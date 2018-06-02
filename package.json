@@ -1,0 +1,26 @@
+{
+  "name": "vincentp.micropub-api",
+  "version": "0.0.1",
+  "description": "The Micropub REST API that publishes to vincentp.me",
+  "main": "https://vincentp.me",
+  "author": "Vincent Pickering",
+  "homepage": "https://github.com/vipickering/micropub-API/#readme",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vipickering/micropub-API.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vipickering/micropub-API/issues"
+  },
+  "devDependencies": {},
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "nodemon": "^1.17.5"
+  }
+}
