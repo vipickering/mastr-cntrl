@@ -1,11 +1,14 @@
 const express = require('express');
 require('dotenv').config(); // Add .ENV vars
 // const bodyParser = require('body-parser');
+const config = require('./config');
+const github = config.github;
+const api = config.api;
 const app = express();
 const path = require('path');
 const fetch = require('node-fetch');
 const helmet = require('helmet');
-const port = process.env.PORT || 3000;
+const port = api.port;
 let server;
 let routes;
 

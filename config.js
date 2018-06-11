@@ -1,9 +1,20 @@
-var config = {}
+const config = {};
+
 config.github = {
-    dev:
-    prod:
+    "url":  process.env.GITHUB_HOST + '/repos/' + process.env.GITHUB_NAME + '/' + process.env.GITHUB_REPO + '/contents/_posts/',
+    "key" : process.env.GITHUB_KEY,
+    "repo" : process.env.GITHUB_REPO,
+    "name" : process.env.GITHUB_NAME,
+    "user" : process.env.GITHUB_USER,
+    "email" : process.env.GITHUB_USER_EMAIL,
+    "host" : process.env.GITHUB_HOST,
+    "branch" : process.env.GITHUB_BRANCH
 };
 
-config.google.id = process.env.GOOGLE_ID || ‘DEVELOPMENT.googleusercontent.com’;
+config.api = {
+    "url" : process.env.MICROPUB_SITE_URL,
+    "token" : process.env.MICROPUB_TOKEN_ENDPOINT,
+    "port" : process.env.MICROPUB_PORT || 3000
+};
 
 module.exports = config;
