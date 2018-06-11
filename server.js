@@ -1,6 +1,6 @@
 const express = require('express');
 require('dotenv').config(); // Add .ENV vars
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 const app = express();
 const path = require('path');
 const fetch = require('node-fetch');
@@ -12,7 +12,8 @@ let routes;
 appRootDirectory = path.join(__dirname, '/');
 
 app.use(helmet());
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
+app.use(express.json());
 
 // Do we need to accept form POSTs?
 // app.use(bodyParser.urlencoded({ extended: true }));

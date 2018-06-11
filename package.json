@@ -8,8 +8,7 @@
   "license": "MIT",
   "scripts": {
     "start": "nodemon server.js",
-    "test:post": "json-server --port 3004 --watch test/db.json",
-    "test:js": "eslint */*.js"
+    "lint": "eslint */*.js"
   },
   "repository": {
     "type": "git",

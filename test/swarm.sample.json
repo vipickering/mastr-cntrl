@@ -1,0 +1,47 @@
+{
+  "type": [
+    "h-entry"
+  ],
+  "properties": {
+    "author": [
+      {
+        "type": [
+          "h-card"
+        ],
+        "properties": {
+          "photo": [
+            "https://ss1.4sqi.net/img/points/coin_icon_crown.png"
+          ],
+          "url": [
+            "https://swarmapp.com/"
+          ],
+          "name": [
+            "Swarm"
+          ]
+        },
+        "value": "https://swarmapp.com/"
+      }
+    ],
+    "name": [
+      "You're still the Mayor. Time to make some rules!"
+    ],
+    "swarm-coins": [
+      "3"
+    ],
+    "in-reply-to": [
+      "https://aaronparecki.com/2017/03/24/7/"
+    ],
+    "url": [
+      "https://ownyourswarm.p3k.io/checkin/58d57db03bd4ab039c76dfed/144ba522fe8454c1e97aef5735329f55"
+    ],
+    "published": [
+      "2017-03-24T13:12:42-07:00"
+    ],
+    "content": [
+      {
+        "html": "You're still the Mayor. Time to make some rules!",
+        "value": "You're still the Mayor. Time to make some rules!"
+      }
+    ]
+  }
+}
