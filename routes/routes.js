@@ -20,13 +20,11 @@ const appRouter = function appRouterFunction(app) {
 
     // It would be good if errors got published to a webhook, picked up by Slack.
     app.post('/', function appRouterPostman(req, res) {
-        let serviceIdentifier = req.body.properties.author[0].properties.name[0]; //Work out where the content came from
-        let serviceContent = req.body;
-        let publishedDate = req.body.properties.published[0];
-        let postFileNameDate = publishedDate.replace(/T|:/g,'-').slice(0, -6); //https://stackoverflow.com/questions/16576983/replace-multiple-characters-in-one-replace-call
-
+        const serviceIdentifier = req.body.properties.author[0].properties.name[0]; //Work out where the content came from
+        const serviceContent = req.body;
+        const publishedDate = req.body.properties.published[0];
+        const postFileNameDate = publishedDate.replace(/T|:/g, '-').slice(0, -6); //https://stackoverflow.com/questions/16576983/replace-multiple-characters-in-one-replace-call
         const postFileName = postFileNameDate + '-' + serviceIdentifier.toLowerCase() + '.md'; // TODO: Format file name with correct date
-        console.log(postFileName);
         const destination = github.url + postFileName;
         const blogEntry = 'Test Post';
         const blogEntryEncoded =  base64.encode(blogEntry);
@@ -52,8 +50,8 @@ const appRouter = function appRouterFunction(app) {
         };
 
         // Format Swarm in to post
-        function formatSwarm(content){
-            console.log("swarm detected");
+        function formatSwarm(content) {
+            console.log('swarm detected');
             // return;
         }
 
@@ -62,21 +60,21 @@ const appRouter = function appRouterFunction(app) {
         // 3. Turn content in to post
         // 4. Post content to Github on master branch
         // Work out if this is from a service we want to post to the blog.
-        switch (serviceIdentifier){
-            case "Swarm":
-                formatSwarm(serviceContent);
-                // Fire POST function
-                // log event
-                // return service code and appropriate response.
+        switch (serviceIdentifier) {
+        case 'Swarm':
+            formatSwarm(serviceContent);
+            // Fire POST function
+            // log event
+            // return service code and appropriate response.
             break;
-            case "Instagram":
-                console.log("instagram detected");
+        case 'Instagram':
+            console.log('instagram detected');
             break;
-            default:
-                console.log("Not worked");
-                console.log("serviceIdentifier " + serviceIdentifier);
-                // return service code and bad response here.
-                // Exit
+        default:
+            console.log('Not worked');
+            console.log('serviceIdentifier ' + serviceIdentifier);
+            // return service code and bad response here.
+            // Exit
         }
 
         //Move inside switch?
