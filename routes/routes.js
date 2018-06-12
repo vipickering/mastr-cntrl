@@ -20,30 +20,19 @@ const appRouter = function appRouterFunction(app) {
 
     // It would be good if errors got published to a webhook, picked up by Slack.
     app.post('/', function appRouterPostman(req, res) {
-        console.log(req.body); // This is how to get the content posted to the server.
+        let serviceIdentifier = req.body.properties.author[0].properties.name[0]; //Work out where the content came from
+        let serviceContent = req.body;
+        let publishedDate = req.body.properties.published[0];
+        let postFileNameDate = publishedDate.replace(/T|:/g,'-').slice(0, -6); //https://stackoverflow.com/questions/16576983/replace-multiple-characters-in-one-replace-call
 
-        // Parse the JSON and check this is a correct post type
-        // when creating the file we need more than dates now
-
-        //properties.author.properties.name = 'Swarm'; // This is how to identify Swarm data
-
-        // switch (req.body){
-        //     case: senda;
-        //     case: asd;
-        //     break;
-        // }
-
-        //Turn the code in to JSON?
-        // let sourceEntry =  JSON.stringify(req.body);
-
-        const postFileName = '2018-06-10-test-post.md'; // TODO: Format file name with correct date
-        const payload = github.url + postFileName;
+        const postFileName = postFileNameDate + '-' + serviceIdentifier.toLowerCase() + '.md'; // TODO: Format file name with correct date
+        console.log(postFileName);
+        const destination = github.url + postFileName;
         const blogEntry = 'Test Post';
         const blogEntryEncoded =  base64.encode(blogEntry);
-
         const options = {
             method : 'PUT',
-            url : payload,
+            url : destination,
             headers : {
                 Authorization : 'token ' + github.key,
                 'Content-Type' : 'application/json',
@@ -62,18 +51,41 @@ const appRouter = function appRouterFunction(app) {
             json : true
         };
 
+        // Format Swarm in to post
+        function formatSwarm(content){
+            console.log("swarm detected");
+            // return;
+        }
+
+        // 1. ERROR HANDLING NEEDED HERE.
+        // 2. Return the correct server response
+        // 3. Turn content in to post
+        // 4. Post content to Github on master branch
+        // Work out if this is from a service we want to post to the blog.
+        switch (serviceIdentifier){
+            case "Swarm":
+                formatSwarm(serviceContent);
+                // Fire POST function
+                // log event
+                // return service code and appropriate response.
+            break;
+            case "Instagram":
+                console.log("instagram detected");
+            break;
+            default:
+                console.log("Not worked");
+                console.log("serviceIdentifier " + serviceIdentifier);
+                // return service code and bad response here.
+                // Exit
+        }
+
+        //Move inside switch?
         request(options, function sendIt(error, response, body) {
             if (error) {
                 console.log(body);
                 throw new Error(error);
             }
         });
-
-        // 1. ERROR HANDLING NEEDED HERE.
-        // 2. Return the correct server response
-        // 3. Turn content in to post
-        // 4. Post content to Github on micropub branch
-        // 5. Raise pull request?
 
         res.send('done'); // Modify this to the appropirate server response and code.
     });
