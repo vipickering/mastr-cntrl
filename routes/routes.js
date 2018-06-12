@@ -23,8 +23,10 @@ const appRouter = function appRouterFunction(app) {
         const serviceIdentifier = req.body.properties.author[0].properties.name[0]; //Work out where the content came from
         const serviceContent = req.body;
         const publishedDate = req.body.properties.published[0];
-        const postFileNameDate = publishedDate.replace(/T|:/g, '-').slice(0, -6); //https://stackoverflow.com/questions/16576983/replace-multiple-characters-in-one-replace-call
-        const postFileName = postFileNameDate + '-' + serviceIdentifier.toLowerCase() + '.md'; // TODO: Format file name with correct date
+        const postFileNameDate = publishedDate.slice(0, 10);
+        const postFileNameTime = publishedDate.replace(/:/g, '-').slice(11, -9); //https://stackoverflow.com/questions/16576983/replace-multiple-characters-in-one-replace-call
+        const postFileName = postFileNameDate + '-update-' + postFileNameTime + '.md'; // TODO: Format file name with correct date
+        console.log(postFileName);
         const destination = github.url + postFileName;
         const blogEntry = 'Test Post';
         const blogEntryEncoded =  base64.encode(blogEntry);
