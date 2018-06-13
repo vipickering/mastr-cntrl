@@ -12,7 +12,6 @@ const appRouter = function appRouterFunction(app) {
     // let day = currentTime.getDate();
     // let year = currentTime.getFullYear();
     // date = year + "-" + month + "-" + day;
-
         res.send('');
 
         // I should output a nice page here to explain what this is, what it does and its Github Repo.
@@ -51,6 +50,7 @@ const appRouter = function appRouterFunction(app) {
             json : true
         };
 
+        //MOVE TO SEPARATE PAGE
         // Format Swarm in to post
         function formatSwarm(content) {
             console.log('swarm detected');
