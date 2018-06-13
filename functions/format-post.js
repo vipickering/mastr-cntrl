@@ -1,4 +1,5 @@
 const base64 = require('base64it');
+const logger = require('../functions/bunyan');
 
 exports.checkIn = function checkIn(micropubContent) {
      let layout = 'myDate';
@@ -26,6 +27,7 @@ exports.checkIn = function checkIn(micropubContent) {
         entry =`<p>some text</p>`;
         micropubContent = frontmatter + entry;
         micropubContentFormatted =  base64.encode(micropubContent);
+        logger.info(micropubContentFormatted);
         return micropubContentFormatted;
 };
 

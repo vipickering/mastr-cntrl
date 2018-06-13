@@ -1,3 +1,4 @@
+const logger = require('../functions/bunyan');
 const request = require('request');
 const config = require('../config');
 const github = config.github;
@@ -24,7 +25,7 @@ const appRouter = function appRouterFunction(app) {
         const postFileNameDate = publishedDate.slice(0, 10);
         const postFileNameTime = publishedDate.replace(/:/g, '-').slice(11, -9); //https://stackoverflow.com/questions/16576983/replace-multiple-characters-in-one-replace-call
         const postFileName = postFileNameDate + '-update-' + postFileNameTime + '.md'; // TODO: Format file name with correct date
-        console.log(postFileName);
+        logger.info(postFileName);
         const destination = github.url + postFileName;
         const micropubContent = req.body;
         let options;
@@ -38,19 +39,19 @@ const appRouter = function appRouterFunction(app) {
         switch (serviceIdentifier) {
         case 'Swarm':
             // formatSwarm(serviceContent);
-            console.log('swarm detected');
+            logger.info('swarm detected');
            test = pageFormatter.checkIn(micropubContent);
-           console.log(test);
+           logger.info(test);
             // Fire POST function
             // log event
             // return service code and appropriate response.
             break;
         case 'Instagram':
-            console.log('instagram detected');
+            logger.info('instagram detected');
             break;
         default:
-            console.log('Not worked');
-            console.log('serviceIdentifier ' + serviceIdentifier);
+            logger.info('Not worked');
+            logger.info('serviceIdentifier ' + serviceIdentifier);
             // return service code and bad response here.
             // Exit
         }
