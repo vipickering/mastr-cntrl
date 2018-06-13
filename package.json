@@ -1,6 +1,6 @@
 {
   "name": "vincentp.micropub-api",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "The Micropub REST API that publishes to vincentp.me",
   "main": "https://vincentp.me",
   "author": "Vincent Pickering",

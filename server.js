@@ -11,7 +11,7 @@ const port = api.port;
 let server;
 let routes;
 
-// appRootDirectory = path.join(__dirname, '/');
+appRootDirectory = path.join(__dirname, '/..');
 
 app.use(helmet());
 app.use(express.json());
