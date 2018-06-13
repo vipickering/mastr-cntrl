@@ -1,47 +1,80 @@
 {
-  "type": [
-    "h-entry"
-  ],
-  "properties": {
-    "author": [
-      {
-        "type": [
-          "h-card"
+    "type": [
+        "h-entry"
+    ],
+    "properties": {
+        "published": [
+            "2018-06-11T08:27:03+01:00"
         ],
-        "properties": {
-          "photo": [
-            "https://ss1.4sqi.net/img/points/coin_icon_crown.png"
-          ],
-          "url": [
-            "https://swarmapp.com/"
-          ],
-          "name": [
-            "Swarm"
-          ]
-        },
-        "value": "https://swarmapp.com/"
-      }
-    ],
-    "name": [
-      "You're still the Mayor. Time to make some rules!"
-    ],
-    "swarm-coins": [
-      "3"
-    ],
-    "in-reply-to": [
-      "https://aaronparecki.com/2017/03/24/7/"
-    ],
-    "url": [
-      "https://ownyourswarm.p3k.io/checkin/58d57db03bd4ab039c76dfed/144ba522fe8454c1e97aef5735329f55"
-    ],
-    "published": [
-      "2017-03-24T13:12:42-07:00"
-    ],
-    "content": [
-      {
-        "html": "You're still the Mayor. Time to make some rules!",
-        "value": "You're still the Mayor. Time to make some rules!"
-      }
-    ]
-  }
+        "syndication": [
+            "https://www.swarmapp.com/user/492614834/checkin/5b1e24472a7ab6002cd1bd6c"
+        ],
+        "content": [
+            "Breakfast"
+        ],
+        "photo": [
+            "https://igx.4sqi.net/img/general/original/492614834_7JxcCoG2_yrk4rgwpchEOSdQvjA7gvpOwon1MT0xlyg.jpg"
+        ],
+        "checkin": [
+            {
+                "type": [
+                    "h-card"
+                ],
+                "properties": {
+                    "name": [
+                        "Laynes Espresso"
+                    ],
+                    "url": [
+                        "https://foursquare.com/v/4dd64e9de4cd37c8938e7b83"
+                    ],
+                    "latitude": [
+                        53.795323197491
+                    ],
+                    "longitude": [
+                        -1.5449386346674
+                    ],
+                    "street-address": [
+                        "16 New Station St."
+                    ],
+                    "locality": [
+                        "Leeds"
+                    ],
+                    "country-name": [
+                        "United Kingdom"
+                    ],
+                    "postal-code": [
+                        "LS1 5DL"
+                    ]
+                },
+                "value": "https://foursquare.com/v/4dd64e9de4cd37c8938e7b83"
+            }
+        ],
+        "location": [
+            {
+                "type": [
+                    "h-adr"
+                ],
+                "properties": {
+                    "latitude": [
+                        53.795323197491
+                    ],
+                    "longitude": [
+                        -1.5449386346674
+                    ],
+                    "street-address": [
+                        "16 New Station St."
+                    ],
+                    "locality": [
+                        "Leeds"
+                    ],
+                    "country-name": [
+                        "United Kingdom"
+                    ],
+                    "postal-code": [
+                        "LS1 5DL"
+                    ]
+                }
+            }
+        ]
+    }
 }

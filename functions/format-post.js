@@ -8,6 +8,12 @@ exports.checkIn = function checkIn(micropubContent) {
         let summary = 'myDate';
         let category = 'myDate';
         let tags = 'myDate';
+        let photo = micropubContent.properties.photo[0];
+        let pubDate = micropubContent.properties.published[0];
+        let content = micropubContent.properties.content[0];
+        let syndication = micropubContent.properties.syndication[0];
+        let checkinName = micropubContent.properties.checkin[0].properties.name[0];
+        let checkinUrl = micropubContent.properties.checkin[0].properties.url[0];
         let entry;
         let frontmatter = `---
         layout: ${layout}
@@ -24,10 +30,31 @@ exports.checkIn = function checkIn(micropubContent) {
         `;
         let micropubContentFormatted;
 
-        entry =`<p>some text</p>`;
+// SHOULD WE JUST PUSH THIS UP TO HEROKU AND TEST RECIEVING THE CONTET AND FORMAT IT THEN INSTEAD?
+        entry =`
+
+AVATAR at Portland Community College - Southeast Campus
+Portland, Oregon • Tue, June 12, 2018 4:19pm
+
+CONTENT
+
+PHOTO
+
+ 15 Coins <-- WEBMENTION?
+Tue, Jun 12, 2018 4:19pm -07:00
+
+SYNDICATION
+
+<img src="${photo}" alt=""><br>
+${name}<br>
+
+${url}<br>
+${pubDate}<br>
+${content}
+`;
         micropubContent = frontmatter + entry;
+        console.log(micropubContent);
         micropubContentFormatted =  base64.encode(micropubContent);
-        logger.info(micropubContentFormatted);
         return micropubContentFormatted;
 };
 
