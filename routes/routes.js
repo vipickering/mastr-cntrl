@@ -20,12 +20,13 @@ const appRouter = function appRouterFunction(app) {
 
     // It would be good if errors got published to a webhook, picked up by Slack.
     app.post('/', function appRouterPostman(req, res) {
-        const serviceIdentifier = req.body.properties.author[0].properties.name[0]; //Work out where the content came from
+        // const serviceIdentifier = req.body.properties.author[0].properties.name[0]; //Work out where the content came from
+        const serviceIdentifier = "Swarm";
         const publishedDate = req.body.properties.published[0];
         const postFileNameDate = publishedDate.slice(0, 10);
         const postFileNameTime = publishedDate.replace(/:/g, '-').slice(11, -9); //https://stackoverflow.com/questions/16576983/replace-multiple-characters-in-one-replace-call
         const postFileName = postFileNameDate + '-update-' + postFileNameTime + '.md'; // TODO: Format file name with correct date
-        logger.info(postFileName);
+        console.log(JSON.stringify(req.body));
         const destination = github.url + postFileName;
         const micropubContent = req.body;
         let options;
