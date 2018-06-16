@@ -7,7 +7,7 @@
   "homepage": "https://github.com/vipickering/micropub-API/#readme",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "nodemon app.js",
     "lint": "eslint */*.js"
   },
   "repository": {
