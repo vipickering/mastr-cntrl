@@ -1,9 +1,11 @@
-const logger = require('../functions/bunyan');
+const path = require('path');
+const appDir = path.dirname(require.main.filename);
+const logger = require(appDir + '/functions/bunyan');
 const request = require('request');
-const config = require('../config');
+const config = require(appDir + '/config');
 const github = config.github;
 const api = config.api;
-const pageFormatter = require('../functions/format-post');
+const pageFormatter = require(appDir + '/functions/format-post');
 
 const appRouter = function appRouterFunction(app) {
     app.get('/', function appRouterHome(req, res) {
