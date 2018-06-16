@@ -21,7 +21,7 @@ const appRouter = function appRouterFunction(app) {
     });
 
     // It would be good if errors got published to a webhook, picked up by Slack.
-    app.post('/', function appRouterPostman(req, res) {
+    app.post('/micropub', function appRouterPostman(req, res) {
         // const serviceIdentifier = req.body.properties.author[0].properties.name[0]; //Work out where the content came from
         const serviceIdentifier = "Swarm";
         const publishedDate = req.body.properties.published[0];
