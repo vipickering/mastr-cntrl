@@ -8,17 +8,18 @@ const api = config.api;
 const pageFormatter = require(appDir + '/functions/format-post');
 
 const appRouter = function appRouterFunction(app) {
-    app.get('/', function appRouterHome(req, res) {
+
     //If we need to work out file date name, do it like this:
     // let currentTime = new Date();
     // let month = ("0" + (currentTime.getMonth() + 1)).slice(-2);
     // let day = currentTime.getDate();
     // let year = currentTime.getFullYear();
     // date = year + "-" + month + "-" + day;
-        res.send('');
 
-        // I should output a nice page here to explain what this is, what it does and its Github Repo.
+     app.get('/', (req, res) => {
+        res.render('index');
     });
+
 
     // Publish Elsewhere, Syndicate (to your) Own Site Endpoint.
     app.post('/pesos', function appRouterPostman(req, res) {
