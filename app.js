@@ -26,6 +26,6 @@ app.use(express.json());
 
 routes = require(appDir + "/routes/routes.js")(app);
 
-server = app.listen(api.port|| 3000, function () {
+server = app.listen(process.env.PORT || 3000, function () {
     logger.info("Listening on port %s...", server.address().port);
 });
