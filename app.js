@@ -21,11 +21,11 @@ const njk = expressNunjucks(app, {
 
 app.set('views',__dirname + '/views');
 app.use(helmet());
-app.use(favicon(path.join(__dirname, 'public', '/images/favicon.ico')))
+app.use(favicon(path.join(__dirname, 'public', '/images/favicon.ico')));
 app.use(express.json());
 
 routes = require(appDir + "/routes/routes.js")(app);
 
-server = app.listen(port, function () {
+server = app.listen(api.port|| 3000, function () {
     logger.info("Listening on port %s...", server.address().port);
 });

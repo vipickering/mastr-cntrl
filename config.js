@@ -14,7 +14,7 @@ config.github = {
 config.api = {
     "url" : process.env.MICROPUB_SITE_URL,
     "token" : process.env.MICROPUB_TOKEN_ENDPOINT,
-    "port" : process.env.MICROPUB_PORT || 3000
+    "port" : process.env.MICROPUB_PORT
 };
 
 module.exports = config;
