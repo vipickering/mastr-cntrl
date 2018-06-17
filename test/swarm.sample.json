@@ -1,80 +1,59 @@
 {
-    "type": [
-        "h-entry"
-    ],
-    "properties": {
-        "published": [
-            "2018-06-11T08:27:03+01:00"
-        ],
-        "syndication": [
-            "https://www.swarmapp.com/user/492614834/checkin/5b1e24472a7ab6002cd1bd6c"
-        ],
-        "content": [
-            "Breakfast"
-        ],
-        "photo": [
-            "https://igx.4sqi.net/img/general/original/492614834_7JxcCoG2_yrk4rgwpchEOSdQvjA7gvpOwon1MT0xlyg.jpg"
-        ],
-        "checkin": [
-            {
-                "type": [
-                    "h-card"
-                ],
-                "properties": {
-                    "name": [
-                        "Laynes Espresso"
-                    ],
-                    "url": [
-                        "https://foursquare.com/v/4dd64e9de4cd37c8938e7b83"
-                    ],
-                    "latitude": [
-                        53.795323197491
-                    ],
-                    "longitude": [
-                        -1.5449386346674
-                    ],
-                    "street-address": [
-                        "16 New Station St."
-                    ],
-                    "locality": [
-                        "Leeds"
-                    ],
-                    "country-name": [
-                        "United Kingdom"
-                    ],
-                    "postal-code": [
-                        "LS1 5DL"
-                    ]
-                },
-                "value": "https://foursquare.com/v/4dd64e9de4cd37c8938e7b83"
+   "type":[
+      "h-entry"
+   ],
+   "properties":{
+      "published":[
+         "2018-06-17T12:00:21+01:00"
+      ],
+      "syndication":[
+         "https://www.swarmapp.com/user/492614834/checkin/5b263f45d7627e002c7b2a41"
+      ],
+      "content":[
+         "Fathers Day meal"
+      ],
+      "checkin":[
+         {
+            "type":[
+               "h-card"
+            ],
+            "properties":{
+               "name":[
+                  "Epicure Bar & Kitchen"
+               ],
+               "url":[
+                  "https://foursquare.com/v/5814735c38faf1fd67b61752"
+               ],
+               "latitude":[
+                  53.64475
+               ],
+               "longitude":[
+                  -1.778292
+               ],
+               "country-name":[
+                  "United Kingdom"
+               ]
+            },
+            "value":"https://foursquare.com/v/5814735c38faf1fd67b61752"
+         }
+      ],
+      "location":[
+         {
+            "type":[
+               "h-adr"
+            ],
+            "properties":{
+               "latitude":[
+                  53.64475
+               ],
+               "longitude":[
+                  -1.778292
+               ],
+               "country-name":[
+                  "United Kingdom"
+               ]
             }
-        ],
-        "location": [
-            {
-                "type": [
-                    "h-adr"
-                ],
-                "properties": {
-                    "latitude": [
-                        53.795323197491
-                    ],
-                    "longitude": [
-                        -1.5449386346674
-                    ],
-                    "street-address": [
-                        "16 New Station St."
-                    ],
-                    "locality": [
-                        "Leeds"
-                    ],
-                    "country-name": [
-                        "United Kingdom"
-                    ],
-                    "postal-code": [
-                        "LS1 5DL"
-                    ]
-                }
-            }
-        ]
-    }
+         }
+      ]
+   }
 }

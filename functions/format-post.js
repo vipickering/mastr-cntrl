@@ -30,7 +30,11 @@ exports.checkIn = function checkIn(micropubContent) {
     `;
     let micropubContentFormatted;
 
-    // SHOULD WE JUST PUSH THIS UP TO HEROKU AND TEST RECIEVING THE CONTET AND FORMAT IT THEN INSTEAD?
+    // TODO
+    // 1. Format post using captured sample data
+    // 2. Format Instagram post, after we capture data
+    // 3.  Add test mode. Bypass routing and output JSON in to console.
+
     entry =`
 AVATAR at Portland Community College - Southeast Campus
 Portland, Oregon • Tue, June 12, 2018 4:19pm
