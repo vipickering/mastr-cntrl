@@ -66,7 +66,7 @@ const appRouter = function appRouterFunction(app) {
             body : {
                 path : postFileName,
                 branch : github.branch,
-                message : ':sparkles: Submitted via micropub API',
+                message : ':robot: Submitted via micropub API',
                 committer : {
                     'name' : github.user,
                     'email' : github.email
