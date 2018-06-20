@@ -1,6 +1,6 @@
 const base64 = require('base64it');
 const logger = require('../functions/bunyan');
-const checkJSON = require('../functions/does-key-exist');
+// const checkJSON = require('../functions/does-key-exist');
 
 exports.checkIn = function checkIn(micropubContent) {
     const layout = 'checkin';
@@ -17,18 +17,52 @@ exports.checkIn = function checkIn(micropubContent) {
     let foursquare = '';
     let addrLat = '';
     let addrLong  = '';
-    let addrCountry  = '';
+    let addrCountry = '';
     let address   = '';
     let locality = '';
     let region = '';
     //https://stackoverflow.com/questions/2313630/ajax-check-if-a-string-is-json
-    // Look at try-catch or promise instead.
-    try { photo = micropubContent.properties.photo[0]; } catch(e) { console.log('No photo skipping..'); }
-    try { foursquare = micropubContent.properties.checkin[0].properties.url[0]; } catch(e) { console.log('No foursquare link skipping..'); }
-    try { addrLat = micropubContent.properties.checkin[0].properties.latitude[0]; } catch(e) { console.log('No lttitude link skipping..'); }
-    try { addrLong = micropubContent.properties.checkin[0].properties.longitude[0]; } catch(e) { console.log('No longitude link skipping..'); }
-    try { locality = micropubContent.properties.checkin[0].properties.locality[0]; } catch(e) { console.log('No locality link skipping..'); }
-    try { region = micropubContent.properties.checkin[0].properties.region[0];} catch(e) { console.log('No region link skipping..'); }
+
+    try {
+        photo = micropubContent.properties.photo[0];
+    } catch (e) {
+        logger.info('No photo skipping..');
+    }
+    try {
+        foursquare = micropubContent.properties.checkin[0].properties.url[0];
+    } catch (e) {
+        logger.info('No foursquare link skipping..');
+    }
+    try {
+        addrLat = micropubContent.properties.checkin[0].properties.latitude[0];
+    } catch (e) {
+        logger.info('No lttitude link skipping..');
+    }
+    try {
+        addrLong = micropubContent.properties.checkin[0].properties.longitude[0];
+    } catch (e) {
+        logger.info('No longitude link skipping..');
+    }
+    try {
+        locality = micropubContent.properties.checkin[0].properties.locality[0];
+    } catch (e) {
+        logger.info('No locality link skipping..');
+    }
+    try {
+        address  = micropubContent.properties.checkin[0].properties.address[0];
+    } catch (e) {
+        logger.info('No address link skipping..');
+    }
+    try {
+        region = micropubContent.properties.checkin[0].properties.region[0];
+    } catch (e) {
+        logger.info('No region link skipping..');
+    }
+    try {
+        addrCountry = micropubContent.properties.checkin[0].properties['country-name'][0];
+    } catch (e) {
+        logger.info('No country link skipping..');
+    }
 
     const entry = `---
 layout: "${layout}"

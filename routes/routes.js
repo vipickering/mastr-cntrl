@@ -24,17 +24,21 @@ const appRouter = function appRouterFunction(app) {
         // const destination = github.url + 'test.md';
         const micropubContent = req.body;
         let payload;
+        let messageContent;
 
         // 1. ERROR HANDLING NEEDED HERE.
+        // Get Indie Auth token from header, verify this is correct and from a service we trust, then proceed.
         // Work out if this is from a service we want to post to the blog.
         switch (serviceIdentifier) {
         case 'Swarm':
             logger.info('swarm detected');
             payload = formatCheckin.checkIn(micropubContent);
+            messageContent = ':robot: Checking submitted via micropub API and ownyourswarm';
             logger.info(payload);
             break;
         case 'Instagram':
             logger.info('instagram detected');
+            messageContent = ':robot: Instagram photo submitted via micropub API  and ownyourgram';
             break;
         default:
             logger.info('Not worked');
@@ -54,7 +58,7 @@ const appRouter = function appRouterFunction(app) {
             body : {
                 path : postFileName,
                 branch : github.branch,
-                message : ':robot: Submitted via micropub API',
+                message : messageContent,
                 committer : {
                     'name' : github.user,
                     'email' : github.email

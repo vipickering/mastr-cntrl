@@ -1,11 +1,11 @@
 const base64 = require('base64it');
 const logger = require('../functions/bunyan');
+// const checkJSON = require('../functions/does-key-exist');
 
-exports.note = function note(micropubContent) {
+exports.checkIn = function checkIn(micropubContent) {
     const layout = 'checkin';
     const summary = '';
     const category = 'Checkins';
-    const photo = micropubContent.properties.photo[0];
     const rawPubDate = micropubContent.properties.published[0];
     const rawDate = rawPubDate.slice(0, 10);
     const rawTime = rawPubDate.replace(/:/g, '-').slice(11, -9); //https://stackoverflow.com/questions/16576983/replace-multiple-characters-in-one-replace-call
@@ -13,13 +13,57 @@ exports.note = function note(micropubContent) {
     const content = micropubContent.properties.content[0];
     const syndication = micropubContent.properties.syndication[0];
     const checkinName = 'Checked in at ' + micropubContent.properties.checkin[0].properties.name[0];
-    const foursquare = micropubContent.properties.checkin[0].properties.url[0];
-    const addrLat = micropubContent.properties.checkin[0].properties.lattitude[0];
-    const addrLong = micropubContent.properties.checkin[0].properties.longitude[0];
-    const addrCountry = micropubContent.properties.checkin[0].properties.country-name[0];
-    const address  = micropubContent.properties.checkin[0].properties.address[0];
-    const locality = micropubContent.properties.checkin[0].properties.locality[0];
-    const region = micropubContent.properties.checkin[0].properties.region[0];
+    let photo = '';
+    let foursquare = '';
+    let addrLat = '';
+    let addrLong  = '';
+    let addrCountry = '';
+    let address   = '';
+    let locality = '';
+    let region = '';
+    //https://stackoverflow.com/questions/2313630/ajax-check-if-a-string-is-json
+
+    try {
+        photo = micropubContent.properties.photo[0];
+    } catch (e) {
+        logger.info('No photo skipping..');
+    }
+    try {
+        foursquare = micropubContent.properties.checkin[0].properties.url[0];
+    } catch (e) {
+        logger.info('No foursquare link skipping..');
+    }
+    try {
+        addrLat = micropubContent.properties.checkin[0].properties.latitude[0];
+    } catch (e) {
+        logger.info('No lttitude link skipping..');
+    }
+    try {
+        addrLong = micropubContent.properties.checkin[0].properties.longitude[0];
+    } catch (e) {
+        logger.info('No longitude link skipping..');
+    }
+    try {
+        locality = micropubContent.properties.checkin[0].properties.locality[0];
+    } catch (e) {
+        logger.info('No locality link skipping..');
+    }
+    try {
+        address  = micropubContent.properties.checkin[0].properties.address[0];
+    } catch (e) {
+        logger.info('No address link skipping..');
+    }
+    try {
+        region = micropubContent.properties.checkin[0].properties.region[0];
+    } catch (e) {
+        logger.info('No region link skipping..');
+    }
+    try {
+        addrCountry = micropubContent.properties.checkin[0].properties['country-name'][0];
+    } catch (e) {
+        logger.info('No country link skipping..');
+    }
+
     const entry = `---
 layout: "${layout}"
 title: "${checkinName}"
@@ -32,15 +76,16 @@ syndication: "${syndication}"
 foursquare: "${foursquare}"
 latitude: "${addrLat}"
 longitude: "${addrLong}"
-street-address: "${address}"
+address: "${address}"
 locality: "${locality}"
 region: "${region}"
-country-name: "${addrCountry}"
+country: "${addrCountry}"
 twitterCard: false
 ---
 ${content}
 `;
     logger.info('swarm content: ' + entry);
+    // const temp = JSON.stringify(entry);
     const micropubContentFormatted = base64.encode(entry);
     return micropubContentFormatted;
 };
