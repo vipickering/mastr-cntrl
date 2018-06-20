@@ -10,7 +10,7 @@ exports.checkIn = function checkIn(micropubContent) {
     const rawDate = rawPubDate.slice(0, 10);
     const rawTime = rawPubDate.replace(/:/g, '-').slice(11, -9); //https://stackoverflow.com/questions/16576983/replace-multiple-characters-in-one-replace-call
     const pubDate = rawDate + ' ' + rawTime + ' +/-GMT';
-    const content = micropubContent.properties.content[0];
+    let content = '';
     const syndication = micropubContent.properties.syndication[0];
     const checkinName = 'Checked in at ' + micropubContent.properties.checkin[0].properties.name[0];
     let photo = '';
@@ -21,8 +21,12 @@ exports.checkIn = function checkIn(micropubContent) {
     let address   = '';
     let locality = '';
     let region = '';
-    //https://stackoverflow.com/questions/2313630/ajax-check-if-a-string-is-json
 
+     try {
+        content = micropubContent.properties.content[0];
+    } catch (e) {
+        logger.info('No content skipping..');
+    }
     try {
         photo = micropubContent.properties.photo[0];
     } catch (e) {
