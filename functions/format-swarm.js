@@ -22,7 +22,7 @@ exports.checkIn = function checkIn(micropubContent) {
     let locality = '';
     let region = '';
 
-     try {
+    try {
         content = micropubContent.properties.content[0];
     } catch (e) {
         logger.info('No content skipping..');

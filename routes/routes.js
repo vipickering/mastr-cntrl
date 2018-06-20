@@ -14,18 +14,15 @@ const appRouter = function appRouterFunction(app) {
     // Publish Elsewhere, Syndicate (to your) Own Site Endpoint.
     app.post('/pesos', function appRouterPostman(req, res) {
         // const serviceIdentifier = req.body.properties.author[0].properties.name[0]; //Work out where the content came from
+        let postFileName;
+        let payload;
+        let messageContent;
         const serviceIdentifier = 'Swarm';
         const publishedDate = req.body.properties.published[0];
         const postFileNameDate = publishedDate.slice(0, 10);
         const postFileNameTime = publishedDate.replace(/:/g, '-').slice(11, -9); //https://stackoverflow.com/questions/16576983/replace-multiple-characters-in-one-replace-call
-        const postFileName = postFileNameDate + '-update-' + postFileNameTime + '.md';
-
-        const destination = github.url + postFileName;
-        // const destination = github.url + 'test.md';
         const micropubContent = req.body;
-        let payload;
-        let messageContent;
-
+        logger.info('header' + req.header);
         // 1. ERROR HANDLING NEEDED HERE.
         // Get Indie Auth token from header, verify this is correct and from a service we trust, then proceed.
         // Work out if this is from a service we want to post to the blog.
@@ -34,10 +31,12 @@ const appRouter = function appRouterFunction(app) {
             logger.info('swarm detected');
             payload = formatCheckin.checkIn(micropubContent);
             messageContent = ':robot: Checking submitted via micropub API and ownyourswarm';
+            postFileName = postFileNameDate + '-checkin-' + postFileNameTime + '.md';
             logger.info(payload);
             break;
         case 'Instagram':
             logger.info('instagram detected');
+            postFileName = postFileNameDate + '-instagram-' + postFileNameTime + '.md';
             messageContent = ':robot: Instagram photo submitted via micropub API  and ownyourgram';
             break;
         default:
@@ -46,7 +45,7 @@ const appRouter = function appRouterFunction(app) {
             // return service code and bad response here.
             // Exit
         }
-
+        const destination = github.url + postFileName;
         const options = {
             method : 'PUT',
             url : destination,
@@ -77,7 +76,7 @@ const appRouter = function appRouterFunction(app) {
                 throw new Error('failed to send ' + error);
             }
             logger.info('Upload successful!  Server responded with:', body);
-            res.status(200);
+            res.status(201);
             res.send('Content received, have a nice day');
         });
     });
