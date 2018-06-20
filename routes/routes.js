@@ -4,22 +4,12 @@ const logger = require(appDir + '/functions/bunyan');
 const request = require('request');
 const config = require(appDir + '/config');
 const github = config.github;
-const api = config.api;
 const formatCheckin = require(appDir + '/functions/format-swarm');
 
 const appRouter = function appRouterFunction(app) {
-
-    //If we need to work out file date name, do it like this:
-    // let currentTime = new Date();
-    // let month = ("0" + (currentTime.getMonth() + 1)).slice(-2);
-    // let day = currentTime.getDate();
-    // let year = currentTime.getFullYear();
-    // date = year + "-" + month + "-" + day;
-
-     app.get('/', (req, res) => {
+    app.get('/', (req, res) => {
         res.render('index');
     });
-
 
     // Publish Elsewhere, Syndicate (to your) Own Site Endpoint.
     app.post('/pesos', function appRouterPostman(req, res) {
@@ -28,14 +18,12 @@ const appRouter = function appRouterFunction(app) {
         const publishedDate = req.body.properties.published[0];
         const postFileNameDate = publishedDate.slice(0, 10);
         const postFileNameTime = publishedDate.replace(/:/g, '-').slice(11, -9); //https://stackoverflow.com/questions/16576983/replace-multiple-characters-in-one-replace-call
-        const postFileName = postFileNameDate + '-update-' + postFileNameTime + '.md'; // TODO: Format file name with correct date
-        // console.log(JSON.stringify(req.body));
-        const destination = github.url + postFileName;
-        const micropubContent = req.body;
-        let options;
-        let payload;
+        const postFileName = postFileNameDate + '-update-' + postFileNameTime + '.md';
 
-// https://www.swarmapp.com/user/492614834/checkin/5b263f45d7627e002c7b2a41
+        const destination = github.url + postFileName;
+        // const destination = github.url + 'test.md';
+        const micropubContent = req.body;
+        let payload;
 
         // 1. ERROR HANDLING NEEDED HERE.
         // Work out if this is from a service we want to post to the blog.
@@ -55,7 +43,7 @@ const appRouter = function appRouterFunction(app) {
             // Exit
         }
 
-        options = {
+        const options = {
             method : 'PUT',
             url : destination,
             headers : {
@@ -79,13 +67,15 @@ const appRouter = function appRouterFunction(app) {
         //Move inside switch?
         request(options, function sendIt(error, response, body) {
             if (error) {
-                throw new Error(error);
                 res.status(400);
                 res.send('Player 1 requires keys');
+                logger.error('upload failed:' + error);
+                throw new Error('failed to send ' + error);
             }
+            logger.info('Upload successful!  Server responded with:', body);
+            res.status(200);
+            res.send('Content received, have a nice day');
         });
-         res.status(200);
-        res.send('Content recieved, have a nice day');
     });
 };
 

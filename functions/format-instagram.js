@@ -1,67 +1,46 @@
 const base64 = require('base64it');
 const logger = require('../functions/bunyan');
 
-//UNFINISHED
-exports.note = function note(serviceContent) {
-    let layout = 'checkin';
-    let title = 'titlehere';
-    let date = '2018-06-15 07:00:00 +/-GMT';
-    let summary = 'summaryhere';
-    let category = 'checkin';
-    let tags = 'checkin swarm foursquare';
-    let photo = micropubContent.properties.photo[0];
-    let pubDate = micropubContent.properties.published[0] ;
-    let content = micropubContent.properties.content[0] ;
-    let syndication = micropubContent.properties.syndication[0] ;
-    let checkinName = micropubContent.properties.checkin[0].properties.name[0] ;
-    let foursquareUrl = micropubContent.properties.checkin[0].properties.url[0] ;
-    let checkinLat = micropubContent.properties.checkin[0].properties.lattitude[0] ;
-    let checkinLong = micropubContent.properties.checkin[0].properties.longitude[0] ;
-    let checkinCountry = micropubContent.properties.checkin[0].properties.country-name[0] ;
-    let entry;
-    let frontmatter = `---
-    layout: ${layout}
-    title: ${title}
-    date: ${date}
-    meta: ${summary}
-    summary: ${summary}
-    category: ${category}
-    modified :
-    modifiedReason:
-    twitterCard: true
-    tags: ${tags}
-    ---
-    `;
-    let micropubContentFormatted;
-
-    // TODO
-    // 1. Format post using captured sample data
-    // 2. Format Instagram post, after we capture data
-    // 3.  Add test mode. Bypass routing and output JSON in to console.
-
-    entry =`
-AVATAR at Portland Community College - Southeast Campus
-Portland, Oregon • Tue, June 12, 2018 4:19pm
-
-CONTENT
-
-PHOTO
-
- 15 Coins <-- WEBMENTION?
-Tue, Jun 12, 2018 4:19pm -07:00
-
-SYNDICATION
-<img src="${photo}" alt=""><br>
-${name}<br>
-
-${url}<br>
-${pubDate}<br>
+exports.note = function note(micropubContent) {
+    const layout = 'checkin';
+    const summary = '';
+    const category = 'Checkins';
+    const photo = micropubContent.properties.photo[0];
+    const rawPubDate = micropubContent.properties.published[0];
+    const rawDate = rawPubDate.slice(0, 10);
+    const rawTime = rawPubDate.replace(/:/g, '-').slice(11, -9); //https://stackoverflow.com/questions/16576983/replace-multiple-characters-in-one-replace-call
+    const pubDate = rawDate + ' ' + rawTime + ' +/-GMT';
+    const content = micropubContent.properties.content[0];
+    const syndication = micropubContent.properties.syndication[0];
+    const checkinName = 'Checked in at ' + micropubContent.properties.checkin[0].properties.name[0];
+    const foursquare = micropubContent.properties.checkin[0].properties.url[0];
+    const addrLat = micropubContent.properties.checkin[0].properties.lattitude[0];
+    const addrLong = micropubContent.properties.checkin[0].properties.longitude[0];
+    const addrCountry = micropubContent.properties.checkin[0].properties.country-name[0];
+    const address  = micropubContent.properties.checkin[0].properties.address[0];
+    const locality = micropubContent.properties.checkin[0].properties.locality[0];
+    const region = micropubContent.properties.checkin[0].properties.region[0];
+    const entry = `---
+layout: "${layout}"
+title: "${checkinName}"
+photo: "${photo}"
+date: "${pubDate}"
+meta: "${checkinName}"
+summary: "${summary}"
+category: "${category}"
+syndication: "${syndication}"
+foursquare: "${foursquare}"
+latitude: "${addrLat}"
+longitude: "${addrLong}"
+street-address: "${address}"
+locality: "${locality}"
+region: "${region}"
+country-name: "${addrCountry}"
+twitterCard: false
+---
 ${content}
 `;
-
-        entry = JSON.stringify(micropubContent);
-        micropubContent = frontmatter + entry;
-        console.log(micropubContent);
-        micropubContentFormatted =  base64.encode(micropubContent);
-        return micropubContentFormatted;
+    logger.info('swarm content: ' + entry);
+    const micropubContentFormatted = base64.encode(entry);
+    return micropubContentFormatted;
 };

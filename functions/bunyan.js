@@ -1,9 +1,5 @@
 const bunyan = require('bunyan');
-const config = require('../config');
-let logger;
-let streamsContent;
-
-streamsContent =  [
+const streamsContent =  [
     {
         stream : process.stdout,
         level : 'debug'
@@ -30,9 +26,7 @@ streamsContent =  [
         count : 3
     }
 ];
-
-
-logger = bunyan.createLogger({
+const logger = bunyan.createLogger({
     name : 'micropubAPI',
     serializers : {
         err : bunyan.stdSerializers.err
