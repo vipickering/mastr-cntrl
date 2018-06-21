@@ -1,6 +1,6 @@
 const config = {};
 
-config.github = {
+ config.github = {
     "url":  process.env.GITHUB_HOST + '/repos/' + process.env.GITHUB_NAME + '/' + process.env.GITHUB_REPO + '/contents/_posts/',
     "key" : process.env.GITHUB_KEY,
     "repo" : process.env.GITHUB_REPO,
@@ -18,3 +18,4 @@ config.api = {
 };
 
 module.exports = config;
+

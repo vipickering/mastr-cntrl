@@ -23,7 +23,6 @@ app.set('views',__dirname + '/views');
 app.use(helmet());
 app.use(favicon(path.join(__dirname, 'public', '/images/favicon.ico')));
 app.use(express.json());
-
 routes = require(appDir + "/routes/routes.js")(app);
 
 server = app.listen(process.env.PORT || 3000, function () {

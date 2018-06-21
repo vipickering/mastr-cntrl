@@ -15,29 +15,35 @@ const appRouter = function appRouterFunction(app) {
     app.post('/pesos', function appRouterPostman(req, res) {
         // const serviceIdentifier = req.body.properties.author[0].properties.name[0]; //Work out where the content came from
         let postFileName;
+        let responseLocation;
         let payload;
         let messageContent;
-        const serviceIdentifier = 'Swarm';
+        const serviceIdentifier = 'Swarm'; // TODO!
         const publishedDate = req.body.properties.published[0];
         const postFileNameDate = publishedDate.slice(0, 10);
-        const postFileNameTime = publishedDate.replace(/:/g, '-').slice(11, -9); //https://stackoverflow.com/questions/16576983/replace-multiple-characters-in-one-replace-call
+        const postFileNameTime = publishedDate.replace(/:/g, '-').slice(11, -9);
+        const responseDate = postFileNameDate.replace(/-/g, '/')
+        const responseLocationTime = publishedDate.slice(11, -12) + '-' + publishedDate.slice(14, -9);
         const micropubContent = req.body;
-        logger.info('header' + req.header);
+
         // 1. ERROR HANDLING NEEDED HERE.
         // Get Indie Auth token from header, verify this is correct and from a service we trust, then proceed.
         // Work out if this is from a service we want to post to the blog.
         switch (serviceIdentifier) {
         case 'Swarm':
-            logger.info('swarm detected');
+            logger.info('Swarm detected');
             payload = formatCheckin.checkIn(micropubContent);
-            messageContent = ':robot: Checking submitted via micropub API and ownyourswarm';
-            postFileName = postFileNameDate + '-checkin-' + postFileNameTime + '.md';
-            logger.info(payload);
+            messageContent = ':robot: Checkin submitted via micropub API and ownyourswarm';
+            postFileName = postFileNameDate + '-' + postFileNameTime + '.md';
+            responseLocation = 'https://vincentp.me/checkins/' + responseDate + '/' + responseLocationTime;
+            logger.info('response location ' + responseLocation);
             break;
         case 'Instagram':
-            logger.info('instagram detected');
-            postFileName = postFileNameDate + '-instagram-' + postFileNameTime + '.md';
+            logger.info('Instagram detected');
             messageContent = ':robot: Instagram photo submitted via micropub API  and ownyourgram';
+            postFileName = postFileNameDate + '-' + postFileNameTime + '.md';
+            responseLocation = 'https://vincentp.me/instagram/' + responseDate + '/' + responseLocationTime;
+            logger.info('response ' + responseLocation);
             break;
         default:
             logger.info('Not worked');
@@ -46,6 +52,7 @@ const appRouter = function appRouterFunction(app) {
             // Exit
         }
         const destination = github.url + postFileName;
+        logger.info('destination ' + destination);
         const options = {
             method : 'PUT',
             url : destination,
@@ -72,12 +79,14 @@ const appRouter = function appRouterFunction(app) {
             if (error) {
                 res.status(400);
                 res.send('Player 1 requires keys');
-                logger.error('upload failed:' + error);
+                logger.error('Git creation failed:' + error);
                 throw new Error('failed to send ' + error);
             }
-            logger.info('Upload successful!  Server responded with:', body);
-            res.status(201);
-            res.send('Content received, have a nice day');
+            logger.info('Git creation successful!  Server responded with:', body);
+            res.writeHead(201, {
+                'location': responseLocation
+            });
+            res.end("Thanks\n");
         });
     });
 };

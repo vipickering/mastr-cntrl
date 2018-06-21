@@ -1,6 +1,5 @@
 const base64 = require('base64it');
 const logger = require('../functions/bunyan');
-// const checkJSON = require('../functions/does-key-exist');
 
 exports.checkIn = function checkIn(micropubContent) {
     const layout = 'checkin';
@@ -8,11 +7,11 @@ exports.checkIn = function checkIn(micropubContent) {
     const category = 'Checkins';
     const rawPubDate = micropubContent.properties.published[0];
     const rawDate = rawPubDate.slice(0, 10);
-    const rawTime = rawPubDate.replace(/:/g, '-').slice(11, -9); //https://stackoverflow.com/questions/16576983/replace-multiple-characters-in-one-replace-call
+    const rawTime = rawPubDate.replace(/-/g, ':').slice(11, -9);
     const pubDate = rawDate + ' ' + rawTime + ' +/-GMT';
-    let content = '';
     const syndication = micropubContent.properties.syndication[0];
-    const checkinName = 'Checked in at ' + micropubContent.properties.checkin[0].properties.name[0];
+    const checkinName = micropubContent.properties.checkin[0].properties.name[0];
+    let content = '';
     let photo = '';
     let foursquare = '';
     let addrLat = '';
@@ -73,7 +72,7 @@ layout: "${layout}"
 title: "${checkinName}"
 photo: "${photo}"
 date: "${pubDate}"
-meta: "${checkinName}"
+meta: "'Checked in at' ${checkinName}"
 summary: "${summary}"
 category: "${category}"
 syndication: "${syndication}"
