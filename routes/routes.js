@@ -35,14 +35,14 @@ const appRouter = function appRouterFunction(app) {
             payload = formatCheckin.checkIn(micropubContent);
             messageContent = ':robot: Checkin submitted via micropub API and ownyourswarm';
             postFileName = postFileNameDate + '-' + postFileNameTime + '.md';
-            responseLocation = 'https://vincentp.me/checkins/' + responseDate + '/' + responseLocationTime;
+            responseLocation = 'https://vincentp.me/checkins/' + responseDate + '/' + responseLocationTime + '/';
             logger.info('response location ' + responseLocation);
             break;
         case 'Instagram':
             logger.info('Instagram detected');
             messageContent = ':robot: Instagram photo submitted via micropub API  and ownyourgram';
             postFileName = postFileNameDate + '-' + postFileNameTime + '.md';
-            responseLocation = 'https://vincentp.me/instagram/' + responseDate + '/' + responseLocationTime;
+            responseLocation = 'https://vincentp.me/instagram/' + responseDate + '/' + responseLocationTime + '/';
             logger.info('response ' + responseLocation);
             break;
         default:
