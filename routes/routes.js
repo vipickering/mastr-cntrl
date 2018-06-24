@@ -29,15 +29,15 @@ const appRouter = function appRouterFunction(app) {
         const micropubContent = req.body;
         logger.info(req.header);
         // Get Indie Auth token from header, verify with https://tokens.indieauth.com
-        payloadOptions = {
-            method : 'GET',
-            url : 'https://tokens.indieauth.com/token',
-            headers : {
-                'Accept' : 'application/json',
-                'Authorization' : token
-            },
-            json : true
-        };
+        // payloadOptions = {
+        //     method : 'GET',
+        //     url : 'https://tokens.indieauth.com/token',
+        //     headers : {
+        //         'Accept' : 'application/json',
+        //         'Authorization' : token
+        //     },
+        //     json : true
+        // };
 
         /*
         HTTP/1.1 200 OK
@@ -51,18 +51,18 @@ Content-Type: application/json
   "nonce": 501884823
 }
 */
-        request(payloadOptions, function sendIt(error, response, body) {
-            if (error) {
-                serviceIdentifier = 'Invalid';
-                logger.info('Invalid request:', body);
-            } else {
-                logger.info('header ' + req.header);
-                logger.info('body ' + req.body);
-                logger.info('request ' + req.header);
-            }
-            res.writeHead(200);
-            res.end('Thanks\n');
-        });
+        // request(payloadOptions, function sendIt(error, response, body) {
+        //     if (error) {
+        //         serviceIdentifier = 'Invalid';
+        //         logger.info('Invalid request:', body);
+        //     } else {
+        //         logger.info('header ' + req.header);
+        //         logger.info('body ' + req.body);
+        //         logger.info('request ' + req.header);
+        //     }
+        //     res.writeHead(200);
+        //     res.end('Thanks\n');
+        // });
 
         // Work out if this is from a service we want to post to the blog.
         switch (serviceIdentifier) {
