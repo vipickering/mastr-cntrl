@@ -18,16 +18,52 @@ const appRouter = function appRouterFunction(app) {
         let responseLocation;
         let payload;
         let messageContent;
-        const serviceIdentifier = 'Swarm'; // TODO!
+        let payloadOptions;
+        const token = req.header.Authorization;
+        let serviceIdentifier = 'Swarm'; // TODO!
         const publishedDate = req.body.properties.published[0];
         const postFileNameDate = publishedDate.slice(0, 10);
         const postFileNameTime = publishedDate.replace(/:/g, '-').slice(11, -9);
-        const responseDate = postFileNameDate.replace(/-/g, '/')
+        const responseDate = postFileNameDate.replace(/-/g, '/');
         const responseLocationTime = publishedDate.slice(11, -12) + '-' + publishedDate.slice(14, -9);
         const micropubContent = req.body;
+        logger.info(req.header);
+        // Get Indie Auth token from header, verify with https://tokens.indieauth.com
+        payloadOptions = {
+            method : 'GET',
+            url : 'https://tokens.indieauth.com/token',
+            headers : {
+                'Accept' : 'application/json',
+                'Authorization' : token
+            },
+            json : true
+        };
 
-        // 1. ERROR HANDLING NEEDED HERE.
-        // Get Indie Auth token from header, verify this is correct and from a service we trust, then proceed.
+        /*
+        HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "me": "https://aaronparecki.com/",
+  "client_id": "https://ownyourgram.com",
+  "scope": "post",
+  "issued_at": 1399155608,
+  "nonce": 501884823
+}
+*/
+        request(payloadOptions, function sendIt(error, response, body) {
+            if (error) {
+                serviceIdentifier = 'Invalid';
+                logger.info('Invalid request:', body);
+            } else {
+                logger.info('header ' + req.header);
+                logger.info('body ' + req.body);
+                logger.info('request ' + req.header);
+            }
+            res.writeHead(200);
+            res.end('Thanks\n');
+        });
+
         // Work out if this is from a service we want to post to the blog.
         switch (serviceIdentifier) {
         case 'Swarm':
@@ -51,9 +87,10 @@ const appRouter = function appRouterFunction(app) {
             // return service code and bad response here.
             // Exit
         }
+
         const destination = github.url + postFileName;
         logger.info('destination ' + destination);
-        const options = {
+        payloadOptions = {
             method : 'PUT',
             url : destination,
             headers : {
@@ -75,7 +112,7 @@ const appRouter = function appRouterFunction(app) {
         };
 
         //Move inside switch?
-        request(options, function sendIt(error, response, body) {
+        request(payloadOptions, function sendIt(error, response, body) {
             if (error) {
                 res.status(400);
                 res.send('Player 1 requires keys');
@@ -84,9 +121,9 @@ const appRouter = function appRouterFunction(app) {
             }
             logger.info('Git creation successful!  Server responded with:', body);
             res.writeHead(201, {
-                'location': responseLocation
+                'location' : responseLocation
             });
-            res.end("Thanks\n");
+            res.end('Thanks\n');
         });
     });
 };
