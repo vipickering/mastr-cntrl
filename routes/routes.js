@@ -11,47 +11,8 @@ const appRouter = function appRouterFunction(app) {
         res.render('index');
     });
 
-    appRouter.use(function(req, res, next) {
-                /*
-        HTTP/1.1 200 OK
-Content-Type: application/json
-
-{
-  "me": "https://aaronparecki.com/",
-  "client_id": "https://ownyourgram.com",
-  "scope": "post",
-  "issued_at": 1399155608,
-  "nonce": 501884823
-}
-*/
-
-        const verifyOptions = {
-            method : 'GET',
-            url : 'https://tokens.indieauth.com/token',
-            headers : {
-                'Accept' : 'application/json',
-                'Authorization' : token
-            },
-            json : true
-        };
-
-         request(verifyOptions, function sendIt(error, response, body) {
-            if (error) {
-                serviceIdentifier = 'Invalid';
-                logger.info('Invalid request:', body);
-            } else {
-                logger.info('header ' + req.header);
-                logger.info('body ' + req.body);
-                logger.info('request ' + req.header);
-                next();
-            }
-            res.writeHead(200);
-            res.end('Thanks\n');
-        });
-    });
-
     // Publish Elsewhere, Syndicate (to your) Own Site Endpoint.
-    appRouter.post('/pesos', function appRouterPostman(req, res) {
+    app.post('/pesos', function appRouterPostman(req, res) {
         // const serviceIdentifier = req.body.properties.author[0].properties.name[0]; //Work out where the content came from
         let postFileName;
         let responseLocation;
@@ -68,6 +29,39 @@ Content-Type: application/json
         const micropubContent = req.body;
         logger.info(req.header);
         // Get Indie Auth token from header, verify with https://tokens.indieauth.com
+        // payloadOptions = {
+        //     method : 'GET',
+        //     url : 'https://tokens.indieauth.com/token',
+        //     headers : {
+        //         'Accept' : 'application/json',
+        //         'Authorization' : token
+        //     },
+        //     json : true
+        // };
+
+        /*
+        HTTP/1.1 200 OK
+Content-Type: application/json
+{
+  "me": "https://aaronparecki.com/",
+  "client_id": "https://ownyourgram.com",
+  "scope": "post",
+  "issued_at": 1399155608,
+  "nonce": 501884823
+}
+*/
+        // request(payloadOptions, function sendIt(error, response, body) {
+        //     if (error) {
+        //         serviceIdentifier = 'Invalid';
+        //         logger.info('Invalid request:', body);
+        //     } else {
+        //         logger.info('header ' + req.header);
+        //         logger.info('body ' + req.body);
+        //         logger.info('request ' + req.header);
+        //     }
+        //     res.writeHead(200);
+        //     res.end('Thanks\n');
+        // });
 
         // Work out if this is from a service we want to post to the blog.
         switch (serviceIdentifier) {
