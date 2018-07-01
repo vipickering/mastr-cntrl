@@ -36,8 +36,8 @@ router.post('/pesos', function appPesosRouter(req, res, next) {
        'Accept' : 'application/json',
        'Authorization': token
     };
-    console.log('raw: ' + micropubContent);
-    console.log('JSON: ' + JSON.parse(micropubContent));
+    console.log('raw: ' + req);
+    console.log('JSON: ' + JSON.stringify(micropubContent));
     logger.info('Token Recieved: '+ token);
 
     /* example response we want
