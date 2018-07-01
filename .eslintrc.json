@@ -172,10 +172,6 @@
     "space-infix-ops": [1, { "int32Hint": false}],
     "space-unary-ops": [1, { "words": true, "nonwords": false}],
     "wrap-regex": 2,
-    /*
-    **  ECMASCRIPT 6
-    **  These rules are only relevant to ES6 environments.
-    */
     "arrow-parens": [2, "always"],
     "arrow-spacing": [2, { "before": true, "after": true}],
     "constructor-super": 2,
@@ -192,11 +188,6 @@
     "prefer-reflect": 0,
     "prefer-template": 0,
     "require-yield": 2,
-    /*
-    **  NODE.JS AND COMMONJS
-    **  These rules are specific to JavaScript running on Node.js or
-    **  using CommonJS in the browser.
-    */
     "callback-return": 1,
     "global-require": 0,
     "handle-callback-err": 1,

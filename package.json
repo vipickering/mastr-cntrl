@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node app.js | bunyan -o short",
-    "lint": "eslint */*.js"
+    "lint": "eslint */*.js --ignore-path .gitignore ."
   },
   "repository": {
     "type": "git",
@@ -31,6 +31,7 @@
     "express": "^4.16.3",
     "express-nunjucks": "^2.2.3",
     "helmet": "^3.12.1",
+    "node-fetch": "^2.1.2",
     "nunjucks": "^3.1.3",
     "request": "^2.87.0",
     "serve-favicon": "^2.5.0"

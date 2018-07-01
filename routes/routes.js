@@ -1,94 +1,114 @@
+const express = require('express');
+const router = new express.Router();
 const path = require('path');
-const appDir = path.dirname(require.main.filename);
-const logger = require(appDir + '/functions/bunyan');
+const fetch = require('node-fetch');
 const request = require('request');
+const appDir = path.dirname(require.main.filename);
 const config = require(appDir + '/config');
+const functionPath = '/functions/';
+const logger = require(appDir + functionPath + 'bunyan');
+// const authTokenService = require(appDir + functionPath + 'indieAuth');
+const formatCheckin = require(appDir + functionPath + 'format-swarm');
 const github = config.github;
-const formatCheckin = require(appDir + '/functions/format-swarm');
+// let tokenAuth =  authTokenService.token(req, res, next);
+ let serviceIdentifier = '';
 
-const appRouter = function appRouterFunction(app) {
-    app.get('/', (req, res) => {
-        res.render('index');
-    });
+// Example applying middleware.
+// router.use(function (req, res, next) {
+//     const token = req.headers.authorization;
+//     logger.info('Token: '+ token);
 
-    // Publish Elsewhere, Syndicate (to your) Own Site Endpoint.
-    app.post('/pesos', function appRouterPostman(req, res) {
-        // const serviceIdentifier = req.body.properties.author[0].properties.name[0]; //Work out where the content came from
-        let postFileName;
-        let responseLocation;
-        let payload;
-        let messageContent;
-        let payloadOptions;
-        const token = req.header.Authorization;
-        let serviceIdentifier = 'Swarm'; // TODO!
-        const publishedDate = req.body.properties.published[0];
-        const postFileNameDate = publishedDate.slice(0, 10);
-        const postFileNameTime = publishedDate.replace(/:/g, '-').slice(11, -9);
-        const responseDate = postFileNameDate.replace(/-/g, '/');
-        const responseLocationTime = publishedDate.slice(11, -12) + '-' + publishedDate.slice(14, -9);
-        const micropubContent = req.body;
-        logger.info(req.header);
-        // Get Indie Auth token from header, verify with https://tokens.indieauth.com
-        // payloadOptions = {
-        //     method : 'GET',
-        //     url : 'https://tokens.indieauth.com/token',
-        //     headers : {
-        //         'Accept' : 'application/json',
-        //         'Authorization' : token
-        //     },
-        //     json : true
-        // };
+// GET content, stash it somewhere.
+// Do GET request check
+// stash service with data
+// use data to post request?
 
-        /*
+//     next();
+// });
+
+router.get('/', (req, res) => {
+    res.render('index');
+});
+
+// Publish Elsewhere, Syndicate (to your) Own Site Endpoint.
+router.post('/pesos', function appRouterPostman(req, res, next) {
+    let postFileName;
+    let responseLocation;
+    let payload;
+    let messageContent;
+    let payloadOptions;
+    const publishedDate = req.body.properties.published[0];
+    const postFileNameDate = publishedDate.slice(0, 10);
+    const postFileNameTime = publishedDate.replace(/:/g, '-').slice(11, -9);
+    const responseDate = postFileNameDate.replace(/-/g, '/');
+    const responseLocationTime = publishedDate.slice(11, -12) + '-' + publishedDate.slice(14, -9);
+    const micropubContent = req.body;
+    const token = req.headers.authorization;
+    const indieauth = 'https://tokens.indieauth.com/token';
+    const authHeaders = {
+       'Accept' : 'application/json',
+       'Authorization': token
+    };
+
+    logger.info('Token Recieved: '+ token);
+
+    /* example response we want
         HTTP/1.1 200 OK
-Content-Type: application/json
-{
-  "me": "https://aaronparecki.com/",
-  "client_id": "https://ownyourgram.com",
-  "scope": "post",
-  "issued_at": 1399155608,
-  "nonce": 501884823
-}
-*/
-        // request(payloadOptions, function sendIt(error, response, body) {
-        //     if (error) {
-        //         serviceIdentifier = 'Invalid';
-        //         logger.info('Invalid request:', body);
-        //     } else {
-        //         logger.info('header ' + req.header);
-        //         logger.info('body ' + req.body);
-        //         logger.info('request ' + req.header);
-        //     }
-        //     res.writeHead(200);
-        //     res.end('Thanks\n');
-        // });
+        Content-Type: application/json
+        {
+            "me": "https://aaronparecki.com/",
+            "client_id": "https://ownyourgram.com",
+            "scope": "post",
+            "issued_at": 1399155608,
+            "nonce": 501884823
+        }
+    */
+    fetch(indieauth, { method: 'GET', headers: authHeaders})
+        .then(function(response){
+             return response.json();
+        })
+        .then(function(json){
+            console.log(json);
 
-        // Work out if this is from a service we want to post to the blog.
-        switch (serviceIdentifier) {
-        case 'Swarm':
-            logger.info('Swarm detected');
-            payload = formatCheckin.checkIn(micropubContent);
-            messageContent = ':robot: Checkin submitted via micropub API and ownyourswarm';
-            postFileName = postFileNameDate + '-' + postFileNameTime + '.md';
-            responseLocation = 'https://vincentp.me/checkins/' + responseDate + '/' + responseLocationTime + '/';
-            logger.info('response location ' + responseLocation);
-            break;
-        case 'Instagram':
-            logger.info('Instagram detected');
-            messageContent = ':robot: Instagram photo submitted via micropub API  and ownyourgram';
-            postFileName = postFileNameDate + '-' + postFileNameTime + '.md';
-            responseLocation = 'https://vincentp.me/instagram/' + responseDate + '/' + responseLocationTime + '/';
-            logger.info('response ' + responseLocation);
-            break;
-        default:
-            logger.info('Not worked');
-            logger.info('serviceIdentifier ' + serviceIdentifier);
-            // return service code and bad response here.
-            // Exit
+        // serviceIdentifier = json.client_id;
+        serviceIdentifier = 'https://ownyourswarm.p3k.io'; // Default temp route.
+
+        if (!serviceIdentifier) {
+             // Work out if this is from a service we want to post to the blog.
+            switch (serviceIdentifier) {
+            case 'https://ownyourswarm.p3k.io':
+                logger.info('Swarm detected');
+                payload = formatCheckin.checkIn(micropubContent);
+                messageContent = ':robot: Checkin submitted via micropub API and ownyourswarm';
+                postFileName = postFileNameDate + '-' + postFileNameTime + '.md';
+                responseLocation = 'https://vincentp.me/checkins/' + responseDate + '/' + responseLocationTime + '/';
+                logger.info('response location ' + responseLocation);
+                break;
+            case 'https://ownyourgram.com':
+                logger.info('Instagram detected');
+                messageContent = ':robot: Instagram photo submitted via micropub API  and ownyourgram';
+                postFileName = postFileNameDate + '-' + postFileNameTime + '.md';
+                responseLocation = 'https://vincentp.me/instagram/' + responseDate + '/' + responseLocationTime + '/';
+                logger.info('response ' + responseLocation);
+                break;
+            default:
+                postFileName = '';
+                responseLocation = '';
+                logger.error('Service Not Recognised');
+                logger.info('serviceIdentifier: ' + serviceIdentifier);
+                res.status(400);
+                res.end('Service  Not Recognised');
+            }
+        }  else {
+            res.status(400);
+            logger.error('Service Identifier failed');
+            res.end('No Service Identified');
+            return;
+            //How to about sending to gIT?
         }
 
         const destination = github.url + postFileName;
-        logger.info('destination ' + destination);
+        logger.info('Destination: ' + destination);
         payloadOptions = {
             method : 'PUT',
             url : destination,
@@ -110,21 +130,23 @@ Content-Type: application/json
             json : true
         };
 
-        //Move inside switch?
         request(payloadOptions, function sendIt(error, response, body) {
             if (error) {
                 res.status(400);
-                res.send('Player 1 requires keys');
+                res.send('Error Sending Payload');
                 logger.error('Git creation failed:' + error);
+                res.end('Error Sending Payload');
                 throw new Error('failed to send ' + error);
+            } else {
+                logger.info('Git creation successful!  Server responded with:', body);
+                res.writeHead(201, {
+                    'location' : responseLocation
+                });
+                res.end('Thanks');
             }
-            logger.info('Git creation successful!  Server responded with:', body);
-            res.writeHead(201, {
-                'location' : responseLocation
-            });
-            res.end('Thanks\n');
         });
-    });
-};
 
-module.exports = appRouter;
+        });
+});
+
+module.exports = router;
