@@ -7,24 +7,9 @@ const appDir = path.dirname(require.main.filename);
 const config = require(appDir + '/config');
 const functionPath = '/functions/';
 const logger = require(appDir + functionPath + 'bunyan');
-// const authTokenService = require(appDir + functionPath + 'indieAuth');
 const formatCheckin = require(appDir + functionPath + 'format-swarm');
 const github = config.github;
-// let tokenAuth =  authTokenService.token(req, res, next);
  let serviceIdentifier = '';
-
-// Example applying middleware.
-// router.use(function (req, res, next) {
-//     const token = req.headers.authorization;
-//     logger.info('Token: '+ token);
-
-// GET content, stash it somewhere.
-// Do GET request check
-// stash service with data
-// use data to post request?
-
-//     next();
-// });
 
 router.get('/', (req, res) => {
     res.render('index');
@@ -32,13 +17,13 @@ router.get('/', (req, res) => {
 
 // Publish Elsewhere, Syndicate (to your) Own Site Endpoint.
 router.post('/pesos', function appRouterPostman(req, res, next) {
-   logger.info('content: ' + req.body.properties);
+   console.log('content: ' + req.body.properties);
     let postFileName;
     let responseLocation;
     let payload;
     let messageContent;
     let payloadOptions;
-   const publishedDate = 'test';
+    const publishedDate = '2018-06-17T12:00:21+01:00';
     // const publishedDate = req.body.properties.published[0];
     const postFileNameDate = publishedDate.slice(0, 10);
     const postFileNameTime = publishedDate.replace(/:/g, '-').slice(11, -9);
@@ -71,9 +56,9 @@ router.post('/pesos', function appRouterPostman(req, res, next) {
         })
         .then(function(json){
             console.log(json);
-
+            console.log('content: ' + req.body);
             serviceIdentifier = json.client_id;
-            // serviceIdentifier = 'https://ownyourswarm.p3k.io'; // Default temp route.
+            // serviceIdentifier = 'https://ownyourgram.com'; // Default temp route.
 
              // Work out if this is from a service we want to post to the blog.
             switch (serviceIdentifier) {
