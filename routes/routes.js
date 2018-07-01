@@ -32,6 +32,8 @@ router.get('/', (req, res) => {
 
 // Publish Elsewhere, Syndicate (to your) Own Site Endpoint.
 router.post('/pesos', function appRouterPostman(req, res, next) {
+    logger.info(req.headers);
+    logger.info(req.body);
     let postFileName;
     let responseLocation;
     let payload;
