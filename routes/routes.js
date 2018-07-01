@@ -8,6 +8,7 @@ const config = require(appDir + '/config');
 const functionPath = '/functions/';
 const logger = require(appDir + functionPath + 'bunyan');
 const formatCheckin = require(appDir + functionPath + 'format-swarm');
+const formatInstagram = require(appDir + functionPath + 'format-instagram');
 const github = config.github;
  let serviceIdentifier = '';
 
@@ -22,7 +23,7 @@ router.post('/pesos', function appRouterPostman(req, res, next) {
     let payload;
     let messageContent;
     let payloadOptions;
-    const publishedDate = '2018-06-17T12:00:21+01:00';
+    const publishedDate = '2018-06-17T12:00:21+01:00'; // TEMP
     // const publishedDate = req.body.properties.published[0];
     const postFileNameDate = publishedDate.slice(0, 10);
     const postFileNameTime = publishedDate.replace(/:/g, '-').slice(11, -9);
@@ -55,7 +56,6 @@ router.post('/pesos', function appRouterPostman(req, res, next) {
         })
         .then(function(json){
             serviceIdentifier = json.client_id;
-            // serviceIdentifier = 'https://ownyourgram.com'; // Default temp route.
 
              // Work out if this is from a service we want to post to the blog.
             switch (serviceIdentifier) {
@@ -69,7 +69,7 @@ router.post('/pesos', function appRouterPostman(req, res, next) {
                 break;
             case 'https://ownyourgram.com':
                 logger.info('Instagram detected');
-                payload = formatCheckin.checkIn(micropubContent);
+                payload = formatInstagram.checkIn(micropubContent);
                 messageContent = ':robot: Instagram photo submitted via micropub API  and ownyourgram';
                 postFileName = postFileNameDate + '-' + postFileNameTime + '.md';
                 responseLocation = 'https://vincentp.me/instagram/' + responseDate + '/' + responseLocationTime + '/';
