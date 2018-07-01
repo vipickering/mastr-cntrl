@@ -9,8 +9,8 @@ exports.checkIn = function checkIn(micropubContent) {
     // const rawDate = rawPubDate.slice(0, 10);
     // const rawTime = rawPubDate.replace(/-/g, ':').slice(11, -9);
     // const pubDate = rawDate + ' ' + rawTime + ' +/-GMT';
-    const syndication = micropubContent.properties.syndication[0];
-    const checkinName = micropubContent.properties.checkin[0].properties.name[0];
+    // const syndication = micropubContent.properties.syndication[0];
+    // const checkinName = micropubContent.properties.checkin[0].properties.name[0];
     let content = '';
     let photo = '';
     let foursquare = '';
@@ -69,12 +69,10 @@ exports.checkIn = function checkIn(micropubContent) {
 
     const entry = `---
 layout: "${layout}"
-title: "${checkinName}"
 photo: "${photo}"
 meta: "'Checked in at' ${checkinName}"
 summary: "${summary}"
 category: "${category}"
-syndication: "${syndication}"
 foursquare: "${foursquare}"
 latitude: "${addrLat}"
 longitude: "${addrLong}"
