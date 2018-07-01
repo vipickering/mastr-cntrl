@@ -73,7 +73,7 @@ router.post('/pesos', function appRouterPostman(req, res, next) {
         // serviceIdentifier = json.client_id;
         serviceIdentifier = 'https://ownyourswarm.p3k.io'; // Default temp route.
 
-        if (!serviceIdentifier) {
+
              // Work out if this is from a service we want to post to the blog.
             switch (serviceIdentifier) {
             case 'https://ownyourswarm.p3k.io':
@@ -99,13 +99,7 @@ router.post('/pesos', function appRouterPostman(req, res, next) {
                 res.status(400);
                 res.end('Service  Not Recognised');
             }
-        }  else {
-            res.status(400);
-            logger.error('Service Identifier failed');
-            res.end('No Service Identified');
-            return;
-            //How to about sending to gIT?
-        }
+
 
         const destination = github.url + postFileName;
         logger.info('Destination: ' + destination);
@@ -146,7 +140,7 @@ router.post('/pesos', function appRouterPostman(req, res, next) {
             }
         });
 
-        });
+});
 });
 
 module.exports = router;
