@@ -17,7 +17,6 @@ router.get('/', (req, res) => {
 
 // Publish Elsewhere, Syndicate (to your) Own Site Endpoint.
 router.post('/pesos', function appRouterPostman(req, res, next) {
-   console.log('content: ' + req.body.properties);
     let postFileName;
     let responseLocation;
     let payload;
@@ -56,7 +55,7 @@ router.post('/pesos', function appRouterPostman(req, res, next) {
         })
         .then(function(json){
             console.log(json);
-            console.log('content: ' + req.body);
+            console.log('content: ' + JSON.parse(req.body));
             serviceIdentifier = json.client_id;
             // serviceIdentifier = 'https://ownyourgram.com'; // Default temp route.
 
