@@ -55,7 +55,7 @@ router.post('/pesos', function appRouterPostman(req, res, next) {
         })
         .then(function(json){
             console.log(json);
-            console.log('content: ' + JSON.parse(req.body));
+            console.log(JSON.stringify(req.body));
             serviceIdentifier = json.client_id;
             // serviceIdentifier = 'https://ownyourgram.com'; // Default temp route.
 
