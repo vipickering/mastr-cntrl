@@ -70,7 +70,6 @@ exports.checkIn = function checkIn(micropubContent) {
     const entry = `---
 layout: "${layout}"
 photo: "${photo}"
-meta: "'Checked in at' ${checkinName}"
 summary: "${summary}"
 category: "${category}"
 foursquare: "${foursquare}"
