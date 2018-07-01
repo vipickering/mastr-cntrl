@@ -54,8 +54,6 @@ router.post('/pesos', function appRouterPostman(req, res, next) {
              return response.json();
         })
         .then(function(json){
-            console.log(json);
-            console.log(micropubContent);
             serviceIdentifier = json.client_id;
             // serviceIdentifier = 'https://ownyourgram.com'; // Default temp route.
 
@@ -71,6 +69,7 @@ router.post('/pesos', function appRouterPostman(req, res, next) {
                 break;
             case 'https://ownyourgram.com':
                 logger.info('Instagram detected');
+                payload = formatCheckin.checkIn(micropubContent);
                 messageContent = ':robot: Instagram photo submitted via micropub API  and ownyourgram';
                 postFileName = postFileNameDate + '-' + postFileNameTime + '.md';
                 responseLocation = 'https://vincentp.me/instagram/' + responseDate + '/' + responseLocationTime + '/';
