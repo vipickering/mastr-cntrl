@@ -17,7 +17,7 @@ router.get('/', (req, res) => {
 });
 
 // Publish Elsewhere, Syndicate (to your) Own Site Endpoint.
-router.post('/pesos', function appPesosRouter(req, res, next) {
+router.post('/pesos', function appPesosRouter(req, res) {
     let postFileName;
     let responseLocation;
     let payload;
@@ -36,8 +36,7 @@ router.post('/pesos', function appPesosRouter(req, res, next) {
        'Accept' : 'application/json',
        'Authorization': token
     };
-    console.log('raw: ' + req);
-    console.log('JSON: ' + JSON.stringify(micropubContent));
+    console.log('raw: ' + Object.values(req));
     logger.info('Token Recieved: '+ token);
 
     /* example response we want
@@ -108,6 +107,7 @@ router.post('/pesos', function appPesosRouter(req, res, next) {
                 json : true
             };
 
+            // The error checking here is poor
             request(payloadOptions, function sendIt(error, response, body) {
                 if (error) {
                     res.status(400);
