@@ -36,7 +36,7 @@ router.post('/pesos', function appPesosRouter(req, res) {
        'Accept' : 'application/json',
        'Authorization': token
     };
-    console.log(micropubContent); // While testing inputs
+    console.log(req.headers); // While testing inputs
     logger.info('Token Recieved: '+ token);
 
     /* example response we want
@@ -56,7 +56,7 @@ router.post('/pesos', function appPesosRouter(req, res) {
         })
         .then(function(json){
             serviceIdentifier = json.client_id;
-            console.log(micropubContent); // While testing inputs
+            console.log(req.headers); // While testing inputs
              // Work out if this is from a service we want to post to the blog.
             switch (serviceIdentifier) {
             case 'https://ownyourswarm.p3k.io':
