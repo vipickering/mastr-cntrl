@@ -4,19 +4,20 @@ const logger = require('../functions/bunyan');
 exports.checkIn = function checkIn(micropubContent) {
     const layout = 'notes';
     const category = 'Notes';
-    const rawPubDate = micropubContent.properties.published[0];
-    const rawDate = rawPubDate.slice(0, 10);
-    const rawTime = rawPubDate.replace(/-/g, ':').slice(11, -9);
-    const pubDate = rawDate + ' ' + rawTime + ' +/-GMT';
-    const syndication = micropubContent.properties.syndication[0];
-    const checkinName = 'Instagram content ' + pubDate;
+    // const rawPubDate = micropubContent.properties.published[0];
+    // const rawDate = rawPubDate.slice(0, 10);
+    // const rawTime = rawPubDate.replace(/-/g, ':').slice(11, -9);
+    // const pubDate = rawDate + ' ' + rawTime + ' +/-GMT';
+    // const syndication = micropubContent.properties.syndication[0];
+    // const checkinName = 'Instagram content ' + pubDate;
     let summary = '';
     let content = '';
     let photo = '';
     let addrLat = '';
     let addrLong  = '';
     let addrName = '';
-
+    console.log(micropubContent);
+    logger.info(micropubContent);
     try {
         content = micropubContent.properties.content[0];
     } catch (e) {
@@ -45,13 +46,9 @@ exports.checkIn = function checkIn(micropubContent) {
 
     const entry = `---
 layout: "${layout}"
-title: "${checkinName}"
 photo: "${photo}"
-date: "${pubDate}"
-meta: "'Checked in at' ${checkinName}"
 summary: "${summary}"
 category: "${category}"
-syndication: "${syndication}"
 name: "${addrName}"
 latitude: "${addrLat}"
 longitude: "${addrLong}"
