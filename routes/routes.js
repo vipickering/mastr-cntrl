@@ -23,8 +23,7 @@ router.post('/pesos', function appPesosRouter(req, res) {
     let payload;
     let messageContent;
     let payloadOptions;
-    const publishedDate = '2018-06-17T12:00:21+01:00'; // TEMP
-    // const publishedDate = req.body.properties.published[0];
+    const publishedDate = req.body.properties.published[0];
     const postFileNameDate = publishedDate.slice(0, 10);
     const postFileNameTime = publishedDate.replace(/:/g, '-').slice(11, -9);
     const responseDate = postFileNameDate.replace(/-/g, '/');
@@ -36,7 +35,6 @@ router.post('/pesos', function appPesosRouter(req, res) {
        'Accept' : 'application/json',
        'Authorization': token
     };
-    console.log(req); // While testing inputs
     logger.info('Token Recieved: '+ token);
 
     /* example response we want
@@ -56,7 +54,6 @@ router.post('/pesos', function appPesosRouter(req, res) {
         })
         .then(function(json){
             serviceIdentifier = json.client_id;
-            console.log(req); // While testing inputs
              // Work out if this is from a service we want to post to the blog.
             switch (serviceIdentifier) {
             case 'https://ownyourswarm.p3k.io':
