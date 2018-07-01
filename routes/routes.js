@@ -36,7 +36,7 @@ router.post('/pesos', function appPesosRouter(req, res) {
        'Accept' : 'application/json',
        'Authorization': token
     };
-    console.log('raw: ' + Object.values(req));
+    console.log('raw: ' + typeof req);
     logger.info('Token Recieved: '+ token);
 
     /* example response we want
