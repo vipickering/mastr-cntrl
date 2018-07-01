@@ -38,7 +38,8 @@ router.post('/pesos', function appRouterPostman(req, res, next) {
     let payload;
     let messageContent;
     let payloadOptions;
-    const publishedDate = req.body.properties.published[0];
+   const publishedDate = 'test';
+    // const publishedDate = req.body.properties.published[0];
     const postFileNameDate = publishedDate.slice(0, 10);
     const postFileNameTime = publishedDate.replace(/:/g, '-').slice(11, -9);
     const responseDate = postFileNameDate.replace(/-/g, '/');
