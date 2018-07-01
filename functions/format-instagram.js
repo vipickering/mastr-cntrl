@@ -4,12 +4,12 @@ const logger = require('../functions/bunyan');
 exports.checkIn = function checkIn(micropubContent) {
     const layout = 'notes';
     const category = 'Notes';
-    // const rawPubDate = micropubContent.properties.published[0];
-    // const rawDate = rawPubDate.slice(0, 10);
-    // const rawTime = rawPubDate.replace(/-/g, ':').slice(11, -9);
-    // const pubDate = rawDate + ' ' + rawTime + ' +/-GMT';
-    // const syndication = micropubContent.properties.syndication[0];
-    // const checkinName = 'Instagram content ' + pubDate;
+    const rawPubDate = micropubContent.properties.published[0];
+    const rawDate = rawPubDate.slice(0, 10);
+    const rawTime = rawPubDate.replace(/-/g, ':').slice(11, -9);
+    const pubDate = rawDate + ' ' + rawTime + ' +/-GMT';
+    const syndication = micropubContent.properties.syndication[0];
+    const checkinName = 'Instagram content ' + pubDate;
     let summary = '';
     let content = '';
     let photo = '';
@@ -45,9 +45,13 @@ exports.checkIn = function checkIn(micropubContent) {
 
     const entry = `---
 layout: "${layout}"
+title: "${checkinName}"
 photo: "${photo}"
+date: "${pubDate}"
+meta: "'Checked in at' ${checkinName}"
 summary: "${summary}"
 category: "${category}"
+syndication: "${syndication}"
 name: "${addrName}"
 latitude: "${addrLat}"
 longitude: "${addrLong}"
@@ -55,7 +59,7 @@ twitterCard: false
 ---
 ${content}
 `;
-    logger.info('Instagram content: ' + entry);
+    logger.info('Instragram content: ' + entry);
     const micropubContentFormatted = base64.encode(entry);
     return micropubContentFormatted;
 };

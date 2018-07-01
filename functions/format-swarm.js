@@ -87,7 +87,7 @@ twitterCard: false
 ---
 ${content}
 `;
-    logger.info('swarm content: ' + entry);
+    logger.info('Swarm content: ' + entry);
     const micropubContentFormatted = base64.encode(entry);
     return micropubContentFormatted;
 };
