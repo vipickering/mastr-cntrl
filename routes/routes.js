@@ -70,9 +70,8 @@ router.post('/pesos', function appRouterPostman(req, res, next) {
         .then(function(json){
             console.log(json);
 
-        // serviceIdentifier = json.client_id;
-        serviceIdentifier = 'https://ownyourswarm.p3k.io'; // Default temp route.
-
+            serviceIdentifier = json.client_id;
+            // serviceIdentifier = 'https://ownyourswarm.p3k.io'; // Default temp route.
 
              // Work out if this is from a service we want to post to the blog.
             switch (serviceIdentifier) {
@@ -100,47 +99,45 @@ router.post('/pesos', function appRouterPostman(req, res, next) {
                 res.end('Service  Not Recognised');
             }
 
-
-        const destination = github.url + postFileName;
-        logger.info('Destination: ' + destination);
-        payloadOptions = {
-            method : 'PUT',
-            url : destination,
-            headers : {
-                Authorization : 'token ' + github.key,
-                'Content-Type' : 'application/json',
-                'User-Agent' : github.name
-            },
-            body : {
-                path : postFileName,
-                branch : github.branch,
-                message : messageContent,
-                committer : {
-                    'name' : github.user,
-                    'email' : github.email
+            const destination = github.url + postFileName;
+            logger.info('Destination: ' + destination);
+            payloadOptions = {
+                method : 'PUT',
+                url : destination,
+                headers : {
+                    Authorization : 'token ' + github.key,
+                    'Content-Type' : 'application/json',
+                    'User-Agent' : github.name
                 },
-                content : payload
-            },
-            json : true
-        };
+                body : {
+                    path : postFileName,
+                    branch : github.branch,
+                    message : messageContent,
+                    committer : {
+                        'name' : github.user,
+                        'email' : github.email
+                    },
+                    content : payload
+                },
+                json : true
+            };
 
-        request(payloadOptions, function sendIt(error, response, body) {
-            if (error) {
-                res.status(400);
-                res.send('Error Sending Payload');
-                logger.error('Git creation failed:' + error);
-                res.end('Error Sending Payload');
-                throw new Error('failed to send ' + error);
-            } else {
-                logger.info('Git creation successful!  Server responded with:', body);
-                res.writeHead(201, {
-                    'location' : responseLocation
-                });
-                res.end('Thanks');
-            }
+            request(payloadOptions, function sendIt(error, response, body) {
+                if (error) {
+                    res.status(400);
+                    res.send('Error Sending Payload');
+                    logger.error('Git creation failed:' + error);
+                    res.end('Error Sending Payload');
+                    throw new Error('failed to send ' + error);
+                } else {
+                    logger.info('Git creation successful!  Server responded with:', body);
+                    res.writeHead(201, {
+                        'location' : responseLocation
+                    });
+                    res.end('Thanks');
+                }
+            });
         });
-
-});
 });
 
 module.exports = router;
