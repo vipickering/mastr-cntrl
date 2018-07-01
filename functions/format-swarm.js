@@ -5,10 +5,10 @@ exports.checkIn = function checkIn(micropubContent) {
     const layout = 'checkin';
     const summary = '';
     const category = 'Checkins';
-    const rawPubDate = micropubContent.properties.published[0];
-    const rawDate = rawPubDate.slice(0, 10);
-    const rawTime = rawPubDate.replace(/-/g, ':').slice(11, -9);
-    const pubDate = rawDate + ' ' + rawTime + ' +/-GMT';
+    // const rawPubDate = micropubContent.properties.published[0];
+    // const rawDate = rawPubDate.slice(0, 10);
+    // const rawTime = rawPubDate.replace(/-/g, ':').slice(11, -9);
+    // const pubDate = rawDate + ' ' + rawTime + ' +/-GMT';
     const syndication = micropubContent.properties.syndication[0];
     const checkinName = micropubContent.properties.checkin[0].properties.name[0];
     let content = '';
@@ -71,7 +71,6 @@ exports.checkIn = function checkIn(micropubContent) {
 layout: "${layout}"
 title: "${checkinName}"
 photo: "${photo}"
-date: "${pubDate}"
 meta: "'Checked in at' ${checkinName}"
 summary: "${summary}"
 category: "${category}"
