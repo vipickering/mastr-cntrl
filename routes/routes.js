@@ -17,7 +17,7 @@ router.get('/', (req, res) => {
 });
 
 // Publish Elsewhere, Syndicate (to your) Own Site Endpoint.
-router.post('/pesos', function appRouterPostman(req, res, next) {
+router.post('/pesos', function appPesosRouter(req, res, next) {
     let postFileName;
     let responseLocation;
     let payload;
@@ -36,7 +36,8 @@ router.post('/pesos', function appRouterPostman(req, res, next) {
        'Accept' : 'application/json',
        'Authorization': token
     };
-
+    console.log('raw: ' + micropubContent);
+    console.log('JSON: ' + JSON.stringify(micropubContent));
     logger.info('Token Recieved: '+ token);
 
     /* example response we want
