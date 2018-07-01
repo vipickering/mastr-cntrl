@@ -17,6 +17,7 @@ exports.checkIn = function checkIn(micropubContent) {
     let addrLong  = '';
     let addrName = '';
     console.log(micropubContent);
+    console.log(JSON.stringify(micropubContent));
     logger.info(micropubContent);
     try {
         content = micropubContent.properties.content[0];
