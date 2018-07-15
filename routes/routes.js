@@ -84,7 +84,7 @@ router.post('/pesos', function appPesosRouter(req, res) {
             const destination = github.url + postFileName;
             logger.info('Destination: ' + destination);
             payloadOptions = {
-                method : 'POST',
+                method : 'PUT',
                 url : destination,
                 headers : {
                     Authorization : 'token ' + github.key,
