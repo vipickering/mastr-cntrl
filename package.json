@@ -21,7 +21,7 @@
     "url": "https://github.com/vipickering/micropub-API/issues"
   },
   "devDependencies": {
-    "eslint": "^4.19.1"
+    "eslint": "^5.1.0"
   },
   "dependencies": {
     "base64it": "^1.1.0",

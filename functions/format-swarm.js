@@ -39,7 +39,7 @@ exports.checkIn = function checkIn(micropubContent) {
     try {
         addrLat = micropubContent.properties.checkin[0].properties.latitude[0];
     } catch (e) {
-        logger.info('No lttitude link skipping..');
+        logger.info('No lattitude link skipping..');
     }
     try {
         addrLong = micropubContent.properties.checkin[0].properties.longitude[0];

@@ -37,7 +37,7 @@ router.post('/pesos', function appPesosRouter(req, res) {
     };
     logger.info('Token Recieved: '+ token);
 
-    /* example response we want
+    /* example indie Auth response we want
         HTTP/1.1 200 OK
         Content-Type: application/json
         {
@@ -84,11 +84,11 @@ router.post('/pesos', function appPesosRouter(req, res) {
             const destination = github.url + postFileName;
             logger.info('Destination: ' + destination);
             payloadOptions = {
-                method : 'PUT',
+                method : 'POST',
                 url : destination,
                 headers : {
                     Authorization : 'token ' + github.key,
-                    'Content-Type' : 'application/json',
+                    'Content-Type' : 'application/vnd.github.v3+json',
                     'User-Agent' : github.name
                 },
                 body : {
