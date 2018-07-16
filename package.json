@@ -8,7 +8,9 @@
   "license": "MIT",
   "scripts": {
     "start": "node app.js | bunyan -o short",
-    "lint": "eslint */*.js --ignore-path .gitignore ."
+    "lint:functions": "eslint functions/*.js",
+    "lint:routes": "eslint routes/*.js",
+    "lint:app": "eslint app.js"
   },
   "repository": {
     "type": "git",
@@ -21,7 +23,7 @@
     "url": "https://github.com/vipickering/micropub-API/issues"
   },
   "devDependencies": {
-    "eslint": "^5.1.0"
+
   },
   "dependencies": {
     "base64it": "^1.1.0",

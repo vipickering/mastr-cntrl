@@ -3,7 +3,6 @@ const logger = require('../functions/bunyan');
 
 exports.checkIn = function checkIn(micropubContent) {
     const layout = 'checkin';
-    const summary = '';
     const category = 'Checkins';
     const rawPubDate = micropubContent.properties.published[0];
     const rawDate = rawPubDate.slice(0, 10);
@@ -11,6 +10,7 @@ exports.checkIn = function checkIn(micropubContent) {
     const pubDate = rawDate + ' ' + rawTime + ' +/-GMT';
     const syndication = micropubContent.properties.syndication[0];
     const checkinName = micropubContent.properties.checkin[0].properties.name[0];
+    let summary = '';
     let content = '';
     let photo = '';
     let foursquare = '';

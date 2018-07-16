@@ -9,8 +9,9 @@ const functionPath = '/functions/';
 const logger = require(appDir + functionPath + 'bunyan');
 const formatCheckin = require(appDir + functionPath + 'format-swarm');
 const formatInstagram = require(appDir + functionPath + 'format-instagram');
+const formatNote = require(appDir + functionPath + 'format-note');
 const github = config.github;
- let serviceIdentifier = '';
+let serviceIdentifier = '';
 
 router.get('/', (req, res) => {
     res.render('index');
@@ -48,24 +49,28 @@ router.post('/pesos', function appPesosRouter(req, res) {
             "nonce": 501884823
         }
     */
+
+    // logger.info(req.body);
+
     fetch(indieauth, { method: 'GET', headers: authHeaders})
         .then(function(response){
              return response.json();
         })
         .then(function(json){
             serviceIdentifier = json.client_id;
-             // Work out if this is from a service we want to post to the blog.
+
+            // Format Note based on service sending. Or use standard Note format.
             switch (serviceIdentifier) {
             case 'https://ownyourswarm.p3k.io':
-                logger.info('Swarm detected');
+                logger.info('Creating Swarm checkin');
                 payload = formatCheckin.checkIn(micropubContent);
-                messageContent = ':robot: Checkin submitted via micropub API and ownyourswarm';
+                messageContent = ':robot: Checkin submitted via micropub API';
                 postFileName = postFileNameDate + '-' + postFileNameTime + '.md';
                 responseLocation = 'https://vincentp.me/checkins/' + responseDate + '/' + responseLocationTime + '/';
                 logger.info('response location ' + responseLocation);
                 break;
             case 'https://ownyourgram.com':
-                logger.info('Instagram detected');
+                logger.info('Creating Instagram note');
                 payload = formatInstagram.checkIn(micropubContent);
                 messageContent = ':robot: Instagram photo submitted via micropub API  and ownyourgram';
                 postFileName = postFileNameDate + '-' + postFileNameTime + '.md';
@@ -73,22 +78,21 @@ router.post('/pesos', function appPesosRouter(req, res) {
                 logger.info('response ' + responseLocation);
                 break;
             default:
-                postFileName = '';
-                responseLocation = '';
-                logger.error('Service Not Recognised');
-                logger.info('serviceIdentifier: ' + serviceIdentifier);
-                res.status(400);
-                res.end('Service  Not Recognised');
+                logger.info('Creating Note');
+                payload = formatNote.note(micropubContent);
+                postFileName = postFileNameDate + '-' + postFileNameTime + '.md';
+                responseLocation = 'https://vincentp.me/notes/' + responseDate + '/' + responseLocationTime + '/';
+                logger.info('response location ' + responseLocation);
             }
 
             const destination = github.url + postFileName;
             logger.info('Destination: ' + destination);
             payloadOptions = {
-                method : 'PUT',
+                method : 'PUT', //Not sure why PUT works but POST does not.
                 url : destination,
                 headers : {
                     Authorization : 'token ' + github.key,
-                    'Content-Type' : 'application/vnd.github.v3+json',
+                    'Content-Type' : 'application/vnd.github.v3+json', //Request v3 API
                     'User-Agent' : github.name
                 },
                 body : {
@@ -104,7 +108,7 @@ router.post('/pesos', function appPesosRouter(req, res) {
                 json : true
             };
 
-            // The error checking here is poor
+            // The error checking here is poor. We are not handling if GIT throws an error.
             request(payloadOptions, function sendIt(error, response, body) {
                 if (error) {
                     res.status(400);
