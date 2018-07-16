@@ -104,11 +104,11 @@ router.post('/pesos', function appPesosRouter(req, res) {
             const destination = github.url + postFileName;
             logger.info('Destination: ' + destination);
             payloadOptions = {
-                method : 'POST', //Not sure why PUT works but POST does not.
+                method : 'PUT',
                 url : destination,
                 headers : {
                     Authorization : 'token ' + github.key,
-                    'Content-Type' : 'application/json', //Request v3 API
+                    'Content-Type' : 'application/vnd.github.v3+json', //Request v3 API
                     'User-Agent' : github.name
                 },
                 body : {
