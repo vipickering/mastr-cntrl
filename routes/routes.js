@@ -50,7 +50,8 @@ router.post('/pesos', function appPesosRouter(req, res) {
         }
     */
 
-    // logger.info(req.body);
+    logger.info(req.headers);
+    logger.info(req.body);
 
     fetch(indieauth, { method: 'GET', headers: authHeaders})
         .then(function(response){
