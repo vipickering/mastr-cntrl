@@ -3,6 +3,7 @@ const router = new express.Router();
 const path = require('path');
 const fetch = require('node-fetch');
 const request = require('request');
+const moment = require('moment');
 const appDir = path.dirname(require.main.filename);
 const config = require(appDir + '/config');
 const functionPath = '/functions/';
@@ -25,33 +26,29 @@ router.post('/pesos', function appPesosRouter(req, res) {
     let messageContent;
     let payloadOptions;
     let publishedDate;
-    let postFileNameDate;
-    let postFileNameTime;
-    let responseDate;
-    let responseLocationTime;
     const micropubContent = req.body;
     const token = req.headers.authorization;
     const indieauth = 'https://tokens.indieauth.com/token';
     const authHeaders = {
-       'Accept' : 'application/json',
-       'Authorization': token
+        'Accept' : 'application/json',
+        'Authorization' : token
     };
 
     try {
         //2018-07-16T08:39:26+01:00
         publishedDate = req.body.properties.published[0];
-    } catch(e) {
+    } catch (e) {
         //2018-07-16T14:38:52.444Z
-        publishedDate = new Date().toISOString();
+        publishedDate = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss+01:00');
     }
 
     //Format date time for naming file.
-    postFileNameDate = publishedDate.slice(0, 10);
-    postFileNameTime = publishedDate.replace(/:/g, '-').slice(11, -9);
-    responseDate = postFileNameDate.replace(/-/g, '/');
-    responseLocationTime = publishedDate.slice(11, -12) + '-' + publishedDate.slice(14, -9);
+    const postFileNameDate = publishedDate.slice(0, 10);
+    const postFileNameTime = publishedDate.replace(/:/g, '-').slice(11, -9);
+    const responseDate = postFileNameDate.replace(/-/g, '/');
+    const responseLocationTime = publishedDate.slice(11, -12) + '-' + publishedDate.slice(14, -9);
 
-    logger.info('Token Recieved: '+ token);
+    logger.info('Token Recieved: ' + token);
 
     /* example indie Auth response we want
         HTTP/1.1 200 OK
@@ -68,11 +65,14 @@ router.post('/pesos', function appPesosRouter(req, res) {
     logger.info(req.headers);
     logger.info(req.body);
 
-    fetch(indieauth, { method: 'GET', headers: authHeaders})
-        .then(function(response){
-             return response.json();
+    fetch(indieauth, {
+        method : 'GET',
+        headers : authHeaders
+    })
+        .then(function(response) {
+            return response.json();
         })
-        .then(function(json){
+        .then(function(json) {
             serviceIdentifier = json.client_id;
 
             // Format Note based on service sending. Or use standard Note format.
