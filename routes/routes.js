@@ -38,8 +38,10 @@ router.post('/pesos', function appPesosRouter(req, res) {
     };
 
     try {
+        //2018-07-16T08:39:26+01:00
         publishedDate = req.body.properties.published[0];
     } catch(e) {
+        //2018-07-16T14:38:52.444Z
         publishedDate = new Date().toISOString();
     }
 
@@ -102,7 +104,7 @@ router.post('/pesos', function appPesosRouter(req, res) {
             const destination = github.url + postFileName;
             logger.info('Destination: ' + destination);
             payloadOptions = {
-                method : 'PUT', //Not sure why PUT works but POST does not.
+                method : 'POST', //Not sure why PUT works but POST does not.
                 url : destination,
                 headers : {
                     Authorization : 'token ' + github.key,
