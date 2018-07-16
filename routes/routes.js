@@ -24,7 +24,6 @@ router.post('/pesos', function appPesosRouter(req, res) {
     let payload;
     let messageContent;
     let payloadOptions;
-    const publishedDate = req.body.properties.published[0];
     const postFileNameDate = publishedDate.slice(0, 10);
     const postFileNameTime = publishedDate.replace(/:/g, '-').slice(11, -9);
     const responseDate = postFileNameDate.replace(/-/g, '/');
@@ -36,6 +35,12 @@ router.post('/pesos', function appPesosRouter(req, res) {
        'Accept' : 'application/json',
        'Authorization': token
     };
+    try {
+        const publishedDate = req.body.properties.published[0];
+    } catch(e) {
+        const publishedDate = new Date().toISOString().slice(0, 19) + 'Z';
+    }
+
     logger.info('Token Recieved: '+ token);
 
     /* example indie Auth response we want
