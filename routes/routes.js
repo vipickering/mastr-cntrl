@@ -88,7 +88,7 @@ router.post('/pesos', function appPesosRouter(req, res) {
             case 'https://ownyourgram.com':
                 logger.info('Creating Instagram note');
                 payload = formatInstagram.checkIn(micropubContent);
-                messageContent = ':robot: Instagram photo submitted via micropub API  and ownyourgram';
+                messageContent = ':robot: Instagram photo submitted via micropub API';
                 postFileName = postFileNameDate + '-' + postFileNameTime + '.md';
                 responseLocation = 'https://vincentp.me/instagram/' + responseDate + '/' + responseLocationTime + '/';
                 logger.info('response ' + responseLocation);
@@ -96,6 +96,7 @@ router.post('/pesos', function appPesosRouter(req, res) {
             default:
                 logger.info('Creating Note');
                 payload = formatNote.note(micropubContent);
+                messageContent = ':robot: Note  submitted via micropub API';
                 postFileName = postFileNameDate + '-' + postFileNameTime + '.md';
                 responseLocation = 'https://vincentp.me/notes/' + responseDate + '/' + responseLocationTime + '/';
                 logger.info('response location ' + responseLocation);
