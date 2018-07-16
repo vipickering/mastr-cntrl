@@ -7,7 +7,7 @@ exports.note = function note(micropubContent) {
     // const syndication = micropubContent.properties.syndication[0]; // Might add this later
     // End
 
-    const rawPubDate = new Date().toISOString().slice(0, 19) + 'Z';
+    const rawPubDate = new Date().toISOString();
     const rawDate = rawPubDate.slice(0, 10);
     const rawTime = rawPubDate.replace(/-/g, ':').slice(11, -9);
     const pubDate = rawDate + ' ' + rawTime + ' +/-GMT';

@@ -40,7 +40,7 @@ router.post('/pesos', function appPesosRouter(req, res) {
     try {
         publishedDate = req.body.properties.published[0];
     } catch(e) {
-        publishedDate = new Date().toISOString().slice(0, 19) + 'Z';
+        publishedDate = new Date().toISOString();
     }
 
     //Format date time for naming file.
