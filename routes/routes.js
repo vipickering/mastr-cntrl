@@ -24,10 +24,11 @@ router.post('/pesos', function appPesosRouter(req, res) {
     let payload;
     let messageContent;
     let payloadOptions;
-    const postFileNameDate = publishedDate.slice(0, 10);
-    const postFileNameTime = publishedDate.replace(/:/g, '-').slice(11, -9);
-    const responseDate = postFileNameDate.replace(/-/g, '/');
-    const responseLocationTime = publishedDate.slice(11, -12) + '-' + publishedDate.slice(14, -9);
+    let publishedDate;
+    let postFileNameDate;
+    let postFileNameTime;
+    let responseDate;
+    let responseLocationTime;
     const micropubContent = req.body;
     const token = req.headers.authorization;
     const indieauth = 'https://tokens.indieauth.com/token';
@@ -35,11 +36,18 @@ router.post('/pesos', function appPesosRouter(req, res) {
        'Accept' : 'application/json',
        'Authorization': token
     };
+
     try {
-        const publishedDate = req.body.properties.published[0];
+        publishedDate = req.body.properties.published[0];
     } catch(e) {
-        const publishedDate = new Date().toISOString().slice(0, 19) + 'Z';
+        publishedDate = new Date().toISOString().slice(0, 19) + 'Z';
     }
+
+    //Format date time for naming file.
+    postFileNameDate = publishedDate.slice(0, 10);
+    postFileNameTime = publishedDate.replace(/:/g, '-').slice(11, -9);
+    responseDate = postFileNameDate.replace(/-/g, '/');
+    responseLocationTime = publishedDate.slice(11, -12) + '-' + publishedDate.slice(14, -9);
 
     logger.info('Token Recieved: '+ token);
 
