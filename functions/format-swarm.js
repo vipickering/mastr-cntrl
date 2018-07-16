@@ -4,7 +4,11 @@ const logger = require('../functions/bunyan');
 exports.checkIn = function checkIn(micropubContent) {
     const layout = 'checkin';
     const category = 'Checkins';
-    const rawPubDate = micropubContent.properties.published[0];
+    try {
+        const rawPubDate = micropubContent.properties.published[0];
+    } catch(e) {
+        const rawPubDate = new Date().toISOString().slice(0, 19) + 'Z';
+    }
     const rawDate = rawPubDate.slice(0, 10);
     const rawTime = rawPubDate.replace(/-/g, ':').slice(11, -9);
     const pubDate = rawDate + ' ' + rawTime + ' +/-GMT';
