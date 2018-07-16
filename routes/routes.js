@@ -108,7 +108,7 @@ router.post('/pesos', function appPesosRouter(req, res) {
                 url : destination,
                 headers : {
                     Authorization : 'token ' + github.key,
-                    'Content-Type' : 'application/vnd.github.v3+json', //Request v3 API
+                    'Content-Type' : 'application/json', //Request v3 API
                     'User-Agent' : github.name
                 },
                 body : {
