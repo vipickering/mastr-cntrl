@@ -13,6 +13,9 @@ const logger = require(appDir + '/functions/bunyan');
 const port = api.port;
 const isDev = app.get('env') === 'development';
 const routes  = require(appDir + '/routes/routes.js');
+const bodyParser = require('body-parser');
+const multer = require('multer');
+const upload = multer();
 const njk = expressNunjucks(app, {
     watch : isDev,
     noCache : isDev
@@ -20,8 +23,11 @@ const njk = expressNunjucks(app, {
 
 app.set('views', path.join(__dirname + '/views'));
 app.use(helmet());
+app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 app.use(favicon(path.join(__dirname, 'public', '/images/favicon.ico')));
 app.use(express.json());
+
 
 // Routes
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

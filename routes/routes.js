@@ -12,6 +12,9 @@ const formatCheckin = require(appDir + functionPath + 'format-swarm');
 const formatInstagram = require(appDir + functionPath + 'format-instagram');
 const formatNote = require(appDir + functionPath + 'format-note');
 const github = config.github;
+const bodyParser = require('body-parser');
+const multer = require('multer');
+const upload = multer();
 let serviceIdentifier = '';
 
 router.get('/', (req, res) => {
@@ -33,6 +36,8 @@ router.post('/pesos', function appPesosRouter(req, res) {
         'Accept' : 'application/json',
         'Authorization' : token
     };
+
+    logger.info(req.body);
 
     try {
         //2018-07-16T08:39:26+01:00
