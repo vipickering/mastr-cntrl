@@ -27,6 +27,7 @@ router.post('/pesos', function appPesosRouter(req, res) {
     let payloadOptions;
     let publishedDate;
     const micropubContent = req.body;
+    const test = json.stringify(micropubContent);
     const token = req.headers.authorization;
     const indieauth = 'https://tokens.indieauth.com/token';
     const authHeaders = {
@@ -76,7 +77,7 @@ router.post('/pesos', function appPesosRouter(req, res) {
             switch (serviceIdentifier) {
             case 'https://ownyourswarm.p3k.io':
                 logger.info('Creating Swarm checkin');
-                logger.info('Package: ' + req.body);
+                logger.info('Package: ' + test);
                 payload = formatCheckin.checkIn(micropubContent);
                 messageContent = ':robot: Checkin submitted via micropub API';
                 postFileName = postFileNameDate + '-' + postFileNameTime + '.md';
@@ -85,7 +86,7 @@ router.post('/pesos', function appPesosRouter(req, res) {
                 break;
             case 'https://ownyourgram.com':
                 logger.info('Creating Instagram note');
-                logger.info('Package: ' + req.body);
+                logger.info('Package: ' + test);
                 payload = formatInstagram.checkIn(micropubContent);
                 messageContent = ':robot: Instagram photo submitted via micropub API';
                 postFileName = postFileNameDate + '-' + postFileNameTime + '.md';
@@ -94,7 +95,7 @@ router.post('/pesos', function appPesosRouter(req, res) {
                 break;
             default:
                 logger.info('Creating Note');
-                logger.info('Package: ' + req.body);
+                logger.info('Package: ' + test);
                 payload = formatNote.note(micropubContent);
                 messageContent = ':robot: Note  submitted via micropub API';
                 postFileName = postFileNameDate + '-' + postFileNameTime + '.md';

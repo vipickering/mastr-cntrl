@@ -21,7 +21,7 @@ const njk = expressNunjucks(app, {
 
 app.set('views', path.join(__dirname + '/views'));
 app.use(helmet());
-app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.raw(options));
 app.use(favicon(path.join(__dirname, 'public', '/images/favicon.ico')));
 app.use(express.json());
 
