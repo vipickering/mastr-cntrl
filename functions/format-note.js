@@ -6,7 +6,7 @@ exports.note = function note(micropubContent) {
     const category = 'Notes';
     // const syndication = micropubContent.properties.syndication[0]; // Might add this later
     // End
-    logger.info(micropubContent);
+    logger.info(JSON.stringify(micropubContent));
     logger.info(micropubContent.properties);
     const rawPubDate = new Date().toISOString();
     const rawDate = rawPubDate.slice(0, 10);
