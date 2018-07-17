@@ -39,20 +39,19 @@ exports.note = function note(micropubContent) {
     }
     */
 
-    let title ='';
     let content = '';
     let modified = '';
     let modifiedReason = '';
     let tags = '';
     let inReplyTo = '';
     let location = '';
-    // let photo = '';
+    let photo = '';
     let slug = '';
     let postStatus = '';
     let tagArray = '';
 
     try {
-        content = micropubContent.properties.content[0];
+        content = micropubContent.content;
     } catch (e) {
         logger.info('No content skipping..');
     }
@@ -61,12 +60,6 @@ exports.note = function note(micropubContent) {
         slug = micropubContent.mp-slug[0];
     } catch (e) {
         logger.info('No slug skipping..');
-    }
-
-    try {
-        title = micropubContent.properties.name[0];
-    } catch (e) {
-        logger.info('No title skipping..');
     }
 
     try {
@@ -84,11 +77,7 @@ exports.note = function note(micropubContent) {
         logger.info('No tags skipping..');
     }
 
-    try {
-        content = micropubContent.properties.content[0].html;
-    } catch (e) {
-        logger.info('No content skipping..');
-    }
+
 
     // try {
     //     photo = micropubContent.properties.content[0].html;
@@ -99,10 +88,10 @@ exports.note = function note(micropubContent) {
     // Meta & lat & long might need conditional
     const entry = `---
 layout: "${layout}"
-title: "${title}"
+title: "Note added on ${pubDate}"
 date: "${pubDate}"
-meta: "${title}"
-summary: "${title}"
+meta: "Note added on ${pubDate}"
+summary: "Note added on ${pubDate}"
 category: "${category}"
 modified:  "${modified}"
 modifiedReason:  "${modifiedReason}"
