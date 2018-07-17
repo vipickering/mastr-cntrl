@@ -6,7 +6,8 @@ exports.note = function note(micropubContent) {
     const category = 'Notes';
     // const syndication = micropubContent.properties.syndication[0]; // Might add this later
     // End
-
+    logger.info(micropubContent);
+    logger.info(micropubContent.properties);
     const rawPubDate = new Date().toISOString();
     const rawDate = rawPubDate.slice(0, 10);
     const rawTime = rawPubDate.replace(/-/g, ':').slice(11, -9);
@@ -51,7 +52,7 @@ exports.note = function note(micropubContent) {
     let tagArray = '';
 
     try {
-        content = micropubContent.properties.content[0].html;
+        content = micropubContent.properties.content[0];
     } catch (e) {
         logger.info('No content skipping..');
     }
