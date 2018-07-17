@@ -37,8 +37,8 @@ router.post('/pesos', function appPesosRouter(req, res) {
         'Authorization' : token
     };
 
-    logger.info(JSON.stringify(req.body));
-
+    console.log('json ' + JSON.stringify(req.body));
+    console.log('raw ' + req.body);
     try {
         //2018-07-16T08:39:26+01:00
         publishedDate = req.body.properties.published[0];

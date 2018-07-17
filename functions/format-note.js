@@ -51,7 +51,7 @@ exports.note = function note(micropubContent) {
     let tagArray = '';
 
     try {
-        content = micropubContent.content;
+        content = micropubContent.properties.content;
     } catch (e) {
         logger.info('No content skipping..');
     }
