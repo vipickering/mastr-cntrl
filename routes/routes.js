@@ -27,7 +27,7 @@ router.post('/pesos', function appPesosRouter(req, res) {
     let payloadOptions;
     let publishedDate;
     const micropubContent = req.body;
-    const test = JSON.parse(micropubContent.properties);
+    const test = JSON.parse(micropubContent);
     const token = req.headers.authorization;
     const indieauth = 'https://tokens.indieauth.com/token';
     const authHeaders = {
