@@ -8,7 +8,6 @@ const config = require(appDir + '/config');
 const github = config.github;
 const api = config.api;
 const app = express();
-const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const logger = require(appDir + '/functions/bunyan');
 const port = api.port;
@@ -21,7 +20,6 @@ const njk = expressNunjucks(app, {
 
 app.set('views', path.join(__dirname + '/views'));
 app.use(helmet());
-app.use(bodyParser.raw(options));
 app.use(favicon(path.join(__dirname, 'public', '/images/favicon.ico')));
 app.use(express.json());
 
