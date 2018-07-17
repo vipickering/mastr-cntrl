@@ -37,8 +37,9 @@ router.post('/pesos', function appPesosRouter(req, res) {
         'Authorization' : token
     };
 
+    //Log packages sent, while in test mode
     console.log('json ' + JSON.stringify(req.body));
-    console.log('raw ' + req.body);
+
     try {
         //2018-07-16T08:39:26+01:00
         publishedDate = req.body.properties.published[0];
@@ -53,7 +54,7 @@ router.post('/pesos', function appPesosRouter(req, res) {
     const responseDate = postFileNameDate.replace(/-/g, '/');
     const responseLocationTime = publishedDate.slice(11, -12) + '-' + publishedDate.slice(14, -9);
 
-    logger.info('Token Recieved: ' + token);
+    logger.info('Token Received: ' + token);
 
     /* example indie Auth response we want
         HTTP/1.1 200 OK

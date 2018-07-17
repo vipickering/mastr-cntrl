@@ -6,7 +6,6 @@ exports.note = function note(micropubContent) {
     const category = 'Notes';
     // const syndication = micropubContent.properties.syndication[0]; // Might add this later
     // End
-    logger.info(JSON.stringify(micropubContent));
 
     const rawPubDate = new Date().toISOString();
     const rawDate = rawPubDate.slice(0, 10);
@@ -51,27 +50,27 @@ exports.note = function note(micropubContent) {
     let tagArray = '';
 
     try {
-        content = micropubContent.properties.content;
+        content = micropubContent.content;
     } catch (e) {
         logger.info('No content skipping..');
     }
 
     try {
-        slug = micropubContent.mp-slug[0];
+        slug = micropubContent.mp-slug;
     } catch (e) {
         logger.info('No slug skipping..');
     }
 
     try {
-        postStatus = micropubContent.properties.post-status[0];
+        postStatus = micropubContent.post-status;
     } catch (e) {
         logger.info('No post status draft. Publishing immediately');
     }
 
     try {
-        tagArray = micropubContent.properties.content;
+        tagArray = micropubContent.category;
         for (let i = 0; i <  tagArrayLength.length; i++) {
-           tags += myStringArray[i];
+           tags += tagArray[i];
         }
     } catch (e) {
         logger.info('No tags skipping..');
