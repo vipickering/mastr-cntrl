@@ -48,6 +48,7 @@ exports.note = function note(micropubContent) {
     // let photo = '';
     let slug = '';
     let postStatus = '';
+    let tagArray = '';
 
     try {
         content = micropubContent.properties.content[0].html;
@@ -74,7 +75,10 @@ exports.note = function note(micropubContent) {
     }
 
     try {
-        tags = micropubContent.properties.content; //Do we want the whole array?
+        tagArray = micropubContent.properties.content;
+        for (let i = 0; i <  tagArrayLength.length; i++) {
+           tags += myStringArray[i];
+        }
     } catch (e) {
         logger.info('No tags skipping..');
     }
