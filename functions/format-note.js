@@ -47,6 +47,7 @@ exports.note = function note(micropubContent) {
     try {
         postStatus = micropubContent["post-status"];
     } catch (e) {
+        postStatus = false;
         logger.info('No post status draft. Publishing immediately');
     }
 
@@ -54,8 +55,7 @@ exports.note = function note(micropubContent) {
         tagArray = micropubContent.category;
         tagArrayLength =  tagArray.length
         for (let i = 0; i < tagArrayLength; i++) {
-           tags += tagArray[i];
-           console.log(tags);
+           tags += tagArray[i] +' ';
         }
     } catch (e) {
         logger.info('No tags skipping..');
@@ -78,6 +78,7 @@ category: "${category}"
 modified:  "${modified}"
 modifiedReason:  "${modifiedReason}"
 twitterCard: false
+draft: "${postStatus}"
 tags:  "${tags}"
 ---
 ${content}
