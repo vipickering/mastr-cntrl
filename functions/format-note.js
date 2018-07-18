@@ -29,8 +29,6 @@ exports.note = function note(micropubContent) {
     */
 
     let content = '';
-    let modified = '';
-    let modifiedReason = '';
     let inReplyTo = '';
     let location = '';
     let photo = '';
@@ -48,7 +46,8 @@ exports.note = function note(micropubContent) {
         tagArray = micropubContent.category;
         tagArrayLength =  tagArray.length
         for (let i = 0; i < tagArrayLength; i++) {
-           tags += tagArray[i] +' ';
+           tags += tagArray[i];
+           tag += ' ';
         }
     } catch (e) {
         logger.info('No tags skipping..');
@@ -74,8 +73,6 @@ date: "${pubDate}"
 meta: "Note added on ${formattedDate}"
 summary: "Note added on ${formattedDate}"
 category: "${category}"
-modified:  "${modified}"
-modifiedReason:  "${modifiedReason}"
 twitterCard: false
 tags:  "${tags}"
 ---
