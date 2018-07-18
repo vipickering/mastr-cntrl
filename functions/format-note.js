@@ -1,16 +1,13 @@
 const base64 = require('base64it');
 const logger = require('../functions/bunyan');
+const moment = require('moment');
 
 exports.note = function note(micropubContent) {
     const layout = 'post';
     const category = 'Notes';
+    const pubDate  = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss+01:00');
+    const formattedDate = moment(new Date());
     // const syndication = micropubContent.properties.syndication[0]; // Might add this later
-    // End
-
-    const rawPubDate = new Date().toISOString();
-    const rawDate = rawPubDate.slice(0, 10);
-    const rawTime = rawPubDate.replace(/-/g, ':').slice(11, -9);
-    const pubDate = rawDate + ' ' + rawTime + ' +/-GMT';
 
     /*
     h=entry - This indicates that this is a request to create a new h-entry post.
@@ -23,21 +20,6 @@ exports.note = function note(micropubContent) {
     mp-syndicate-to[] - Each syndication destination selected will be sent in this property. The values will be the uid that your endpoint returns. See Syndication for more details. (If you are using an older Micropub endpoint that expects syndicate-to, you can customize this property in the settings.)
     */
 
-    /*
-    Sample JSON
-    {
-      "type": "h-entry",
-      "properties": {
-        "name": ["Post Title"],
-        "content": [
-          "html": "<p>The HTML contents of your post from the editor</p>"
-        ],
-        "mp-slug": ["slug"],
-        "category": ["foo","bar"]
-      }
-    }
-    */
-
     let content = '';
     let modified = '';
     let modifiedReason = '';
@@ -48,6 +30,7 @@ exports.note = function note(micropubContent) {
     let slug = '';
     let postStatus = '';
     let tagArray = '';
+    let tagArrayLength ='';
 
     try {
         content = micropubContent.content;
@@ -56,27 +39,27 @@ exports.note = function note(micropubContent) {
     }
 
     try {
-        slug = micropubContent.mp-slug;
+        slug = micropubContent.["mp-slug"];
     } catch (e) {
         logger.info('No slug skipping..');
     }
 
     try {
-        postStatus = micropubContent.post-status;
+        postStatus = micropubContent.["post-status"];
     } catch (e) {
         logger.info('No post status draft. Publishing immediately');
     }
 
     try {
         tagArray = micropubContent.category;
-        for (let i = 0; i <  tagArrayLength.length; i++) {
+        tagArrayLength =  tagArray.length
+        for (let i = 0; i < tagArrayLength; i++) {
            tags += tagArray[i];
+           console.log(tags);
         }
     } catch (e) {
         logger.info('No tags skipping..');
     }
-
-
 
     // try {
     //     photo = micropubContent.properties.content[0].html;
@@ -84,13 +67,13 @@ exports.note = function note(micropubContent) {
     //     logger.info('No content skipping..');
     // }
 
-    // Meta & lat & long might need conditional
+    // photo & location  need conditional
     const entry = `---
 layout: "${layout}"
-title: "Note added on ${pubDate}"
+title: "Note added on ${formattedDate}"
 date: "${pubDate}"
-meta: "Note added on ${pubDate}"
-summary: "Note added on ${pubDate}"
+meta: "Note added on ${formattedDate}"
+summary: "Note added on ${formattedDate}"
 category: "${category}"
 modified:  "${modified}"
 modifiedReason:  "${modifiedReason}"
