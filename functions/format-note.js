@@ -7,6 +7,7 @@ exports.note = function note(micropubContent) {
     const category = 'Notes';
     const pubDate  = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss+01:00');
     const formattedDate = moment(new Date());
+
     // const syndication = micropubContent.properties.syndication[0]; // Might add this later
 
     /*
@@ -35,11 +36,18 @@ exports.note = function note(micropubContent) {
     let tags = '';
     let tagArray = '';
     let tagArrayLength ='';
+    let title ='';
 
     try {
         content = micropubContent.content;
     } catch (e) {
         logger.info('No content skipping..');
+    }
+
+    try {
+        title = micropubContent.content.substring(0,100);
+    } catch (e) {
+        logger.info('No title skipping..');
     }
 
     try {
@@ -68,10 +76,9 @@ exports.note = function note(micropubContent) {
     // photo & location  need conditional
     const entry = `---
 layout: "${layout}"
-title: "Note added on ${formattedDate}"
+title: "${title}"
 date: "${pubDate}"
-meta: "Note added on ${formattedDate}"
-summary: "Note added on ${formattedDate}"
+meta: "Note added on ${title}"
 category: "${category}"
 twitterCard: false
 tags:  "${tags}"
