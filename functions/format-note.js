@@ -20,13 +20,20 @@ exports.note = function note(micropubContent) {
     mp-syndicate-to[] - Each syndication destination selected will be sent in this property. The values will be the uid that your endpoint returns. See Syndication for more details. (If you are using an older Micropub endpoint that expects syndicate-to, you can customize this property in the settings.)
     */
 
+    /*
+    "content":"quill test 3",
+    "location":"geo:53.80178,-1.54731;u=65",
+    "category":["test","indieweb"],
+    "mp-slug":"test"
+
+    */
+
     let content = '';
     let modified = '';
     let modifiedReason = '';
     let inReplyTo = '';
     let location = '';
     let photo = '';
-    let slug = '';
     let tags = '';
     let tagArray = '';
     let tagArrayLength ='';
@@ -38,12 +45,6 @@ exports.note = function note(micropubContent) {
     }
 
     try {
-        slug = micropubContent["mp-slug"];
-    } catch (e) {
-        logger.info('No slug skipping..');
-    }
-
-    try {
         tagArray = micropubContent.category;
         tagArrayLength =  tagArray.length
         for (let i = 0; i < tagArrayLength; i++) {
@@ -51,6 +52,12 @@ exports.note = function note(micropubContent) {
         }
     } catch (e) {
         logger.info('No tags skipping..');
+    }
+
+    try {
+        location = micropubContent.location;
+    } catch (e) {
+        logger.info('No content skipping..');
     }
 
     // try {

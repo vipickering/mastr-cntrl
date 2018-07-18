@@ -77,6 +77,7 @@ router.post('/pesos', function appPesosRouter(req, res) {
         })
         .then(function(json) {
             serviceIdentifier = json.client_id;
+            logger.info('Service Is: ' + serviceIdentifier);
 
             // Format Note based on service sending. Or use standard Note format.
             switch (serviceIdentifier) {
