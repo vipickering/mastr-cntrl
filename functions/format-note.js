@@ -23,12 +23,11 @@ exports.note = function note(micropubContent) {
     let content = '';
     let modified = '';
     let modifiedReason = '';
-    let tags = '';
     let inReplyTo = '';
     let location = '';
     let photo = '';
     let slug = '';
-    let postStatus = '';
+    let tags = '';
     let tagArray = '';
     let tagArrayLength ='';
 
@@ -42,13 +41,6 @@ exports.note = function note(micropubContent) {
         slug = micropubContent["mp-slug"];
     } catch (e) {
         logger.info('No slug skipping..');
-    }
-
-    try {
-        postStatus = micropubContent["post-status"];
-    } catch (e) {
-        postStatus = false;
-        logger.info('No post status draft. Publishing immediately');
     }
 
     try {
@@ -78,7 +70,6 @@ category: "${category}"
 modified:  "${modified}"
 modifiedReason:  "${modifiedReason}"
 twitterCard: false
-draft: "${postStatus}"
 tags:  "${tags}"
 ---
 ${content}
