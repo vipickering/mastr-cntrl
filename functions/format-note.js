@@ -39,13 +39,13 @@ exports.note = function note(micropubContent) {
     }
 
     try {
-        slug = micropubContent.["mp-slug"];
+        slug = micropubContent["mp-slug"];
     } catch (e) {
         logger.info('No slug skipping..');
     }
 
     try {
-        postStatus = micropubContent.["post-status"];
+        postStatus = micropubContent["post-status"];
     } catch (e) {
         logger.info('No post status draft. Publishing immediately');
     }
