@@ -6,7 +6,6 @@ exports.note = function note(micropubContent) {
     const layout = 'post';
     const category = 'Notes';
     const pubDate  = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss+01:00');
-    const formattedDate = moment(new Date());
 
     // const syndication = micropubContent.properties.syndication[0]; // Might add this later
 
@@ -35,36 +34,37 @@ exports.note = function note(micropubContent) {
     let photo = '';
     let tags = '';
     let tagArray = '';
-    let tagArrayLength ='';
-    let title ='';
+    let title = '';
 
     try {
         content = micropubContent.content;
     } catch (e) {
-        logger.info('No content skipping..');
+        logger.info('No content skipping');
     }
 
     try {
-        title = micropubContent.content.substring(0,100);
+        title = micropubContent.content.substring(0, 100);
     } catch (e) {
-        logger.info('No title skipping..');
+        logger.info('No title skipping');
     }
 
     try {
         tagArray = micropubContent.category;
-        tagArrayLength =  tagArray.length
-        for (let i = 0; i < tagArrayLength; i++) {
-           tags += tagArray[i];
-           tag += ' ';
+        for (let i = 0; i < tagArray.length; i++) {
+            tags += tagArray[i];
+            logger.info(tags);
+            tags += ' ';
+            logger.info(tags);
         }
+        logger.info(tags);
     } catch (e) {
-        logger.info('No tags skipping..');
+        logger.info('No tags skipping');
     }
 
     try {
         location = micropubContent.location;
     } catch (e) {
-        logger.info('No content skipping..');
+        logger.info('No content skipping');
     }
 
     // try {
