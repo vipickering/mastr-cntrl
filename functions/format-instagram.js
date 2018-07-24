@@ -1,24 +1,31 @@
 const base64 = require('base64it');
 const logger = require('../functions/bunyan');
+const moment = require('moment');
+
+/*
+{
+"type":["h-entry"],
+"properties":{
+    "content":["Cat made an orange rainbow cake for Sebs birthday \nHe asked for “An orange cake that’s also like a rainbow”"],
+    "published":["2018-07-23T17:35:11+00:00"],
+    "syndication":["https://www.instagram.com/p/BllS71Fhkuq/"],
+    "photo":["https://scontent-sjc3-1.cdninstagram.com/vp/4ed0f9991a0ca2a45348a971031acd55/5C12C638/t51.2885-15/e35/36995041_256400058476372_3966301331764805632_n.jpg"]
+    }
+*/
 
 exports.checkIn = function checkIn(micropubContent) {
-    const layout = 'notes';
+    const layout = 'instagram';
     const category = 'Notes';
-    const rawPubDate = micropubContent.properties.published[0];
-    const rawDate = rawPubDate.slice(0, 10);
-    const rawTime = rawPubDate.replace(/-/g, ':').slice(11, -9);
-    const pubDate = rawDate + ' ' + rawTime + ' +/-GMT';
+    const pubDate = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss+01:00');
     const syndication = micropubContent.properties.syndication[0];
     const checkinName = 'Instagram content ' + pubDate;
-    let summary = '';
     let content = '';
     let photo = '';
     let addrLat = '';
     let addrLong  = '';
-    let addrName = '';
 
     try {
-        content = micropubContent.properties.content[0];
+        content = JSON.parse(micropubContent.properties.content[0]);
     } catch (e) {
         logger.info('No content skipping..');
     }
@@ -37,11 +44,6 @@ exports.checkIn = function checkIn(micropubContent) {
     } catch (e) {
         logger.info('No longitude link skipping..');
     }
-    try {
-        addrName = micropubContent.properties.location[0].properties.name[0];
-    } catch (e) {
-        logger.info('No addrName skipping..');
-    }
 
     const entry = `---
 layout: "${layout}"
@@ -49,10 +51,8 @@ title: "${checkinName}"
 photo: "${photo}"
 date: "${pubDate}"
 meta: "Checked in at ${checkinName}"
-summary: "${summary}"
 category: "${category}"
 syndication: "${syndication}"
-name: "${addrName}"
 latitude: "${addrLat}"
 longitude: "${addrLong}"
 twitterCard: false

@@ -37,7 +37,7 @@ exports.note = function note(micropubContent) {
     let title = '';
 
     try {
-        content = micropubContent.content;
+        content = JSON.parse(micropubContent.content);
     } catch (e) {
         logger.info('No content skipping');
     }
