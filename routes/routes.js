@@ -38,7 +38,8 @@ router.post('/pesos', function appPesosRouter(req, res) {
     };
 
     //Log packages sent, while in test mode
-    console.log('json ' + JSON.stringify(req.body));
+    console.log('json body ' + JSON.stringify(req.body));
+    console.log('json headers ' + JSON.stringify(req.headers));
 
     try {
         //2018-07-16T08:39:26+01:00

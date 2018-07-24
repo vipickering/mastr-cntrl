@@ -3,7 +3,7 @@ const logger = require('../functions/bunyan');
 const moment = require('moment');
 
 exports.note = function note(micropubContent) {
-    const layout = 'post';
+    const layout = 'Notes';
     const category = 'Notes';
     const pubDate  = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss+01:00');
 
@@ -43,7 +43,7 @@ exports.note = function note(micropubContent) {
     }
 
     try {
-        title = micropubContent.content.substring(0, 100);
+        title = micropubContent.content.substring(0, 100) + '...';
     } catch (e) {
         logger.info('No title skipping');
     }
@@ -64,7 +64,7 @@ exports.note = function note(micropubContent) {
     try {
         location = micropubContent.location;
     } catch (e) {
-        logger.info('No content skipping');
+        logger.info('No location skipping');
     }
 
     // try {
@@ -78,7 +78,7 @@ exports.note = function note(micropubContent) {
 layout: "${layout}"
 title: "${title}"
 date: "${pubDate}"
-meta: "Note added on ${title}"
+meta: "${title}"
 category: "${category}"
 twitterCard: false
 tags:  "${tags}"
