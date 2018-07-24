@@ -1,10 +1,10 @@
 const base64 = require('base64it');
 const logger = require('../functions/bunyan');
 
-exports.checkIn = function checkIn(micropubContent) {
+exports.instagram = function instagram(micropubContent) {
     const layout = 'instagram';
     const category = 'Notes';
-    const pubDate = req.body.properties.published[0];
+    const pubDate = micropubContent.properties.published[0];
     const syndication = micropubContent.properties.syndication[0];
     const title = micropubContent.content[0].substring(0, 100);
     let content = '';

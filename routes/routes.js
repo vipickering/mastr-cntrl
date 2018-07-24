@@ -39,7 +39,6 @@ router.post('/pesos', function appPesosRouter(req, res) {
 
     //Log packages sent, while in test mode
     console.log('json body ' + JSON.stringify(req.body));
-    console.log('json headers ' + JSON.stringify(req.headers));
 
     try {
         //2018-07-16T08:39:26+01:00
@@ -92,10 +91,10 @@ router.post('/pesos', function appPesosRouter(req, res) {
                 break;
             case 'https://ownyourgram.com':
                 logger.info('Creating Instagram note');
-                payload = formatInstagram.checkIn(micropubContent);
+                payload = formatInstagram.instagram(micropubContent);
                 messageContent = ':robot: Instagram photo submitted via micropub API';
                 postFileName = postFileNameDate + '-' + postFileNameTime + '.md';
-                responseLocation = 'https://vincentp.me/instagram/' + responseDate + '/' + responseLocationTime + '/';
+                responseLocation = 'https://vincentp.me/notes/' + responseDate + '/' + responseLocationTime + '/';
                 logger.info('response ' + responseLocation);
                 break;
             default:
