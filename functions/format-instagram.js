@@ -11,6 +11,8 @@ exports.instagram = function instagram(micropubContent) {
     let photo = '';
     let addrLat = '';
     let addrLong  = '';
+    let tagArray = '';
+    let tags = '';
 
     try {
         content = micropubContent.properties.content[0];
@@ -32,6 +34,15 @@ exports.instagram = function instagram(micropubContent) {
     } catch (e) {
         logger.info('No longitude link skipping..');
     }
+    try {
+        tagArray = micropubContent.properties.category[0];
+        for (let i = 0; i < tagArray.length; i++) {
+            tags += tagArray[i];
+            tags += ' ';
+        }
+    } catch (e) {
+        logger.info('No tags skipping');
+    }
 
     const entry = `---
 layout: "${layout}"
@@ -43,6 +54,7 @@ category: "${category}"
 syndication: "${syndication}"
 latitude: "${addrLat}"
 longitude: "${addrLong}"
+tags:  "${tags}"
 twitterCard: false
 ---
 ${content}

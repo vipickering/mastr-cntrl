@@ -52,11 +52,8 @@ exports.note = function note(micropubContent) {
         tagArray = micropubContent.category;
         for (let i = 0; i < tagArray.length; i++) {
             tags += tagArray[i];
-            logger.info(tags);
             tags += ' ';
-            logger.info(tags);
         }
-        logger.info(tags);
     } catch (e) {
         logger.info('No tags skipping');
     }
@@ -80,8 +77,8 @@ title: "${title}"
 date: "${pubDate}"
 meta: "${title}"
 category: "${category}"
-twitterCard: false
 tags:  "${tags}"
+twitterCard: false
 ---
 ${content}
 `;
