@@ -3,7 +3,7 @@ const logger = require('../functions/bunyan');
 const moment = require('moment');
 
 exports.note = function note(micropubContent) {
-    const layout = 'Notes';
+    const layout = 'notes';
     const category = 'Notes';
     const pubDate  = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss+01:00');
 
@@ -37,13 +37,13 @@ exports.note = function note(micropubContent) {
     let title = '';
 
     try {
-        content = JSON.parse(micropubContent.content);
+        content = micropubContent.content;
     } catch (e) {
         logger.info('No content skipping');
     }
 
     try {
-        title = micropubContent.content.substring(0, 100) + '...';
+        title = micropubContent.content.substring(0, 100);
     } catch (e) {
         logger.info('No title skipping');
     }
