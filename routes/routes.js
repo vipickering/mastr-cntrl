@@ -126,7 +126,7 @@ router.post('/pesos', function appPesosRouter(req, res) {
                         'name' : github.user,
                         'email' : github.email
                     },
-                    content : JSON.stringify(payload)
+                    content : payload
                 },
                 json : true
             };
