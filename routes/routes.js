@@ -44,7 +44,7 @@ router.get('/micropub', (req, res) => {
 });
 
 // Catch any illegal routes
-router.get('/*', (req, res) => {
+router.get('/', (req, res) => {
     res.json(serviceProfile);
 });
 
