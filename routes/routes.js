@@ -16,13 +16,42 @@ const bodyParser = require('body-parser');
 const multer = require('multer');
 const upload = multer();
 let serviceIdentifier = '';
+const serviceProfile = {
+    'service' : 'Mastr Cntrl',
+    'version' : '9000',
+    'formatting' : 'Indie Web',
+    'purpose' : 'Mastr Cntrl sees all'
+};
+const syndicateOptions = {
+    "syndicate-to": [{
+          "uid": "https://twitter.com/vincentlistens/",
+          "name": "Twitter"
+        },{
+          "uid": "https://micro.blog/vincentp",
+          "name": "MicroBlog"
+    },{
+          "uid": "https://medium.com/@vincentlistens",
+          "name": "Medium"
+    }]
+};
 
-router.get('/', (req, res) => {
-    res.render('index');
+router.get('/micropub', (req, res) => {
+    if (req.query.q == 'syndicate-to') {
+        res.json(syndicateOptions);
+    } else {
+         res.json(serviceProfile);
+    }
 });
 
-// Publish Elsewhere, Syndicate (to your) Own Site Endpoint.
-router.post('/pesos', function appPesosRouter(req, res) {
+// Catch any illegal routes
+router.get('/*', (req, res) => {
+    res.json(serviceProfile);
+});
+
+
+
+// Micropub Endpoint
+router.post('/micropub', (req, res) => {
     let postFileName;
     let responseLocation;
     let payload;
@@ -37,8 +66,8 @@ router.post('/pesos', function appPesosRouter(req, res) {
         'Authorization' : token
     };
 
-    //Log packages sent, while in test mode
-    console.log('json body ' + JSON.stringify(req.body));
+    //Log packages sent, for debug
+    logger.info('json body ' + JSON.stringify(req.body));
 
     try {
         //2018-07-16T08:39:26+01:00
@@ -115,7 +144,7 @@ router.post('/pesos', function appPesosRouter(req, res) {
                 url : destination,
                 headers : {
                     Authorization : 'token ' + github.key,
-                    'Content-Type' : 'application/vnd.github.v3+json', //Request v3 API
+                    'Content-Type' : 'application/vnd.github.v3+json; charset=UTF-8', //Request v3 API
                     'User-Agent' : github.name
                 },
                 body : {

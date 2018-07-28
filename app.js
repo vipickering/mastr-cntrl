@@ -1,25 +1,26 @@
 const express = require('express');
 require('dotenv').config(); // Add .ENV vars
-const expressNunjucks = require('express-nunjucks'); // See if we can ditch Nunjucks and go with JSON
+// const expressNunjucks = require('express-nunjucks'); // See if we can ditch Nunjucks and go with JSON
+const http = require('http');
 const path = require('path');
 const favicon = require('serve-favicon');
 const appDir = path.dirname(require.main.filename);
-const config = require(appDir + '/config');
+const config = require(__dirname + '/config');
 const github = config.github;
 const api = config.api;
 const app = express();
 const helmet = require('helmet');
-const logger = require(appDir + '/functions/bunyan');
+const logger = require(__dirname + '/functions/bunyan');
 const port = api.port;
 const isDev = app.get('env') === 'development';
-const routes  = require(appDir + '/routes/routes.js');
+const routes  = require(__dirname + '/routes/routes.js');
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const upload = multer();
-const njk = expressNunjucks(app, {
-    watch : isDev,
-    noCache : isDev
-}); // See if we can ditch Nunjucks and go with JSON
+// const njk = expressNunjucks(app, {
+//     watch : isDev,
+//     noCache : isDev
+// }); // See if we can ditch Nunjucks and go with JSON
 
 app.set('views', path.join(__dirname + '/views'));
 app.use(helmet());
