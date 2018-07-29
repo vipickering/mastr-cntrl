@@ -10,7 +10,7 @@ const helmet = require('helmet');
 const logger = require(__dirname + '/app/functions/bunyan');
 const port = api.port;
 const isDev = app.get('env') === 'development';
-const routes  = require(__dirname + '/routes/routes.js');
+const routes  = require(__dirname + '/app/routes.js');
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const upload = multer();

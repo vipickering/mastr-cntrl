@@ -8,10 +8,10 @@ const bodyParser = require('body-parser');
 const multer = require('multer');
 const upload = multer();
 const config = require('../config');
-const logger = require('/app/functions/bunyan');
-const formatCheckin = require('/app/functions/format-swarm');
-const formatInstagram = require('/app/functions/format-instagram');
-const formatNote = require('/app/functions/format-note');
+const logger = require(__dirname + '/functions/bunyan');
+const formatCheckin = require(__dirname + '/functions/format-swarm');
+const formatInstagram = require(__dirname + '/functions/format-instagram');
+const formatNote = require(__dirname + '/functions/format-note');
 const github = config.github;
 const serviceProfile = {
     'service' : 'Mastr Cntrl',
@@ -20,15 +20,15 @@ const serviceProfile = {
     'purpose' : 'Mastr Cntrl sees all'
 };
 const syndicateOptions = {
-    "syndicate-to": [{
-          "uid": "https://twitter.com/vincentlistens/",
-          "name": "Twitter"
-        },{
-          "uid": "https://micro.blog/vincentp",
-          "name": "MicroBlog"
-    },{
-          "uid": "https://medium.com/@vincentlistens",
-          "name": "Medium"
+    'syndicate-to' : [{
+        'uid' : 'https://twitter.com/vincentlistens/',
+        'name' : 'Twitter'
+    }, {
+        'uid' : 'https://micro.blog/vincentp',
+        'name' : 'MicroBlog'
+    }, {
+        'uid' : 'https://medium.com/@vincentlistens',
+        'name' : 'Medium'
     }]
 };
 let serviceIdentifier = '';
@@ -53,20 +53,18 @@ router.get('/micropub', (req, res) => {
             serviceIdentifier = json.client_id;
             logger.info('Service Is: ' + serviceIdentifier);
 
-            if ((req.query.q == 'syndicate-to') && (serviceIdentifier == 'https://quill.p3k.io/')) {
+            if ((req.query.q === 'syndicate-to') && (serviceIdentifier === 'https://quill.p3k.io/')) {
                 res.json(syndicateOptions);
             } else {
-                 res.json({});
+                res.json({});
             }
-
-      });
+        });
 });
 
 // Catch any illegal routes
 router.get('/', (req, res) => {
     res.json(serviceProfile);
 });
-
 
 // router.post('/webmention', (req, res) => {
 //     let webmentionFileName = webmentions.json
