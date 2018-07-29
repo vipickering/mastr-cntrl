@@ -8,10 +8,10 @@ const bodyParser = require('body-parser');
 const multer = require('multer');
 const upload = multer();
 const config = require('../config');
-const logger = require('../app/functions/bunyan');
-const formatCheckin = require('../app/functions/format-swarm');
-const formatInstagram = require('../app/functions/format-instagram');
-const formatNote = require('../app/functions/format-note');
+const logger = require('/app/functions/bunyan');
+const formatCheckin = require('/app/functions/format-swarm');
+const formatInstagram = require('/app/functions/format-instagram');
+const formatNote = require('/app/functions/format-note');
 const github = config.github;
 const serviceProfile = {
     'service' : 'Mastr Cntrl',
