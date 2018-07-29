@@ -4,12 +4,12 @@ const bodyParser = require('body-parser');
 const multer = require('multer');
 const request = require('request');
 const upload = multer();
-const logger = require(appRootDirectory + '/app/functions/bunyan');
 const config = require(appRootDirectory + '/app/config.js');
 const github = config.github;
 let serviceIdentifier = '';
 
 //Define Function Locations
+const logger = require(appRootDirectory + '/app/functions/bunyan');
 const formatCheckin = require(appRootDirectory + '/app/functions/format-swarm');
 const formatInstagram = require(appRootDirectory + '/app/functions/format-instagram');
 const formatNote = require(appRootDirectory + '/app/functions/format-note');

@@ -10,7 +10,6 @@ exports.checkIn = function checkIn(micropubContent) {
     const pubDate = rawDate + ' ' + rawTime + ' +/-GMT';
     const syndication = micropubContent.properties.syndication[0];
     const checkinName = micropubContent.properties.checkin[0].properties.name[0];
-    let summary = '';
     let content = '';
     let photo = '';
     let foursquare = '';
@@ -73,7 +72,6 @@ title: "${checkinName}"
 photo: "${photo}"
 date: "${pubDate}"
 meta: "Checked in at ${checkinName}"
-summary: "${summary}"
 category: "${category}"
 syndication: "${syndication}"
 foursquare: "${foursquare}"

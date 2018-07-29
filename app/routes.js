@@ -1,12 +1,11 @@
 const express = require('express');
 const router = new express.Router();
 const path = require('path');
-
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const upload = multer();
-const config = require(appRootDirectory + '/app/config.js');
-const github = config.github;
+// const config = require(appRootDirectory + '/app/config.js');
+// const github = config.github;
 const serviceProfile = {
     'service' : 'Mastr Cntrl',
     'version' : '9000',
