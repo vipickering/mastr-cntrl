@@ -11,6 +11,20 @@ exports.micropub = function micropub(req, res) {
         'Accept' : 'application/json',
         'Authorization' : token
     };
+
+    const syndicateOptions = {
+    "syndicate-to": [{
+          "uid": "https://twitter.com/vincentlistens/",
+          "name": "Twitter"
+        },{
+          "uid": "https://micro.blog/vincentp",
+          "name": "MicroBlog"
+    },{
+          "uid": "https://medium.com/@vincentlistens",
+          "name": "Medium"
+    }]
+};
+
     logger.info('Token Received: ' + token);
 
     fetch(indieauth, {
