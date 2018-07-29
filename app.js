@@ -16,7 +16,7 @@ const bodyParser = require('body-parser');
 const multer = require('multer');
 const upload = multer();
 
-// app.set('functions', path.join(__dirname + '/app/functions'));
+app.set('views', path.join(__dirname + '/views'));
 app.use(helmet());
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
