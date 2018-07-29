@@ -7,7 +7,6 @@ const moment = require('moment');
 const appDir = path.dirname(require.main.filename);
 const config = require(appDir + '/config');
 const functionPath = '/app/functions/';
-const routesGetPath = '/app/routes/get/';
 const logger = require(appDir + functionPath + 'bunyan');
 const formatCheckin = require(appDir + functionPath + 'format-swarm');
 const formatInstagram = require(appDir + functionPath + 'format-instagram');
@@ -36,36 +35,34 @@ const syndicateOptions = {
     }]
 };
 
-const micropubRoute = require(appDir + routesGetPath + 'micropub');
-router.get('/micropub', micropubRoute.micropub);
-// router.get('/micropub', (req, res) => {
-//     const token = req.headers.authorization;
-//     const indieauth = 'https://tokens.indieauth.com/token';
-//     const authHeaders = {
-//         'Accept' : 'application/json',
-//         'Authorization' : token
-//     };
-//     logger.info('Token Received: ' + token);
+router.get('/micropub', (req, res) => {
+    const token = req.headers.authorization;
+    const indieauth = 'https://tokens.indieauth.com/token';
+    const authHeaders = {
+        'Accept' : 'application/json',
+        'Authorization' : token
+    };
+    logger.info('Token Received: ' + token);
 
-//     fetch(indieauth, {
-//         method : 'GET',
-//         headers : authHeaders
-//     })
-//         .then(function(response) {
-//             return response.json();
-//         })
-//         .then(function(json) {
-//             serviceIdentifier = json.client_id;
-//             logger.info('Service Is: ' + serviceIdentifier);
+    fetch(indieauth, {
+        method : 'GET',
+        headers : authHeaders
+    })
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(json) {
+            serviceIdentifier = json.client_id;
+            logger.info('Service Is: ' + serviceIdentifier);
 
-//             if ((req.query.q == 'syndicate-to') && (serviceIdentifier == 'https://quill.p3k.io/')) {
-//                 res.json(syndicateOptions);
-//             } else {
-//                  res.json({});
-//             }
+            if ((req.query.q == 'syndicate-to') && (serviceIdentifier == 'https://quill.p3k.io/')) {
+                res.json(syndicateOptions);
+            } else {
+                 res.json({});
+            }
 
-//       });
-// });
+      });
+});
 
 // Catch any illegal routes
 router.get('/', (req, res) => {
