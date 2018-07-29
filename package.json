@@ -7,8 +7,8 @@
   "homepage": "https://github.com/vipickering/micropub-API/#readme",
   "license": "MIT",
   "scripts": {
-    "start": "NODE_ENV=prod node ./bin/server.js | bunyan -o short",
-    "dev": "NODE_ENV=dev node ./bin/server.js | bunyan -o short",
+    "start": "NODE_ENV=prod node bin/server.js | bunyan -o short",
+    "dev": "NODE_ENV=dev node bin/server.js | bunyan -o short",
     "lint:functions": "eslint app/functions/*.js",
     "lint:routes": "eslint routes/*.js",
     "lint:app": "eslint app.js"
