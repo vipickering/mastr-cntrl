@@ -1,5 +1,5 @@
 const base64 = require('base64it');
-const logger = require('bunyan');
+const logger = require('../functions/bunyan');
 
 exports.checkIn = function checkIn(micropubContent) {
     const layout = 'checkin';
