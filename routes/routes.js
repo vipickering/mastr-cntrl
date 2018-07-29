@@ -8,10 +8,10 @@ const bodyParser = require('body-parser');
 const multer = require('multer');
 const upload = multer();
 const config = require('../config');
-const logger = require('../functions/bunyan');
-const formatCheckin = require('../functions/format-swarm');
-const formatInstagram = require('../functions/format-instagram');
-const formatNote = require('../functions/format-note');
+const logger = require('../app/functions/bunyan');
+const formatCheckin = require('../app/functions/format-swarm');
+const formatInstagram = require('../app/functions/format-instagram');
+const formatNote = require('../app/functions/format-note');
 const github = config.github;
 const serviceProfile = {
     'service' : 'Mastr Cntrl',
@@ -68,6 +68,46 @@ router.get('/', (req, res) => {
 });
 
 
+// router.post('/webmention', (req, res) => {
+//     let webmentionFileName = webmentions.json
+//     let webmentionsOptions = {
+//         method : 'PATCH',
+//         url : github.webmentionUrl + webmentionFileName,
+//         headers : {
+//             Authorization : 'token ' + github.key,
+//             'Content-Type' : 'application/vnd.github.v3+json; charset=UTF-8', //Request v3 API
+//             'User-Agent' : github.name
+//         },
+//         body : {
+//             path : webmentionFileName,
+//             branch : github.branch,
+//             message : messageContent,
+//             committer : {
+//                 'name' : github.user,
+//                 'email' : github.email
+//             },
+//             content : payload
+//         },
+//         json : true
+//     };
+
+//         // The error checking here is poor. We are not handling if GIT throws an error.
+//         request(payloadOptions, function sendIt(error, response, body) {
+//             if (error) {
+//                 res.status(400);
+//                 res.send('Error Sending Payload');
+//                 logger.error('Git creation failed:' + error);
+//                 res.end('Error Sending Payload');
+//                 throw new Error('failed to send ' + error);
+//             } else {
+//                 logger.info('Git creation successful!  Server responded with:', body);
+//                 res.writeHead(201, {
+//                     'location' : responseLocation
+//                 });
+//                 res.end('Thanks');
+//             }
+//         });
+// });
 
 // Micropub Endpoint
 router.post('/micropub', (req, res) => {
@@ -77,6 +117,7 @@ router.post('/micropub', (req, res) => {
     let messageContent;
     let payloadOptions;
     let publishedDate;
+    let postDestination;
     const micropubContent = req.body;
     const token = req.headers.authorization;
     const indieauth = 'https://tokens.indieauth.com/token';
@@ -154,13 +195,13 @@ router.post('/micropub', (req, res) => {
                 logger.info('response location ' + responseLocation);
             }
 
-            const destination = github.url + postFileName;
+            postDestination = github.postUrl + postFileName;
 
-            logger.info('Destination: ' + destination);
+            logger.info('Destination: ' + postDestination);
 
             payloadOptions = {
                 method : 'PUT',
-                url : destination,
+                url : postDestination,
                 headers : {
                     Authorization : 'token ' + github.key,
                     'Content-Type' : 'application/vnd.github.v3+json; charset=UTF-8', //Request v3 API

@@ -1,5 +1,5 @@
 const base64 = require('base64it');
-const logger = require('../functions/bunyan');
+const logger = require('bunyan');
 
 exports.instagram = function instagram(micropubContent) {
     const layout = 'instagram';

@@ -1,5 +1,5 @@
 const base64 = require('base64it');
-const logger = require('../functions/bunyan');
+const logger = require('bunyan');
 const moment = require('moment');
 
 exports.note = function note(micropubContent) {

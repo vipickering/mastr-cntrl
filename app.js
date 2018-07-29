@@ -7,7 +7,7 @@ const github = config.github;
 const api = config.api;
 const app = express();
 const helmet = require('helmet');
-const logger = require(__dirname + '/functions/bunyan');
+const logger = require(__dirname + '/app/functions/bunyan');
 const port = api.port;
 const isDev = app.get('env') === 'development';
 const routes  = require(__dirname + '/routes/routes.js');
