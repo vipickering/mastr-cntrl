@@ -1,5 +1,6 @@
 const express = require('express');
 const router = new express.Router();
+const logger = require('bunyan');
 const path = require('path');
 const fetch = require('node-fetch');
 const request = require('request');
@@ -7,7 +8,6 @@ const moment = require('moment');
 const appDir = path.dirname(require.main.filename);
 const config = require(appDir + '/config');
 const functionPath = '/functions/';
-const logger = require(appDir + functionPath + 'bunyan');
 const formatCheckin = require(appDir + functionPath + 'format-swarm');
 const formatInstagram = require(appDir + functionPath + 'format-instagram');
 const formatNote = require(appDir + functionPath + 'format-note');
