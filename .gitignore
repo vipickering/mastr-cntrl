@@ -59,3 +59,9 @@ typings/
 
 # next.js build output
 .next
+
+#Apple OS
+.DS_Store
+.sublime-project
+.sublime-workspace
+npm-debug.log
