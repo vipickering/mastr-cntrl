@@ -7,11 +7,13 @@ const moment = require('moment');
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const upload = multer();
-const config = require('../config');
-const logger = require(__dirname + '/functions/bunyan');
-const formatCheckin = require(__dirname + '/functions/format-swarm');
-const formatInstagram = require(__dirname + '/functions/format-instagram');
-const formatNote = require(__dirname + '/functions/format-note');
+
+const config = require(appRootDirectory + '/app/config.js');
+const logger = require(appRootDirectory + '/app/functions/bunyan');
+const formatCheckin = require(appRootDirectory + '/app/functions/format-swarm');
+const formatInstagram = require(appRootDirectory + '/app/functions/format-instagram');
+const formatNote = require(appRootDirectory + '/app/functions/format-note');
+
 const github = config.github;
 const serviceProfile = {
     'service' : 'Mastr Cntrl',
