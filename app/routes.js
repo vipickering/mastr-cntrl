@@ -1,8 +1,6 @@
 const express = require('express');
 const router = new express.Router();
 const path = require('path');
-const fetch = require('node-fetch');
-const request = require('request');
 
 const bodyParser = require('body-parser');
 const multer = require('multer');

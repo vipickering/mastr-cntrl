@@ -2,6 +2,7 @@ const fetch = require('node-fetch');
 const moment = require('moment');
 const bodyParser = require('body-parser');
 const multer = require('multer');
+const request = require('request');
 const upload = multer();
 const logger = require(appRootDirectory + '/app/functions/bunyan');
 const config = require(appRootDirectory + '/app/config.js');
