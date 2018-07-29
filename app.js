@@ -2,7 +2,6 @@ const express = require('express');
 require('dotenv').config();
 const path = require('path');
 const favicon = require('serve-favicon');
-const appDir = path.dirname(require.main.filename);
 const config = require(__dirname + '/config');
 const github = config.github;
 const api = config.api;
@@ -22,18 +21,9 @@ app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 app.use(favicon(path.join(__dirname, 'public', '/images/favicon.ico')));
 app.use(express.json());
-
-// Routes
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-if (typeof (routes) !== 'function') {
-    logger.error(routes.bind);
-    logger.error('Warning routes not configured correctly');
-    routes.bind(app);
-} else {
-    app.use('/', routes);
-}
+app.use('/', routes);
 
 /*eslint-disable-next-line no-process-env */
 const server = app.listen(process.env.PORT || 3000, function() {
-    logger.info('Listening on port %s...', server.address().port);
+    logger.info('Mastr Cntrl Online Port:%s...', server.address().port);
 });

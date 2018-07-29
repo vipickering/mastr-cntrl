@@ -4,18 +4,15 @@ const path = require('path');
 const fetch = require('node-fetch');
 const request = require('request');
 const moment = require('moment');
-const appDir = path.dirname(require.main.filename);
-const config = require(appDir + '/config');
-const functionPath = '/functions/';
-const logger = require(appDir + functionPath + 'bunyan');
-const formatCheckin = require(appDir + functionPath + 'format-swarm');
-const formatInstagram = require(appDir + functionPath + 'format-instagram');
-const formatNote = require(appDir + functionPath + 'format-note');
-const github = config.github;
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const upload = multer();
-let serviceIdentifier = '';
+const config = require('../config');
+const logger = require('../functions/bunyan');
+const formatCheckin = require('../functions/format-swarm');
+const formatInstagram = require('../functions/format-instagram');
+const formatNote = require('../functions/format-note');
+const github = config.github;
 const serviceProfile = {
     'service' : 'Mastr Cntrl',
     'version' : '9000',
@@ -34,6 +31,7 @@ const syndicateOptions = {
           "name": "Medium"
     }]
 };
+let serviceIdentifier = '';
 
 router.get('/micropub', (req, res) => {
     const token = req.headers.authorization;
