@@ -1,15 +1,6 @@
 const express = require('express');
 const router = new express.Router();
-// const path = require('path');
-// const bodyParser = require('body-parser');
-// const multer = require('multer');
-// const upload = multer();
-const serviceProfile = {
-    'service' : 'Mastr Cntrl',
-    'version' : '9000',
-    'formatting' : 'Indie Web',
-    'purpose' : 'Mastr Cntrl sees all'
-};
+const serviceProfile = require(appRootDirectory + '/app/data/serviceProfile.json');
 
 //Define Route locations
 const micropubGetRoute = require(appRootDirectory + '/app/routes/get/micropub');

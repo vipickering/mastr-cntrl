@@ -1,17 +1,6 @@
 const fetch = require('node-fetch');
 const logger = require(appRootDirectory + '/app/functions/bunyan');
-const syndicateOptions = {
-    'syndicate-to' : [{
-        'uid' : 'https://twitter.com/vincentlistens/',
-        'name' : 'Twitter'
-    }, {
-        'uid' : 'https://micro.blog/vincentp',
-        'name' : 'MicroBlog'
-    }, {
-        'uid' : 'https://medium.com/@vincentlistens',
-        'name' : 'Medium'
-    }]
-};
+const syndicateOptions = require(appRootDirectory + '/app/data/syndication.json');
 let serviceIdentifier = '';
 
 exports.micropubGet = function micropubGet(req, res) {
