@@ -15,6 +15,7 @@ const formatInstagram = require(appRootDirectory + '/app/functions/format-instag
 const formatNote = require(appRootDirectory + '/app/functions/format-note');
 
 exports.micropubPost = function micropubPost(req, res) {
+    console.log(module.parent.filename);
     let postFileName;
     let responseLocation;
     let payload;
