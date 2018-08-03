@@ -14,7 +14,7 @@ POST'ed content also triggers a webhook informing Mastr Cntrl to syndicate conte
 
 ### Currently Supported
 
-- [PESOS](https://indieweb.org/PESOS) 3rd party content posted on [Instagram](https://www.instagram.com) and [Swarm](https://www.swarmapp.com) is currently aggregated back to the blog via [https://ownyourgram.com] (https://ownyourgram.com) and [https://ownyourswarm.p3k.io](https://ownyourswarm.p3k.io) respectively.
+- [PESOS](https://indieweb.org/PESOS) 3rd party content posted on [Instagram](https://www.instagram.com) and [Swarm](https://www.swarmapp.com) is currently aggregated back to the blog via [https://ownyourgram.com](https://ownyourgram.com) and [https://ownyourswarm.p3k.io](https://ownyourswarm.p3k.io) respectively.
 - [PESOS](https://indieweb.org/PESOS) Micro.blog Currently using RSS feed. In future data will be POST'ed directly to the API.
 - [PESOS](https://indieweb.org/PESOS) Notes created on [Quill](https://quill.p3k.io) are supported.
 - [Webmention](https://indieweb.org/webmention) Webmentions via Twitter and Medium are supported via [Brid.gy](https://brid.gy) and [Webmention.io](https://webmention.io). (Webmention.io will be deprecated once Mastrl Cntrl accepts Webmentions)
