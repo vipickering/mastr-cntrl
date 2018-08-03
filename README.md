@@ -10,7 +10,7 @@ This triggers a webhook that tells ]Netlify](https://netlify.com) to rebuild the
 
 POST'ed content also triggers a webhook informing Mastr Cntrl to syndicate content to 3rd party providers.
 
-##Support / Roadmap
+## Support / Roadmap
 
 ### Currently Supported
 
