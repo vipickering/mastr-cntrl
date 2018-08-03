@@ -6,7 +6,7 @@ Mastr Cntrl is the [indieweb](https://indieweb.org) server for [this blog](https
 
 Content is routed via this server (hosted on Heroku). Anything POST'ed and accepted to the server is POST'ed to the Github API.
 
-This triggers a webhook that tells ]Netlify](https://netlify.com) to rebuild the [Jekyll site](http://jekyllrb.com) static site.
+This triggers a webhook that tells [Netlify](https://netlify.com) to rebuild the [Jekyll site](http://jekyllrb.com) static site.
 
 POST'ed content also triggers a webhook informing Mastr Cntrl to syndicate content to 3rd party providers.
 
