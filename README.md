@@ -32,6 +32,5 @@ POST'ed content also triggers a webhook informing Mastr Cntrl to syndicate conte
 - Media Endpoint - Mastrl Cntrl doesn't upload media from external sources yet.
 - Bookmarking In theory it is supported. But in practice nothing is being done on this yet.
 
-
 ## License
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fvipickering%2Fmastr-cntrl.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fvipickering%2Fmastr-cntrl?ref=badge_large)
