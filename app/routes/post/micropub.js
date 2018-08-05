@@ -129,5 +129,5 @@ exports.micropubPost = function micropubPost(req, res) {
                     res.end('Thanks');
                 }
             });
-        });
+        }).catch(err => console.error(err));
 };
