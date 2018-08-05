@@ -9,10 +9,10 @@ const webmentionPostRoute = require(appRootDirectory + '/app/routes/post/webment
 
 // Get Routes
 router.get('/micropub', micropubGetRoute.micropubGet);
-router.get('/', (req, res) => { res.json(serviceProfile); }); // Catch any illegal routes
+router.get('/', (req, res) => { res.json(serviceProfile); });
 
 //POST Routes
 router.post('/micropub', micropubPostRoute.micropubPost);
-router.post('/webmention', webmentionPostRoute.webmentionPost);
+// router.post('/webmention', webmentionPostRoute.webmentionPost);
 
 module.exports = router;
