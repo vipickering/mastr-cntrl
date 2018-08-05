@@ -11,6 +11,11 @@ This triggers a webhook that tells [Netlify](https://netlify.com) to rebuild the
 
 POST'ed content also triggers a webhook informing Mastr Cntrl to syndicate content to 3rd party providers.
 
+## Dependencies
+
+- This service uses Redis for cache management with Redis to go add-on
+- Heroku is used to host this.
+
 ## Support / Roadmap
 
 ### Currently Supported
