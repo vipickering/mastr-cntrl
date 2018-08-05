@@ -1,7 +1,5 @@
 # Mastr Cntrl
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fvipickering%2Fmastr-cntrl.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fvipickering%2Fmastr-cntrl?ref=badge_shield)
-
-![npm Dependencies](https://david-dm.org/vipickering/mastr-cntrl.svg)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fvipickering%2Fmastr-cntrl.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fvipickering%2Fmastr-cntrl?ref=badge_shield) [![Known Vulnerabilities](https://snyk.io/test/github/vipickering/mastr-cntrl/badge.svg?targetFile=package.json)](https://snyk.io/test/github/vipickering/mastr-cntrl?targetFile=package.json) ![npm Dependencies](https://david-dm.org/vipickering/mastr-cntrl.svg)
 
 Mastr Cntrl is the [indieweb](https://indieweb.org) server for [this blog](https://vincentp.me).
 
