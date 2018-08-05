@@ -1,4 +1,5 @@
 # Mastr Cntrl
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fvipickering%2Fmastr-cntrl.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fvipickering%2Fmastr-cntrl?ref=badge_shield)
 
 ![npm Dependencies](https://david-dm.org/vipickering/mastr-cntrl.svg)
 
@@ -30,3 +31,7 @@ POST'ed content also triggers a webhook informing Mastr Cntrl to syndicate conte
 - Syndication Endpoint - Mastr Cntrl needs to accept incoming PESOS requests.
 - Media Endpoint - Mastrl Cntrl doesn't upload media from external sources yet.
 - Bookmarking In theory it is supported. But in practice nothing is being done on this yet.
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fvipickering%2Fmastr-cntrl.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fvipickering%2Fmastr-cntrl?ref=badge_large)
