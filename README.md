@@ -19,6 +19,7 @@ POST'ed content also triggers a webhook informing Mastr Cntrl to syndicate conte
 - [PESOS](https://indieweb.org/PESOS) Notes created on [Quill](https://quill.p3k.io) are supported.
 - [Webmention](https://indieweb.org/webmention) Webmentions via Twitter and Medium are supported via [Brid.gy](https://brid.gy) and [Webmention.io](https://webmention.io). (Webmention.io will be deprecated once Mastrl Cntrl accepts Webmentions)
 - Syndication Endpoint - Mastr Cntrl will supply a list of 3rd party site accounts to syndicated towards. But currently will not action them
+- [Webmention](https://indieweb.org/webmention) Like/Favourite is  supported and appear underneath posts.
 
 ### Not yet supported
 
@@ -27,4 +28,3 @@ POST'ed content also triggers a webhook informing Mastr Cntrl to syndicate conte
 - Syndication Endpoint - Mastr Cntrl needs to accept incoming PESOS requests.
 - Media Endpoint - Mastrl Cntrl doesn't upload media from external sources yet.
 - Bookmarking In theory it is supported. But in practice nothing is being done on this yet.
-- Like/Favourite In theory it is supported. But in practice nothing is being done on this yet.
