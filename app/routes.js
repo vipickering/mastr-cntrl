@@ -13,6 +13,6 @@ router.get('/', (req, res) => { res.json(serviceProfile); }); // Catch any illeg
 
 //POST Routes
 router.post('/micropub', micropubPostRoute.micropubPost);
-// router.post('/webmention', webmentionPostRoute.webmentionPost);
+router.post('/webmention', webmentionPostRoute.webmentionPost);
 
 module.exports = router;

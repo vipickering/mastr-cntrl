@@ -1,5 +1,7 @@
 # Mastr Cntrl
 
+![npm Dependencies](https://david-dm.org/vipickering/mastr-cntrl.svg)
+
 Mastr Cntrl is the [indieweb](https://indieweb.org) server for [this blog](https://vincentp.me).
 
 ## Purpose
