@@ -5,7 +5,6 @@ const RateLimit = require('ratelimit.js').RateLimit;
 const ExpressMiddleware = require('ratelimit.js').ExpressMiddleware;
 const  redis = require("redis");
 
-
 const micropubGetRoute = require(appRootDirectory + '/app/routes/get/micropub');
 const micropubPostRoute = require(appRootDirectory + '/app/routes/post/micropub');
 const webmentionPostRoute = require(appRootDirectory + '/app/routes/post/webmention');

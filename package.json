@@ -9,7 +9,7 @@
   "scripts": {
     "start": "NODE_ENV=prod node ./bin/server.js | bunyan -o short",
     "dev": "NODE_ENV=dev node ./bin/server.js | bunyan -o short",
-    "redis:dev" : "redis-server",
+    "redis:dev": "redis-server",
     "lint:functions": "eslint app/functions/*.js",
     "lint:routes": "eslint app/routes.js",
     "lint:server": "eslint bin/server.js"
@@ -41,6 +41,8 @@
     "ratelimit.js": "^1.8.0",
     "redis": "^2.8.0",
     "request": "^2.87.0",
-    "serve-favicon": "^2.5.0"
+    "request-promise": "^4.2.2",
+    "serve-favicon": "^2.5.0",
+    "valid-url": "^1.0.9"
   }
 }
