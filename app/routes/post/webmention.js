@@ -1,22 +1,29 @@
-const fetch = require('node-fetch');
+const bodyParser = require('body-parser');
 const rp = require('request-promise');
+const validUrl = require('valid-url');
 const config = require(appRootDirectory + '/app/config.js');
 const github = config.github;
+
 const logger = require(appRootDirectory + '/app/functions/bunyan');
-const validUrl = require('valid-url');
+const formatWebmention = require(appRootDirectory + '/app/functions/format-webmention');
 
 exports.webmentionPost = function webmentionPost(req, res) {
+    console.log(config);
     let sourceURL = req.body.source;
     let targetURL = req.body.target;
+    const webmentionContent = req.body;
     let checkSourceDomain = false;
     let checkTargetDomain = false;
     let checkSourceDomainFormat = false;
     let checkTargetDomainFormat = false;
     let checkDifferentUrls = false;
-    let webmentionFileName = "test.json"
+    let messageContent = ':robot: Webmentions updated by Mastrl Cntrl';
+    let payload;
+    let webmentionFileName = "test.json";
+    let postDestination = github.postUrl + '/contents/_data/' + webmentionFileName;
     let webmentionsOptions = {
         method : 'PATCH',
-        url : github.webmentionUrl + webmentionFileName,
+        url : postDestination,
         headers : {
             Authorization : 'token ' + github.key,
             'Content-Type' : 'application/vnd.github.v3+json; charset=UTF-8',
@@ -113,6 +120,7 @@ exports.webmentionPost = function webmentionPost(req, res) {
 
     function processWebmention () {
         if ((checkDifferentUrls === true)  && (checkSourceDomain === true) && (checkTargetDomain === true) && (checkSourceDomainFormat === true) && (checkTargetDomainFormat === true)) {
+            payload = formatWebmention.webmention(webmentionContent);
             rp(webmentionsOptions)
                 .catch(handlePatchError);
             logger.info('Webmention Accepted');
@@ -156,22 +164,4 @@ exports.webmentionPost = function webmentionPost(req, res) {
         .then(processSourceUrl)
         .catch(handleErrorSourceUrl);
 
-
-
-    // // The error checking here is poor. We are not handling if GIT throws an error.
-    // request(payloadOptions, function sendIt(error, response, body) {
-    //     if (error) {
-    //         res.status(400);
-    //         res.send('Error Sending Payload');
-    //         logger.error('Git creation failed:' + error);
-    //         res.end('Error Sending Payload');
-    //         throw new Error('failed to send ' + error);
-    //     } else {
-    //         logger.info('Git creation successful!  Server responded with:', body);
-    //         res.writeHead(201, {
-    //             'location' : responseLocation
-    //         });
-    //         res.end('Thanks');
-    //     }
-    // });
 };

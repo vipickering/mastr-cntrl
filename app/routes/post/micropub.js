@@ -15,7 +15,6 @@ const formatInstagram = require(appRootDirectory + '/app/functions/format-instag
 const formatNote = require(appRootDirectory + '/app/functions/format-note');
 
 exports.micropubPost = function micropubPost(req, res) {
-    console.log(module.parent.filename);
     let postFileName;
     let responseLocation;
     let payload;
@@ -66,7 +65,7 @@ exports.micropubPost = function micropubPost(req, res) {
             case 'https://ownyourswarm.p3k.io':
                 logger.info('Creating Swarm checkin');
                 payload = formatCheckin.checkIn(micropubContent);
-                messageContent = ':robot: Checkin submitted via micropub API';
+                messageContent = ':robot: Checkin submitted by Mastrl Cntrl';
                 postFileName = postFileNameDate + '-' + postFileNameTime + '.md';
                 responseLocation = 'https://vincentp.me/checkins/' + responseDate + '/' + responseLocationTime + '/';
                 logger.info('response location ' + responseLocation);
@@ -74,7 +73,7 @@ exports.micropubPost = function micropubPost(req, res) {
             case 'https://ownyourgram.com':
                 logger.info('Creating Instagram note');
                 payload = formatInstagram.instagram(micropubContent);
-                messageContent = ':robot: Instagram photo submitted via micropub API';
+                messageContent = ':robot: Instagram photo submitted by Mastrl Cntrl';
                 postFileName = postFileNameDate + '-' + postFileNameTime + '.md';
                 responseLocation = 'https://vincentp.me/notes/' + responseDate + '/' + responseLocationTime + '/';
                 logger.info('response ' + responseLocation);
@@ -82,13 +81,13 @@ exports.micropubPost = function micropubPost(req, res) {
             default:
                 logger.info('Creating Note');
                 payload = formatNote.note(micropubContent);
-                messageContent = ':robot: Note  submitted via micropub API';
+                messageContent = ':robot: Note  submitted by Mastrl Cntrl';
                 postFileName = postFileNameDate + '-' + postFileNameTime + '.md';
                 responseLocation = 'https://vincentp.me/notes/' + responseDate + '/' + responseLocationTime + '/';
                 logger.info('response location ' + responseLocation);
             }
 
-            postDestination = github.postUrl + postFileName;
+            postDestination = github.postUrl + '/contents/_posts/' + postFileName;
 
             logger.info('Destination: ' + postDestination);
 

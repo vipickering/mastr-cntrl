@@ -2,8 +2,7 @@
 const config = {};
 
 config.github = {
-    'postUrl' : process.env.GITHUB_HOST + '/repos/' + process.env.GITHUB_NAME + '/' + process.env.GITHUB_REPO + '/contents/_posts/',
-    'webmentionUrl' : process.env.GITHUB_HOST + '/repos/' + process.env.GITHUB_NAME + '/' + process.env.GITHUB_REPO + '/contents/_data/',
+    'postUrl' : process.env.GITHUB_HOST + '/repos/' + process.env.GITHUB_NAME + '/' + process.env.GITHUB_REPO,
     'key' : process.env.GITHUB_KEY,
     'repo' : process.env.GITHUB_REPO,
     'name' : process.env.GITHUB_NAME,
