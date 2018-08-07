@@ -8,7 +8,6 @@ const validUrl = require('valid-url');
 exports.webmentionPost = function webmentionPost(req, res) {
     let sourceURL = req.body.source;
     let targetURL = req.body.target;
-    let urlsArray = [sourceURL, targetURL];
     let checkSourceDomain = false;
     let checkTargetDomain = false;
     let checkSourceDomainFormat = false;
@@ -38,10 +37,10 @@ exports.webmentionPost = function webmentionPost(req, res) {
 
     function checkValidTargetFormat(url) {
         if (validUrl.isUri(url)) {
-             logger.info('Webmention ' + url + ' in valid format');
+             logger.info('Webmention ' + url + ' is valid format');
              checkTargetDomainFormat = true;
         } else {
-            logger.info('Webmention ' + url + ' invalid format');
+            logger.info('Webmention ' + url + ' is invalid format');
             checkTargetDomainFormat = false;
         }
     }
@@ -54,48 +53,81 @@ exports.webmentionPost = function webmentionPost(req, res) {
         }
     }
 
-    //Test URLs are valid format.
+    function processSourceUrl() {
+       checkSourceDomain = true;
+        logger.info('Webmention Source OK');
+        rp(targetURL)
+            .then(processTargetUrl)
+            .catch(handleErrorTargetUrl);
+    }
+
+    function processTargetUrl() {
+       checkTargetDomain = true;
+        logger.info('Webmention Target OK');
+        processWebmention(); // Call logic here to process request, use finally?
+    }
+
+    function handleErrorSourceUrl(err) {
+        checkSourceDomain = false;
+        logger.info('Webmention Source Failed');
+        logger.error(err);
+        res.status(400);
+        res.send('Source URL is invalid');
+    }
+
+    function handleErrorTargetUrl(err) {
+        checkSourceDomain = false;
+        logger.info('Webmention Source Failed');
+        logger.error(err);
+        res.status(400);
+        res.send('Target URL is invalid');
+    }
+
+    function processWebmention () {
+        if ((checkDifferentUrls === true)  && (checkSourceDomain === true) && (checkTargetDomain === true) && (checkSourceDomainFormat === true) && (checkTargetDomainFormat === true)) {
+            // Do something with the webmention
+            logger.info('Webmention Accepted');
+            res.status(202);
+            res.send('Accepted');
+       } else if (checkDifferentUrls === false) {
+            logger.info('Webmention Source and Target URL do not match');
+            res.status(400);
+            res.send('Source and Target URL should not match');
+       } else if (checkSourceDomain === false) {
+            logger.info('Webmention Source URL is invalid');
+            res.status(400);
+            res.send('Source URL is invalid');
+        } else if (checkTargetDomain === false) {
+            logger.info('Webmention Target URL is invalid');
+            res.status(400);
+            res.send('Target URL is invalid');
+        } else if (checkSourceDomainFormat === false || checkTargetDomainFormat === false) {
+            logger.info('Webmention URL is invalid');
+            res.status(400);
+            res.send('Webmention URL is invalid');
+        } else {
+            logger.info('bad wemention request');
+            res.status(400);
+            res.send('Bad Request');
+        }
+    }
+
+        //Test URLs are valid format.
     logger.info('Webmention source: ' + sourceURL);
     checkValidSourceFormat(sourceURL);
-    logger.info(checkSourceDomainFormat);
 
     logger.info('Webmention target: ' + targetURL);
     checkValidTargetFormat(targetURL);
-    logger.info(checkTargetDomainFormat);
 
     // Test URLS not identical
     checkDomainMatch(sourceURL,targetURL );
 
-    // Check that the source and target exist and are real.
-    rp(sourceURL).then(checkSourceDomain = true).catch(function (err) { console.error(err); });
-    rp(targetURL).then(checkTargetDomain = true).catch(function (err) { console.error(err); });
+    // Check that the source and target exist and are real, then process the request.
+    rp(sourceURL)
+        .then(processSourceUrl)
+        .catch(handleErrorSourceUrl);
 
-    if ((checkDifferentUrls === true)  && (checkSourceDomain === true) && (checkTargetDomain === true) && (checkSourceDomainFormat === true) && (checkTargetDomainFormat === true)) {
-        // Do something with the webmention
-        logger.info('Webmention Accepted');
-        res.status(202);
-        res.send('Accepted');
-   } else if (checkDifferentUrls === false) {
-        logger.info('Webmention Source and Target URL do not match');
-        res.status(400);
-        res.send('Source and Target URL should not match');
-   } else if (checkSourceDomain === false) {
-        logger.info('Webmention Source URL is invalid');
-        res.status(400);
-        res.send('Source URL is invalid');
-    } else if (checkTargetDomain === false) {
-        logger.info('Webmention Target URL is invalid');
-        res.status(400);
-        res.send('Target URL is invalid');
-    } else if (checkSourceDomainFormat === false || checkTargetDomainFormat === false) {
-        logger.info('Webmention URL is invalid');
-        res.status(400);
-        res.send('Webmention URL is invalid');
-    } else {
-        logger.info('bad wemention request');
-        res.status(400);
-        res.send('Bad Request');
-    }
+
 
 
     // let webmentionFileName = "webmentions.json"
