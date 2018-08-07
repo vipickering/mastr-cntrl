@@ -13,6 +13,27 @@ exports.webmentionPost = function webmentionPost(req, res) {
     let checkSourceDomainFormat = false;
     let checkTargetDomainFormat = false;
     let checkDifferentUrls = false;
+    let webmentionFileName = "test.json"
+    let webmentionsOptions = {
+        method : 'PATCH',
+        url : github.webmentionUrl + webmentionFileName,
+        headers : {
+            Authorization : 'token ' + github.key,
+            'Content-Type' : 'application/vnd.github.v3+json; charset=UTF-8',
+            'User-Agent' : github.name
+        },
+        body : {
+            path : webmentionFileName,
+            branch : github.branch,
+            message : messageContent,
+            committer : {
+                'name' : github.user,
+                'email' : github.email
+            },
+            content : payload
+        },
+        json : true
+    };
 
     function checkStatus(res) {
         if (res.status >= 200 && res.status < 300) {
@@ -83,9 +104,17 @@ exports.webmentionPost = function webmentionPost(req, res) {
         res.send('Target URL is invalid');
     }
 
+    function handlePatchError(err) {
+        logger.info('Webmention PATCH operation to Github API Failed');
+        logger.error(err);
+        res.status(400);
+        res.send('Update failed');
+    }
+
     function processWebmention () {
         if ((checkDifferentUrls === true)  && (checkSourceDomain === true) && (checkTargetDomain === true) && (checkSourceDomainFormat === true) && (checkTargetDomainFormat === true)) {
-            // Do something with the webmention
+            rp(webmentionsOptions)
+                .catch(handlePatchError);
             logger.info('Webmention Accepted');
             res.status(202);
             res.send('Accepted');
@@ -128,29 +157,6 @@ exports.webmentionPost = function webmentionPost(req, res) {
         .catch(handleErrorSourceUrl);
 
 
-
-
-    // let webmentionFileName = "webmentions.json"
-    // let webmentionsOptions = {
-    //     method : 'PATCH',
-    //     url : github.webmentionUrl + webmentionFileName,
-    //     headers : {
-    //         Authorization : 'token ' + github.key,
-    //         'Content-Type' : 'application/vnd.github.v3+json; charset=UTF-8',
-    //         'User-Agent' : github.name
-    //     },
-    //     body : {
-    //         path : webmentionFileName,
-    //         branch : github.branch,
-    //         message : messageContent,
-    //         committer : {
-    //             'name' : github.user,
-    //             'email' : github.email
-    //         },
-    //         content : payload
-    //     },
-    //     json : true
-    // };
 
     // // The error checking here is poor. We are not handling if GIT throws an error.
     // request(payloadOptions, function sendIt(error, response, body) {

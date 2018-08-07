@@ -39,6 +39,6 @@ router.get('/', limitEndpoint, (req, res) => { res.json(serviceProfile); });
 
 //POST Routes
 router.post('/micropub', limitEndpoint, micropubPostRoute.micropubPost);
-// router.post('/webmention', limitEndpoint, webmentionPostRoute.webmentionPost);
+router.post('/webmention', limitEndpoint, webmentionPostRoute.webmentionPost);
 
 module.exports = router;
