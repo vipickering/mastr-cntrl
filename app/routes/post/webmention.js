@@ -71,9 +71,9 @@ exports.webmentionPost = function webmentionPost(req, res) {
     }
 
     rp(apiOptions)
-        .then(function (repos){
-              console.log(repos.sha);
-            let options = {
+        .then(function (repos) {
+            console.log(repos.sha);
+           let options = {
         method : 'PUT',
         uri : postDestination,
         headers : {
@@ -83,7 +83,7 @@ exports.webmentionPost = function webmentionPost(req, res) {
         },
         body : {
             path : postFileName,
-            branch : github.branch,
+            branch : "master",
             message : messageContent,
             sha : repos.sha,
             committer : {
@@ -96,7 +96,9 @@ exports.webmentionPost = function webmentionPost(req, res) {
     };
             console.log(options);
                 rp(options)
+                .then(functionFinish)
                  .catch(handlePatchError);
+
         })
         .catch(function (err) {
             logger.info('Github API Get File Failed');
