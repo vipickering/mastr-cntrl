@@ -85,7 +85,7 @@ exports.webmention = function webmention(micropubContent) {
 // ---
 // ${content}
 // `;
-
+console.log("content:" + JSON.stringify(micropubContent));
 const entry ={
     "links": [
         {
@@ -119,7 +119,8 @@ const entry ={
       "target": "https://vincentp.me/checkins/2018/08/06/08-20/"
     }
   ]};
-    logger.info('Webmention content: ' + entry);
-    const webmentionContentFormatted = base64.encode(entry);
+    logger.info('Webmention content: ' + JSON.stringify(entry));
+
+    const webmentionContentFormatted = base64.encode(JSON.stringify(entry));
     return webmentionContentFormatted;
 };
