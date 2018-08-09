@@ -10,7 +10,12 @@ exports.micropubGet = function micropubGet(req, res) {
         'Accept' : 'application/json',
         'Authorization' : token
     };
-    logger.info('Token Received: ' + token);
+
+    if (token) {
+        logger.info('Indie Auth Token Received: ' + token);
+    } else {
+        logger.info('No Indie Auth Token Received');
+    }
 
     fetch(indieauth, {
         method : 'GET',
@@ -21,7 +26,12 @@ exports.micropubGet = function micropubGet(req, res) {
     })
     .then(function(json) {
         serviceIdentifier = json.client_id;
-        logger.info('Service Is: ' + serviceIdentifier);
+
+        if (serviceIdentifier) {
+            logger.info('Service Is: ' + serviceIdentifier);
+        } else {
+            logger.info('No Service Declared');
+        }
 
         if ((req.query.q === 'syndicate-to') && (serviceIdentifier === 'https://quill.p3k.io/')) {
             res.json(syndicateOptions);
