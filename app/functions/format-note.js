@@ -65,6 +65,7 @@ twitterCard: false
 ${content}
 `;
     logger.info('Note content created: ' + entry);
+    JSON.stringify(entry);
     const micropubContentFormatted = base64.encode(entry);
     return micropubContentFormatted;
 };
