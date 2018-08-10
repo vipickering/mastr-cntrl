@@ -11,6 +11,10 @@
         {
             "uid" : "https://medium.com/@vincentlistens",
             "name" : "Medium"
+        },
+         {
+            "uid" : "https://mastodon.social/@vincentlistens",
+            "name" : "Mastodon"
         }
     ]
 }
