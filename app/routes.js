@@ -3,7 +3,7 @@ const router = new express.Router();
 const serviceProfile = require(appRootDirectory + '/app/data/serviceProfile.json');
 const RateLimit = require('ratelimit.js').RateLimit;
 const ExpressMiddleware = require('ratelimit.js').ExpressMiddleware;
-const redis = require("redis");
+const redis = require('redis');
 const rp = require('request-promise');
 const validUrl = require('valid-url');
 
@@ -14,37 +14,34 @@ const webmentionPostRoute = require(appRootDirectory + '/app/routes/post/webment
 
 let rtg;
 let redisClient;
-let limitEndpoint;
 let redisClientOptions;
-let rateLimiter;
-let limitMiddleware;
 
 // Make Redis work on Heroku Or local using Redis To Go
 if (process.env.REDISTOGO_URL) {
-    rtg   = require("url").parse(process.env.REDISTOGO_URL);
-    redisClient =redis.createClient(rtg.port, rtg.hostname);
-    redisClient.auth(rtg.auth.split(":")[1]);
+    rtg   = require('url').parse(process.env.REDISTOGO_URL);
+    redisClient = redis.createClient(rtg.port, rtg.hostname);
+    redisClient.auth(rtg.auth.split(':')[1]);
 } else {
     redisClient = redis.createClient();
 }
 
 // Rate limit endpoints to prevent DDOS
-clientOptions = { ignoreRedisErrors: true };
-rateLimiter = new RateLimit(redisClient, [{interval: 1, limit: 10}]);
-limitMiddleware = new ExpressMiddleware(rateLimiter, redisClientOptions);
-limitEndpoint = limitMiddleware.middleware(function(req, res, next) {
-    res.status(429).json({message: 'rate limit exceeded'});
+const clientOptions = {ignoreRedisErrors : true};
+const rateLimiter = new RateLimit(redisClient, [{interval : 1, limit : 10}]);
+const limitMiddleware = new ExpressMiddleware(rateLimiter, redisClientOptions);
+const limitEndpoint = limitMiddleware.middleware((req, res, next) => {
+    res.status(429).json({message : 'rate limit exceeded'});
 });
 
 //Move to functions
-webmentionUrlChecker = function(req, res, next) {
-    console.log(req.body);
+const webmentionUrlChecker = (req, res, next) => {
+    logger.info(req.body);
     const sourceURL = req.body.source;
     const targetURL = req.body.target;
 
-     function checkValidUrl(url) {
+    function checkValidUrl(url) {
         if (validUrl.isUri(url)) {
-             logger.info('Webmention ' + url + ' is valid format');
+            logger.info('Webmention ' + url + ' is valid format');
         } else {
             logger.info('Webmention ' + url + ' invalid format');
             logger.info('Webmention URL is invalid');
@@ -66,11 +63,11 @@ webmentionUrlChecker = function(req, res, next) {
         res.status(400);
         res.send('Source and Target URL should not match');
     }
-}
+};
 
 //Move to functions
-webmentionUrlValidation = function(req, res, next) {
-    console.log(req.body);
+const webmentionUrlValidation = (req, res, next) => {
+    logger.info(req.body);
     const sourceURL = req.body.source;
     const targetURL = req.body.target;
 
@@ -89,14 +86,16 @@ webmentionUrlValidation = function(req, res, next) {
         .catch(errorResponse);
 
     return next();
-}
+};
 
 // Get Routes
 router.get('/micropub', limitEndpoint, micropubGetRoute.micropubGet);
-router.get('/', limitEndpoint, (req, res) => { res.json(serviceProfile); });
+router.get('/', limitEndpoint, (req, res) => {
+    res.json(serviceProfile);
+});
 
 //POST Routes
 router.post('/micropub', limitEndpoint, micropubPostRoute.micropubPost);
-router.post('/webmention', limitEndpoint, webmentionUrlChecker, webmentionUrlValidation, webmentionPostRoute.webmentionPost);
+// router.post('/webmention', limitEndpoint, webmentionUrlChecker, webmentionUrlValidation, webmentionPostRoute.webmentionPost);
 
 module.exports = router;

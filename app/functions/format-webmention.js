@@ -85,42 +85,35 @@ exports.webmention = function webmention(micropubContent) {
 // ---
 // ${content}
 // `;
-console.log("content:" + JSON.stringify(micropubContent));
-const entry ={
-    "links": [
-        {
-            "source": "https://test.com",
-            "target" : "http://test2.com"
-        },
-        {
-        "source": "https://ownyourswarm.p3k.io/checkin/5b67f6d193bd63002cdc7a1a/32c452690035aafb2f077bb8432923cf",
-      "verified": true,
-      "verified_date": "2018-08-06T07:21:17+00:00",
-      "id": 540047,
-      "private": false,
-      "data": {
-            "author": {
-              "name": "Swarm",
-              "url": "https://swarmapp.com/",
-              "photo": "https://webmention.io/avatar/ss1.4sqi.net/96fe3389ef056db8717e827a9d0d136c945ab4383641feb80e6596e9ce4a5ad2.png"
-            },
-            "url": "https://ownyourswarm.p3k.io/checkin/5b67f6d193bd63002cdc7a1a/32c452690035aafb2f077bb8432923cf",
-            "name": null,
-            "content": "You're the mayor!",
-            "published": "2018-08-06T08:20:49+01:00",
-            "published_ts": 1533540049,
-            "swarm_coins": 9
-      },
-      "activity": {
-        "type": "reply",
-        "sentence": "Swarm commented 'You're the mayor!' on a post https://vincentp.me/checkins/2018/08/06/08-20/",
-        "sentence_html": "<a href=\"https://swarmapp.com/\">Swarm</a> commented 'You're the mayor!' on a post <a href=\"https://vincentp.me/checkins/2018/08/06/08-20/\">https://vincentp.me/checkins/2018/08/06/08-20/</a>"
-      },
-      "target": "https://vincentp.me/checkins/2018/08/06/08-20/"
-    }
-  ]};
-    logger.info('Webmention content: ' + JSON.stringify(entry));
-
-    const webmentionContentFormatted = base64.encode(JSON.stringify(entry));
-    return webmentionContentFormatted;
+// const entry ={
+//     "links": [
+//         {
+//         "source": "https://ownyourswarm.p3k.io/checkin/5b67f6d193bd63002cdc7a1a/32c452690035aafb2f077bb8432923cf",
+//       "verified": true,
+//       "verified_date": "2018-08-06T07:21:17+00:00",
+//       "id": 540047,
+//       "private": false,
+//       "data": {
+//             "author": {
+//               "name": "Swarm",
+//               "url": "https://swarmapp.com/",
+//               "photo": "https://webmention.io/avatar/ss1.4sqi.net/96fe3389ef056db8717e827a9d0d136c945ab4383641feb80e6596e9ce4a5ad2.png"
+//             },
+//             "url": "https://ownyourswarm.p3k.io/checkin/5b67f6d193bd63002cdc7a1a/32c452690035aafb2f077bb8432923cf",
+//             "name": null,
+//             "content": "You're the mayor!",
+//             "published": "2018-08-06T08:20:49+01:00",
+//             "published_ts": 1533540049,
+//             "swarm_coins": 9
+//       },
+//       "activity": {
+//         "type": "reply",
+//         "sentence": "Swarm commented 'You're the mayor!' on a post https://vincentp.me/checkins/2018/08/06/08-20/",
+//         "sentence_html": "<a href=\"https://swarmapp.com/\">Swarm</a> commented 'You're the mayor!' on a post <a href=\"https://vincentp.me/checkins/2018/08/06/08-20/\">https://vincentp.me/checkins/2018/08/06/08-20/</a>"
+//       },
+//       "target": "https://vincentp.me/checkins/2018/08/06/08-20/"
+//     }
+//   ]};
+    logger.info('Webmention content: ' + JSON.stringify(micropubContent));
+    return JSON.stringify(micropubContent);
 };

@@ -21,22 +21,22 @@ exports.micropubGet = function micropubGet(req, res) {
         method : 'GET',
         headers : authHeaders
     })
-    .then(function(response) {
-        return response.json();
-    })
-    .then(function(json) {
-        serviceIdentifier = json.client_id;
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(json) {
+            serviceIdentifier = json.client_id;
 
-        if (serviceIdentifier) {
-            logger.info('Service Is: ' + serviceIdentifier);
-        } else {
-            logger.info('No Service Declared');
-        }
+            if (serviceIdentifier) {
+                logger.info('Service Is: ' + serviceIdentifier);
+            } else {
+                logger.info('No Service Declared');
+            }
 
-        if ((req.query.q === 'syndicate-to') && (serviceIdentifier === 'https://quill.p3k.io/')) {
-            res.json(syndicateOptions);
-        } else {
-            res.json({});
-        }
-    });
+            if ((req.query.q === 'syndicate-to') && (serviceIdentifier === 'https://quill.p3k.io/')) {
+                res.json(syndicateOptions);
+            } else {
+                res.json({});
+            }
+        });
 };

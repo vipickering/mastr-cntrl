@@ -1,6 +1,5 @@
-const bodyParser = require('body-parser');
-const request = require('request');
 const rp = require('request-promise');
+const base64 = require('base64it');
 const config = require(appRootDirectory + '/app/config.js');
 const github = config.github;
 
@@ -11,28 +10,28 @@ exports.webmentionPost = function webmentionPost(req, res) {
     const sourceURL = req.body.source;
     const targetURL = req.body.target;
     const webmentionContent = req.body;
-    let messageContent = ':robot: Webmentions updated by Mastrl Cntrl';
-    let payload = formatWebmention.webmention(webmentionContent);
-    let shaContent;
-    let postFileName = "test.json";
-    let  postDestination = github.postUrl + '/contents/_data/' + postFileName;
-    // let fileLocation= 'https://api.github.com/repos/vipickering/vincentp/contents/_data/test.json';
-    let apiOptions = {
-        uri: postDestination,
+    const messageContent = ':robot: Webmentions updated by Mastrl Cntrl';
+    const webmentionsToAdd = formatWebmention.webmention(webmentionContent);
+    const postFileName = 'test.json';
+    const postDestination = github.postUrl + '/contents/_data/' + postFileName;
+    const apiOptions = {
+        uri : postDestination,
         headers : {
             Authorization : 'token ' + github.key,
             'Content-Type' : 'application/vnd.github.v3+json; charset=UTF-8',
             'User-Agent' : github.name
         },
-        json: true
+        json : true
     };
+    let payload;
+    let options;
+    let currentWebmentions;
 
-     console.log(postDestination);
+    console.log(postDestination);
     console.log(sourceURL);
     console.log(targetURL);
 
-
-   function handleGithubApiGet(err) {
+    function handleGithubApiGet(err) {
         logger.info('Github API Get File Failed');
         logger.error(err);
         res.status(400);
@@ -51,70 +50,51 @@ exports.webmentionPost = function webmentionPost(req, res) {
         res.send('Accepted');
     }
 
-
-
-    /*
-    do promise 1
-    . then next thing
-    .then next thing
-    .catch errors (return bad response)
-    .finally (close anything left open and return good response)
-
-    */
-
-    function assignThing (req, res) {
-        logger.info('shaContent' + shaContent);
-        logger.info('res.body.sha' + res.body.sha);
-        shaContent = req.body.sha;
-        logger.info('shaContent' + shaContent);
-        logger.info('res.body.sha' + res.body.sha);
-    }
-
     rp(apiOptions)
-        .then(function (repos) {
-            console.log(repos.sha);
-           let options = {
-        method : 'PUT',
-        uri : postDestination,
-        headers : {
-            Authorization : 'token ' + github.key,
-            'Content-Type' : 'application/vnd.github.v3+json; charset=UTF-8',
-            'User-Agent' : github.name
-        },
-        body : {
-            path : postFileName,
-            branch : "master",
-            message : messageContent,
-            sha : repos.sha,
-            committer : {
-                'name' : github.user,
-                'email' : github.email
-            },
-            content : payload
-        },
-        json : true
-    };
-            console.log(options);
-                rp(options)
+        .then((repos) => {
+            // Don't patch the file. Instead. Splice the array and just replace it.
+            currentWebmentions = base64.decode(repos.content);
+            // console.log('repos: ' + currentWebmentions);
+            // console.log('current webmentions: ' + JSON.stringify(currentWebmentions));
+
+            // payload.splice(0, 0, currentWebmentions);
+            // console.log('current webmentions: ' + currentWebmentions);
+
+            // console.log('to add: ' + webmentionsToAdd);
+            payload = currentWebmentions.slice(0, 10) + webmentionsToAdd + ',' + currentWebmentions.slice(10);
+            // We are not adding correctly here.
+            // payload = currentWebmentions.splice(0, 0, webmentionsToAdd);
+            console.log('combined' + payload);
+            // console.log('Join webmentions after: ' + currentWebmentions.join());
+
+            let encodedContent = base64.encode(payload); // Wrong here!
+            console.log('encoded ' + encodedContent);
+
+            options = {
+                method : 'PUT',
+                uri : postDestination,
+                headers : {
+                    Authorization : 'token ' + github.key,
+                    'Content-Type' : 'application/vnd.github.v3+json; charset=UTF-8',
+                    'User-Agent' : github.name
+                },
+                body : {
+                    path : postFileName,
+                    branch : 'master',
+                    message : messageContent,
+                    sha : repos.sha,
+                    committer : {
+                        'name' : github.user,
+                        'email' : github.email
+                    },
+                    content : encodedContent
+                },
+                json : true
+            };
+
+            rp(options)
                 .then(functionFinish)
-                 .catch(handlePatchError);
-
+                .catch(handlePatchError);
         })
-        .catch(function (err) {
-            logger.info('Github API Get File Failed');
-            logger.error(err);
-            res.status(400);
-            res.send('Internal Error Please Contact Author');
-        });
-
+        .catch(handleGithubApiGet);
 };
-
-
-// Get sha to master
-// https://api.github.com/repos/vipickering/vincentp/git/refs
-// https://api.github.com/repos/vipickering/vincentp/git/trees/7770fadd9ef26e42d1c3cfa0495cbd49368399f8
-
-//File to update
-// https://api.github.com/repos/vipickering/vincentp/contents/_data/webmentions.json
-// Then get sha req.body.sha
-// assign to sha in PUT/PATCH request

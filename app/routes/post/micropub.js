@@ -34,10 +34,8 @@ exports.micropubPost = function micropubPost(req, res) {
     logger.info('json body ' + JSON.stringify(req.body));
 
     try {
-        //2018-07-16T08:39:26+01:00
         publishedDate = req.body.properties.published[0];
     } catch (e) {
-        //2018-07-16T14:38:52.444Z
         publishedDate = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss+01:00');
     }
 
@@ -128,5 +126,6 @@ exports.micropubPost = function micropubPost(req, res) {
                     res.end('Thanks');
                 }
             });
-        }).catch(err => console.error(err));
+        })
+        .catch((err) => logger.error(err));
 };
