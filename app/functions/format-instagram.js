@@ -3,7 +3,7 @@ const logger = require(appRootDirectory + '/app/functions/bunyan');
 
 exports.instagram = function instagram(micropubContent) {
     const layout = 'instagram';
-    const category = 'Notes';
+    const category = 'Instagram';
     const pubDate = micropubContent.properties.published[0];
     const syndication = micropubContent.properties.syndication[0];
     const title = micropubContent.properties.content[0].substring(0, 100);
