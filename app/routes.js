@@ -9,8 +9,10 @@ const validUrl = require('valid-url');
 
 const logger = require(appRootDirectory + '/app/functions/bunyan');
 const micropubGetRoute = require(appRootDirectory + '/app/routes/get/micropub');
+const webmentionUpdateGetRoute = require(appRootDirectory + '/app/routes/get/webmention-update');
 const micropubPostRoute = require(appRootDirectory + '/app/routes/post/micropub');
 const webmentionPostRoute = require(appRootDirectory + '/app/routes/post/webmention');
+
 
 let rtg;
 let redisClient;
@@ -34,6 +36,7 @@ const limitEndpoint = limitMiddleware.middleware((req, res, next) => {
 });
 
 //Move to functions
+// This will need a function to extract user bio h-card.
 const webmentionUrlChecker = (req, res, next) => {
     logger.info(req.body);
     const sourceURL = req.body.source;
@@ -90,12 +93,13 @@ const webmentionUrlValidation = (req, res, next) => {
 
 // Get Routes
 router.get('/micropub', limitEndpoint, micropubGetRoute.micropubGet);
+router.get('/webmention-update', limitEndpoint, webmentionUpdateGetRoute.webmentionUpdateGet);
 router.get('/', limitEndpoint, (req, res) => {
     res.json(serviceProfile);
 });
 
 //POST Routes
+// Build test micropub and add indieAuth as authentication function.
 router.post('/micropub', limitEndpoint, micropubPostRoute.micropubPost);
-// router.post('/webmention', limitEndpoint, webmentionUrlChecker, webmentionUrlValidation, webmentionPostRoute.webmentionPost);
-
+//router.post('/webmention', limitEndpoint, webmentionUrlChecker, webmentionUrlValidation, webmentionPostRoute.webmentionPost);
 module.exports = router;

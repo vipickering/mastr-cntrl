@@ -18,5 +18,9 @@ config.api = {
     'port' : process.env.MICROPUB_PORT
 };
 
+config.webmention = {
+    'token' : process.env.WEBMENTION_TOKEN
+};
+
 module.exports = config;
 

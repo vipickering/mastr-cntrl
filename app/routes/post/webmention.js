@@ -26,6 +26,7 @@ exports.webmentionPost = function webmentionPost(req, res) {
     let payload;
     let options;
     let currentWebmentions;
+    let encodedContent;
 
     console.log(postDestination);
     console.log(sourceURL);
@@ -52,22 +53,11 @@ exports.webmentionPost = function webmentionPost(req, res) {
 
     rp(apiOptions)
         .then((repos) => {
-            // Don't patch the file. Instead. Splice the array and just replace it.
             currentWebmentions = base64.decode(repos.content);
-            // console.log('repos: ' + currentWebmentions);
-            // console.log('current webmentions: ' + JSON.stringify(currentWebmentions));
-
-            // payload.splice(0, 0, currentWebmentions);
-            // console.log('current webmentions: ' + currentWebmentions);
-
-            // console.log('to add: ' + webmentionsToAdd);
+            // This is where the webmention is appended to the file. I need to change this here to find the tag to append the content on to
             payload = currentWebmentions.slice(0, 10) + webmentionsToAdd + ',' + currentWebmentions.slice(10);
-            // We are not adding correctly here.
-            // payload = currentWebmentions.splice(0, 0, webmentionsToAdd);
             console.log('combined' + payload);
-            // console.log('Join webmentions after: ' + currentWebmentions.join());
-
-            let encodedContent = base64.encode(payload); // Wrong here!
+            encodedContent = base64.encode(payload);
             console.log('encoded ' + encodedContent);
 
             options = {
