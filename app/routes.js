@@ -13,7 +13,6 @@ const webmentionUpdateGetRoute = require(appRootDirectory + '/app/routes/get/web
 const micropubPostRoute = require(appRootDirectory + '/app/routes/post/micropub');
 const webmentionPostRoute = require(appRootDirectory + '/app/routes/post/webmention');
 
-
 let rtg;
 let redisClient;
 let redisClientOptions;

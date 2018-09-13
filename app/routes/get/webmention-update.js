@@ -7,9 +7,12 @@ const config = require(appRootDirectory + '/app/config.js');
 const webmention = config.webmention;
 const github = config.github;
 
+// Delete after solving merge issue.
 const test = 'https://webmention.io/api/mentions?domain=vincentp.me&since=since=2018-09-08T10:00:00-0700&token=aSJ1xen947l7hz4e42KlYw';
 
-const today  = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss+01:00');
+// We want to run the scheduler at 1am and GET all webmentions for the previous day.
+const yesterday  =  moment().subtract(1, 'days').format('YYYY-MM-DDTHH:mm:ss+01:00');
+
 const webmentionIO = 'https://webmention.io/api/mentions?domain=vincentp.me&since=since=' + test + '&token=' + webmention.token;
 const formatWebmention = require(appRootDirectory + '/app/functions/format-webmention');
 
@@ -65,6 +68,11 @@ exports.webmentionUpdateGet = function webmentionUpdateGet(req, res) {
 
     logger.info(webmentionIO);
 
+
+/*
+Not working. I need to remove the square brackets from the code being inserted.
+
+*/
     fetch(webmentionIO)
         .then(res => res.json())
         .then(function(json) {
@@ -74,11 +82,18 @@ exports.webmentionUpdateGet = function webmentionUpdateGet(req, res) {
                 res.send('Done');
             } else {
                 // There is at least one webmention
+                logger.info(today);
                 const webmentionsToAdd = formatWebmention.webmention(json.links);
                 rp(apiOptions)
                     .then((repos) => {
                         currentWebmentions = base64.decode(repos.content);
-                        payload = currentWebmentions.slice(0, 10) + webmentionsToAdd + ',' + currentWebmentions.slice(10);
+
+                        // https://stackoverflow.com/questions/18884840/adding-a-new-array-element-to-a-json-object
+                        // I think I need to parse the JSON currentWebmentions here, then insert the webmentionsToAdd, then stringify it to put it back.
+                        let obj = JSON.parse(currentWebmentions);
+                        obj['links'].push(webmentionsToAdd);
+                        payload = JSON.stringify(obj);
+                        // payload = currentWebmentions.slice(0, 10) + webmentionsToAdd + ',' + currentWebmentions.slice(10);
                         logger.info('combined' + payload);
                         encodedContent = base64.encode(payload);
                         logger.info('encoded');
