@@ -11,7 +11,7 @@ const logger = require(appRootDirectory + '/app/functions/bunyan');
 const micropubGetRoute = require(appRootDirectory + '/app/routes/get/micropub');
 const webmentionUpdateGetRoute = require(appRootDirectory + '/app/routes/get/webmention-update');
 const micropubPostRoute = require(appRootDirectory + '/app/routes/post/micropub');
-const webmentionPostRoute = require(appRootDirectory + '/app/routes/post/webmention');
+
 
 let rtg;
 let redisClient;
@@ -100,5 +100,5 @@ router.get('/', limitEndpoint, (req, res) => {
 //POST Routes
 // Build test micropub and add indieAuth as authentication function.
 router.post('/micropub', limitEndpoint, micropubPostRoute.micropubPost);
-//router.post('/webmention', limitEndpoint, webmentionUrlChecker, webmentionUrlValidation, webmentionPostRoute.webmentionPost);
+
 module.exports = router;
