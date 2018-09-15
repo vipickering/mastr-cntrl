@@ -9,7 +9,7 @@ const github = config.github;
 
 // We want to run the scheduler at 1am and GET all webmentions for the previous day.
 const yesterday  =  moment().subtract(1, 'days').format('YYYY-MM-DDTHH:mm:ss+01:00');
-const webmentionIO = 'https://webmention.io/api/mentions?domain=vincentp.me&since=since=' + yesterday + '&token=' + webmention.token;
+const webmentionIO = 'https://webmention.io/api/mentions?domain=vincentp.me&token=' + webmention.token + '&since=' + yesterday;
 
 exports.webmentionUpdateGet = function webmentionUpdateGet(req, res) {
     const messageContent = ':robot: Webmentions updated by Mastrl Cntrl';
