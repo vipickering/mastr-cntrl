@@ -9,11 +9,12 @@ const github = config.github;
 
 // We want to run the scheduler at 1am and GET all webmentions for the previous day.
 const yesterday  =  moment().subtract(1, 'days').format('YYYY-MM-DDTHH:mm:ss+01:00');
-const webmentionIO = 'https://webmention.io/api/mentions?domain=vincentp.me&token=' + webmention.token + '&since=' + yesterday;
+// const webmentionIO = 'https://webmention.io/api/mentions?domain=vincentp.me&token=' + webmention.token + '&since=' + yesterday;
+const webmentionIO = 'https://webmention.io/api/mentions?domain=vincentp.me&token=aSJ1xen947l7hz4e42KlYw';
 
 exports.webmentionUpdateGet = function webmentionUpdateGet(req, res) {
     const messageContent = ':robot: Webmentions updated by Mastrl Cntrl';
-    const postFileName = 'webmentions.json';
+    const postFileName = 'test.json';
     const postDestination = github.postUrl + '/contents/_data/' + postFileName;
     const apiOptions = {
         uri : postDestination,
@@ -61,6 +62,16 @@ exports.webmentionUpdateGet = function webmentionUpdateGet(req, res) {
         res.send('Accepted');
     }
 
+    //https://gist.github.com/dougalcampbell/2024272
+    function strencode( data ) {
+      return unescape( encodeURIComponent( JSON.stringify( data ) ) );
+    }
+
+    //https://gist.github.com/dougalcampbell/2024272
+    function strdecode( data ) {
+      return JSON.parse( decodeURIComponent( escape ( data ) ) );
+    }
+
     logger.info('Getting webmention ' + webmentionIO);
 
     fetch(webmentionIO)
@@ -73,13 +84,13 @@ exports.webmentionUpdateGet = function webmentionUpdateGet(req, res) {
             } else {
                 logger.info('Found Webmentions');
                 const webmentionsToAdd = json.links;
-                logger.info('webmentions to add ' + JSON.stringify(webmentionsToAdd));
+                logger.info('webmentions to add ' + strencode(webmentionsToAdd));
                 rp(apiOptions)
                     .then((repos) => {
                         currentWebmentions = base64.decode(repos.content);
 
-                        let currentWebmentionsParsed = JSON.parse(currentWebmentions);
-                        logger.info('Webmentions Parsed: ' +  JSON.stringify(currentWebmentionsParsed));
+                        let currentWebmentionsParsed = strdecode(currentWebmentions);
+                        logger.info('Webmentions Parsed: ' +  strencode(currentWebmentionsParsed));
 
                         // Loop through all the entries and push them in to the array.
                         let arrayLength = webmentionsToAdd.length;
@@ -87,10 +98,10 @@ exports.webmentionUpdateGet = function webmentionUpdateGet(req, res) {
                             currentWebmentionsParsed['links'].push(webmentionsToAdd[i]);
                         }
 
-                        logger.info('Combined Webmentions: ' + JSON.stringify(currentWebmentionsParsed));
+                        logger.info('Combined Webmentions: ' + strencode(currentWebmentionsParsed));
 
                         // Prepare the code to send to Github API
-                        payload = JSON.stringify(currentWebmentionsParsed);
+                        payload = strencode(currentWebmentionsParsed);
                         logger.info('payload combined');
 
                         //Base 64 Encode for Github API
