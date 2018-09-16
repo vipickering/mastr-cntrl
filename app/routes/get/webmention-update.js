@@ -61,32 +61,40 @@ exports.webmentionUpdateGet = function webmentionUpdateGet(req, res) {
         res.send('Accepted');
     }
 
-    logger.info(webmentionIO);
+    logger.info('Getting webmention ' + webmentionIO);
 
     fetch(webmentionIO)
         .then(res => res.json())
         .then(function(json) {
             if (isEmptyObject(json.links)) {
-                // There are no webmentions so quit.
+                logger.info('No Webmentions to fetch');
                 res.status(200);
                 res.send('Done');
             } else {
-                // There is at least one webmention
-                const webmentionsToAdd = json.links[0];
+                logger.info('Found Webmentions');
+                const webmentionsToAdd = json.links;
+                logger.info('webmentions to add ' + JSON.stringify(webmentionsToAdd));
                 rp(apiOptions)
                     .then((repos) => {
                         currentWebmentions = base64.decode(repos.content);
 
-                        let obj = JSON.parse(currentWebmentions);
-                        // logger.info(currentWebmentions);
-                        obj['links'].push(webmentionsToAdd);
-                        // logger.info(obj);
-                        payload = JSON.stringify(obj);
+                        let currentWebmentionsParsed = JSON.parse(currentWebmentions);
+                        logger.info('Webmentions Parsed: ' +  JSON.stringify(currentWebmentionsParsed));
 
+                        // Loop through all the entries and push them in to the array.
+                        let arrayLength = webmentionsToAdd.length;
+                        for (let i = 0; i < arrayLength; i++) {
+                            currentWebmentionsParsed['links'].push(webmentionsToAdd[i]);
+                        }
+
+                        logger.info('Combined Webmentions: ' + JSON.stringify(currentWebmentionsParsed));
+
+                        // Prepare the code to send to Github API
+                        payload = JSON.stringify(currentWebmentionsParsed);
                         logger.info('payload combined');
 
+                        //Base 64 Encode for Github API
                         encodedContent = base64.encode(payload);
-
                         logger.info('payload encoded');
 
                         options = {
@@ -116,6 +124,7 @@ exports.webmentionUpdateGet = function webmentionUpdateGet(req, res) {
                             .catch(handlePatchError);
                     })
                     .catch(handleGithubApiGet);
+                    logger.info('Webmentions complete');
             }
             return;
         });
