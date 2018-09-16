@@ -16,6 +16,11 @@ exports.note = function note(micropubContent) {
     let title = '';
     let syndication = '';
 
+    //https://gist.github.com/dougalcampbell/2024272
+    function strencode( data ) {
+      return unescape( encodeURIComponent( JSON.stringify( data ) ) );
+    }
+
     try {
         content = micropubContent.content;
     } catch (e) {
@@ -65,7 +70,7 @@ twitterCard: false
 ${content}
 `;
     logger.info('Note content created: ' + entry);
-    JSON.stringify(entry);
+    strencode(entry);
     const micropubContentFormatted = base64.encode(entry);
     return micropubContentFormatted;
 };

@@ -14,6 +14,11 @@ exports.instagram = function instagram(micropubContent) {
     let tagArray = '';
     let tags = '';
 
+    //https://gist.github.com/dougalcampbell/2024272
+    function strencode( data ) {
+      return unescape( encodeURIComponent( JSON.stringify( data ) ) );
+    }
+
     try {
         content = micropubContent.properties.content[0];
     } catch (e) {
@@ -60,7 +65,7 @@ twitterCard: false
 ${content}
 `;
     logger.info('Instragram content: ' + entry);
-    JSON.stringify(entry);
+    strencode.stringify(entry);
     const micropubContentFormatted = base64.encode(entry);
     return micropubContentFormatted;
 };

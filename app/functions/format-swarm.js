@@ -20,6 +20,11 @@ exports.checkIn = function checkIn(micropubContent) {
     let locality = '';
     let region = '';
 
+    //https://gist.github.com/dougalcampbell/2024272
+    function strencode( data ) {
+      return unescape( encodeURIComponent( JSON.stringify( data ) ) );
+    }
+
     try {
         content = micropubContent.properties.content[0];
     } catch (e) {
@@ -94,7 +99,7 @@ twitterCard: false
 ${content}
 `;
     logger.info('Swarm content: ' + entry);
-    JSON.stringify(entry);
+    strencode(entry);
     const micropubContentFormatted = base64.encode(entry);
     return micropubContentFormatted;
 };
