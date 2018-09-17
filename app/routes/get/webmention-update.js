@@ -89,7 +89,7 @@ exports.webmentionUpdateGet = function webmentionUpdateGet(req, res) {
                         currentWebmentions = base64.decode(repos.content);
 
                         let currentWebmentionsParsed = strdecode(currentWebmentions);
-                        logger.info('Webmentions Parsed: ' +  strencode(currentWebmentionsParsed));
+                        // logger.info('Webmentions Parsed: ' +  strencode(currentWebmentionsParsed));
 
                         // Loop through all the entries and push them in to the array.
                         let arrayLength = webmentionsToAdd.length;
@@ -97,7 +97,7 @@ exports.webmentionUpdateGet = function webmentionUpdateGet(req, res) {
                             currentWebmentionsParsed['links'].push(webmentionsToAdd[i]);
                         }
 
-                        logger.info('Combined Webmentions: ' + strencode(currentWebmentionsParsed));
+                        // logger.info('Combined Webmentions: ' + strencode(currentWebmentionsParsed));
 
                         // Prepare the code to send to Github API
                         payload = strencode(currentWebmentionsParsed);
