@@ -20,7 +20,7 @@ exports.note = function note(micropubContent) {
     // let replyName = uri.domain();
 
     //Debug
-    // logger.info('Note JSON: ' + JSON.stringify(micropubContent));
+    logger.info('Note JSON: ' + JSON.stringify(micropubContent));
 
     //https://gist.github.com/dougalcampbell/2024272
     function strencode( data ) {
@@ -40,7 +40,7 @@ exports.note = function note(micropubContent) {
     }
 
     try {
-        inReplyTo = micropubContent['in-reply-to'][0];
+        inReplyTo = micropubContent['in-reply-to'];
     } catch (e) {
         logger.info('Not reply type skipping');
     }
