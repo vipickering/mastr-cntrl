@@ -11,7 +11,7 @@ exports.note = function note(micropubContent) {
     let content = '';
     let inReplyTo = '';
     let location = '';
-    let photo = '';
+    // let photo = '';
     let tags = '';
     let tagArray = '';
     let title = '';
@@ -22,8 +22,8 @@ exports.note = function note(micropubContent) {
     // logger.info('Note JSON: ' + JSON.stringify(micropubContent));
 
     //https://gist.github.com/dougalcampbell/2024272
-    function strencode( data ) {
-      return unescape( encodeURIComponent( JSON.stringify( data ) ) );
+    function strencode(data) {
+        return unescape(encodeURIComponent(JSON.stringify(data)));
     }
 
     try {
@@ -46,10 +46,13 @@ exports.note = function note(micropubContent) {
 
     try {
         const uri = new URI(inReplyTo);
-        replyName = uri.domain();
+        if (typeof uri !== 'undefined') {
+            replyName = uri.domain();
+        }
         logger.info(replyName);
     } catch (e) {
-         logger.info('No reply name skipping');
+        logger.info(e);
+        logger.info('No reply name skipping');
     }
 
     try {
@@ -74,7 +77,7 @@ exports.note = function note(micropubContent) {
         logger.info('No Syndication skipping');
     }
 
-//Photo and location not being supported. I have no need for them.
+    //Photo and location not being supported. I have no need for them.
 
     const entry = `---
 layout: "${layout}"
@@ -86,6 +89,7 @@ meta: "${title}"
 category: "${category}"
 tags:  "${tags}"
 syndication:  "${syndication}"
+location: "${location}"
 twitterCard: false
 ---
 ${content}

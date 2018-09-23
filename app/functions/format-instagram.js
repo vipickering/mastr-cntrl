@@ -15,8 +15,8 @@ exports.instagram = function instagram(micropubContent) {
     let tags = '';
 
     //https://gist.github.com/dougalcampbell/2024272
-    function strencode( data ) {
-      return unescape( encodeURIComponent( JSON.stringify( data ) ) );
+    function strencode(data) {
+        return unescape(encodeURIComponent(JSON.stringify(data)));
     }
 
     try {

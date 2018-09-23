@@ -6,5 +6,4 @@ exports.doesExist = function doesExist(variable, value) {
     }
 };
 
-
 // This needs more thought to be implemented.

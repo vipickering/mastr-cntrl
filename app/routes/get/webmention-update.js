@@ -34,12 +34,14 @@ exports.webmentionUpdateGet = function webmentionUpdateGet(req, res) {
     }
 
     function isEmptyObject(obj) {
-      for (var key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key)) {
-          return false;
+        let key;
+
+        for (key in obj) {
+            if (Object.prototype.hasOwnProperty.call(obj, key)) {
+                return false;
+            }
         }
-      }
-      return true;
+        return true;
     }
 
     function handleGithubApiGet(err) {
@@ -62,20 +64,20 @@ exports.webmentionUpdateGet = function webmentionUpdateGet(req, res) {
     }
 
     //https://gist.github.com/dougalcampbell/2024272
-    function strencode( data ) {
-      return unescape( encodeURIComponent( JSON.stringify( data ) ) );
+    function strencode(data) {
+        return unescape(encodeURIComponent(JSON.stringify(data)));
     }
 
     //https://gist.github.com/dougalcampbell/2024272
-    function strdecode( data ) {
-      return JSON.parse( decodeURIComponent( escape ( data ) ) );
+    function strdecode(data) {
+        return JSON.parse(decodeURIComponent(escape(data)));
     }
 
     logger.info('Getting webmention ' + webmentionIO);
 
     fetch(webmentionIO)
-        .then(res => res.json())
-        .then(function(json) {
+        .then((res) => res.json())
+        .then(function fetchWebmentions(json) {
             if (isEmptyObject(json.links)) {
                 logger.info('No Webmentions to fetch');
                 res.status(200);
@@ -88,11 +90,11 @@ exports.webmentionUpdateGet = function webmentionUpdateGet(req, res) {
                     .then((repos) => {
                         currentWebmentions = base64.decode(repos.content);
 
-                        let currentWebmentionsParsed = strdecode(currentWebmentions);
+                        const currentWebmentionsParsed = strdecode(currentWebmentions);
                         // logger.info('Webmentions Parsed: ' +  strencode(currentWebmentionsParsed));
 
                         // Loop through all the entries and push them in to the array.
-                        let arrayLength = webmentionsToAdd.length;
+                        const arrayLength = webmentionsToAdd.length;
                         for (let i = 0; i < arrayLength; i++) {
                             currentWebmentionsParsed['links'].push(webmentionsToAdd[i]);
                         }
@@ -134,7 +136,7 @@ exports.webmentionUpdateGet = function webmentionUpdateGet(req, res) {
                             .catch(handlePatchError);
                     })
                     .catch(handleGithubApiGet);
-                    logger.info('Webmentions complete');
+                        logger.info('Webmentions complete');
             }
             return;
         });

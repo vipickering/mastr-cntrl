@@ -21,8 +21,8 @@ exports.checkIn = function checkIn(micropubContent) {
     let region = '';
 
     //https://gist.github.com/dougalcampbell/2024272
-    function strencode( data ) {
-      return unescape( encodeURIComponent( JSON.stringify( data ) ) );
+    function strencode(data) {
+        return unescape(encodeURIComponent(JSON.stringify(data)));
     }
 
     try {
