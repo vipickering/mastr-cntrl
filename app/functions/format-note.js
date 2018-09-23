@@ -30,18 +30,21 @@ exports.note = function note(micropubContent) {
         content = micropubContent.content;
     } catch (e) {
         logger.info('No content skipping');
+        content = '';
     }
 
     try {
         title = micropubContent.content.substring(0, 100);
     } catch (e) {
         logger.info('No title skipping');
+        title = '';
     }
 
     try {
         inReplyTo = micropubContent['in-reply-to'];
     } catch (e) {
         logger.info('Not reply type skipping');
+        inReplyTo = '';
     }
 
     try {
@@ -49,10 +52,10 @@ exports.note = function note(micropubContent) {
         if (typeof uri !== 'undefined') {
             replyName = uri.domain();
         }
-        logger.info(replyName);
     } catch (e) {
         logger.info(e);
         logger.info('No reply name skipping');
+         inReplyTo = '';
     }
 
     try {
@@ -63,18 +66,21 @@ exports.note = function note(micropubContent) {
         }
     } catch (e) {
         logger.info('No tags skipping');
+        tagArray = '';
     }
 
     try {
         location = micropubContent.location;
     } catch (e) {
         logger.info('No location skipping');
+        location = '';
     }
 
     try {
         syndication = micropubContent['mp-syndicate-to'][0];
     } catch (e) {
         logger.info('No Syndication skipping');
+        syndication = '';
     }
 
     //Photo and location not being supported. I have no need for them.
