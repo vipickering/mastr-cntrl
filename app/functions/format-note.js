@@ -17,7 +17,7 @@ exports.note = function note(micropubContent) {
     let tagArray = '';
     let title = '';
     let syndication = '';
-    let replyName = uri.domain();
+    // let replyName = uri.domain();
 
     //Debug
      logger.info('Note JSON: ' + micropubContent);
