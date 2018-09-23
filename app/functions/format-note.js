@@ -8,13 +8,17 @@ exports.note = function note(micropubContent) {
     const pubDate  = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss+01:00');
 
     let content = '';
-    let inReplyTo = '';
+    let inReplyTo = ''; //ADD HERE
     let location = '';
     let photo = '';
     let tags = '';
     let tagArray = '';
     let title = '';
     let syndication = '';
+
+    //Debug
+     logger.info(micropubContent);
+    logger.info(json.stringify(micropubContent));
 
     //https://gist.github.com/dougalcampbell/2024272
     function strencode( data ) {
@@ -31,6 +35,12 @@ exports.note = function note(micropubContent) {
         title = micropubContent.content.substring(0, 100);
     } catch (e) {
         logger.info('No title skipping');
+    }
+
+    try {
+        inReplyTo = micropubContent.inReplyTo;
+    } catch (e) {
+        logger.info('No reply link skipping');
     }
 
     try {
@@ -61,6 +71,7 @@ exports.note = function note(micropubContent) {
 layout: "${layout}"
 title: "${title}"
 date: "${pubDate}"
+replyUrl: "${inReplyTo}"
 meta: "${title}"
 category: "${category}"
 tags:  "${tags}"
