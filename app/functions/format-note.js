@@ -7,7 +7,6 @@ exports.note = function note(micropubContent) {
     const layout = 'notes';
     const category = 'Notes';
     const pubDate  = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss+01:00');
-    // const uri = new URI("http://www.example.org/foo/hello.html");
 
     let content = '';
     let inReplyTo = '';
@@ -17,7 +16,7 @@ exports.note = function note(micropubContent) {
     let tagArray = '';
     let title = '';
     let syndication = '';
-    // let replyName = uri.domain();
+    let replyName = '';
 
     //Debug
     logger.info('Note JSON: ' + JSON.stringify(micropubContent));
@@ -41,6 +40,8 @@ exports.note = function note(micropubContent) {
 
     try {
         inReplyTo = micropubContent['in-reply-to'];
+        const uri = new URI(inReplyTo);
+        replyName = uri.domain();
     } catch (e) {
         logger.info('Not reply type skipping');
     }
@@ -69,13 +70,12 @@ exports.note = function note(micropubContent) {
 
 //Photo and location not being supported. I have no need for them.
 
-// replyName: "${replyName}"
-
     const entry = `---
 layout: "${layout}"
 title: "${title}"
 date: "${pubDate}"
 replyUrl: "${inReplyTo}"
+replyName: "${replyName}'s"
 meta: "${title}"
 category: "${category}"
 tags:  "${tags}"
