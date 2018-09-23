@@ -68,7 +68,7 @@ exports.micropubPost = function micropubPost(req, res) {
                 responseLocation = 'https://vincentp.me/checkins/' + responseDate + '/' + responseLocationTime + '/';
                 logger.info('response location ' + responseLocation);
                 break;
-            case 'https://ownyourgram.com':
+            case 'https://ownyourgram.com/':
                 logger.info('Creating Instagram note');
                 payload = formatInstagram.instagram(micropubContent);
                 messageContent = ':robot: Instagram photo submitted by Mastrl Cntrl';
