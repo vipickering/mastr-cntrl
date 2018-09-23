@@ -20,7 +20,7 @@ exports.note = function note(micropubContent) {
     // let replyName = uri.domain();
 
     //Debug
-     logger.info('Note JSON: ' + JSON.parse(micropubContent));
+     logger.info('Note JSON: ' + JSON.stringify(micropubContent));
 
     //https://gist.github.com/dougalcampbell/2024272
     function strencode( data ) {
