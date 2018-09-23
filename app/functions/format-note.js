@@ -40,10 +40,16 @@ exports.note = function note(micropubContent) {
 
     try {
         inReplyTo = micropubContent['in-reply-to'];
-        const uri = new URI(inReplyTo);
-        replyName = uri.domain();
     } catch (e) {
         logger.info('Not reply type skipping');
+    }
+
+    try {
+        const uri = new URI(inReplyTo);
+        replyName = uri.domain();
+        logger.info(replyName);
+    } catch (e) {
+         logger.info('No reply name skipping');
     }
 
     try {
