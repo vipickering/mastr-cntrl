@@ -37,11 +37,11 @@ exports.note = function note(micropubContent) {
         logger.info('No title skipping');
     }
 
-    try {
-        inReplyTo = micropubContent.inReplyTo;
-    } catch (e) {
-        logger.info('No reply link skipping');
-    }
+    // try {
+    //     inReplyTo = micropubContent.inReplyTo;
+    // } catch (e) {
+    //     logger.info('No reply link skipping');
+    // }
 
     try {
         tagArray = micropubContent.category;
@@ -66,12 +66,12 @@ exports.note = function note(micropubContent) {
     }
 
 //Photo and location not being supported. I have no need for them.
+//replyUrl: "${inReplyTo}"
 
     const entry = `---
 layout: "${layout}"
 title: "${title}"
 date: "${pubDate}"
-replyUrl: "${inReplyTo}"
 meta: "${title}"
 category: "${category}"
 tags:  "${tags}"
