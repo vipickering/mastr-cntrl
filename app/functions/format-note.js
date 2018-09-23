@@ -20,7 +20,7 @@ exports.note = function note(micropubContent) {
     // let replyName = uri.domain();
 
     //Debug
-     logger.info('Note JSON: ' + JSON.stringify(micropubContent));
+    // logger.info('Note JSON: ' + JSON.stringify(micropubContent));
 
     //https://gist.github.com/dougalcampbell/2024272
     function strencode( data ) {
@@ -39,11 +39,11 @@ exports.note = function note(micropubContent) {
         logger.info('No title skipping');
     }
 
-    // try {
-    //     inReplyTo = micropubContent.inReplyTo;
-    // } catch (e) {
-    //     logger.info('No reply link skipping');
-    // }
+    try {
+        inReplyTo = micropubContent['in-reply-to'][0];
+    } catch (e) {
+        logger.info('Not reply type skipping');
+    }
 
     try {
         tagArray = micropubContent.category;
@@ -68,13 +68,14 @@ exports.note = function note(micropubContent) {
     }
 
 //Photo and location not being supported. I have no need for them.
-//replyUrl: "${inReplyTo}"
+
 // replyName: "${replyName}"
 
     const entry = `---
 layout: "${layout}"
 title: "${title}"
 date: "${pubDate}"
+replyUrl: "${inReplyTo}"
 meta: "${title}"
 category: "${category}"
 tags:  "${tags}"
