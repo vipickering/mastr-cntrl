@@ -1,23 +1,26 @@
 const base64 = require('base64it');
 const logger = require(appRootDirectory + '/app/functions/bunyan');
 const moment = require('moment');
+const URI = require('urijs');
 
 exports.note = function note(micropubContent) {
     const layout = 'notes';
     const category = 'Notes';
     const pubDate  = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss+01:00');
+    // const uri = new URI("http://www.example.org/foo/hello.html");
 
     let content = '';
-    let inReplyTo = ''; //ADD HERE
+    let inReplyTo = '';
     let location = '';
     let photo = '';
     let tags = '';
     let tagArray = '';
     let title = '';
     let syndication = '';
+    let replyName = uri.domain();
 
     //Debug
-     logger.info(micropubContent);
+     logger.info('Note JSON: ' + micropubContent);
 
     //https://gist.github.com/dougalcampbell/2024272
     function strencode( data ) {
@@ -36,11 +39,11 @@ exports.note = function note(micropubContent) {
         logger.info('No title skipping');
     }
 
-    try {
-        inReplyTo = micropubContent.inReplyTo;
-    } catch (e) {
-        logger.info('No reply link skipping');
-    }
+    // try {
+    //     inReplyTo = micropubContent.inReplyTo;
+    // } catch (e) {
+    //     logger.info('No reply link skipping');
+    // }
 
     try {
         tagArray = micropubContent.category;
@@ -65,11 +68,12 @@ exports.note = function note(micropubContent) {
     }
 
 //Photo and location not being supported. I have no need for them.
+//replyUrl: "${inReplyTo}"
+// replyName: "${replyName}"
 
     const entry = `---
 layout: "${layout}"
 title: "${title}"
-replyUrl: "${inReplyTo}"
 date: "${pubDate}"
 meta: "${title}"
 category: "${category}"

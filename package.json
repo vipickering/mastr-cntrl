@@ -44,6 +44,7 @@
     "request": "^2.88.0",
     "request-promise": "^4.2.2",
     "serve-favicon": "^2.5.0",
+    "urijs": "^1.19.1",
     "valid-url": "^1.0.9"
   }
 }
