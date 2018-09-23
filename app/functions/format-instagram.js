@@ -65,7 +65,7 @@ twitterCard: false
 ${content}
 `;
     logger.info('Instragram content: ' + entry);
-    strencode.stringify(entry);
+    strencode(entry);
     const micropubContentFormatted = base64.encode(entry);
     return micropubContentFormatted;
 };
