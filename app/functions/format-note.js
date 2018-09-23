@@ -29,6 +29,7 @@ exports.note = function note(micropubContent) {
     try {
         content = micropubContent.content;
     } catch (e) {
+        logger.info(e);
         logger.info('No content skipping');
         content = '';
     }
@@ -36,6 +37,7 @@ exports.note = function note(micropubContent) {
     try {
         title = micropubContent.content.substring(0, 100);
     } catch (e) {
+        logger.info(e);
         logger.info('No title skipping');
         title = '';
     }
@@ -43,6 +45,7 @@ exports.note = function note(micropubContent) {
     try {
         inReplyTo = micropubContent['in-reply-to'];
     } catch (e) {
+        logger.info(e);
         logger.info('Not reply type skipping');
         inReplyTo = '';
     }
@@ -65,13 +68,19 @@ exports.note = function note(micropubContent) {
             tags += ' ';
         }
     } catch (e) {
+        logger.info(e);
         logger.info('No tags skipping');
         tagArray = '';
     }
 
     try {
         location = micropubContent.location;
+         if (typeof location === 'undefined') {
+            logger.info('No location provided');
+            location ='';
+        }
     } catch (e) {
+        logger.info(e);
         logger.info('No location skipping');
         location = '';
     }
@@ -79,6 +88,7 @@ exports.note = function note(micropubContent) {
     try {
         syndication = micropubContent['mp-syndicate-to'][0];
     } catch (e) {
+        logger.info(e);
         logger.info('No Syndication skipping');
         syndication = '';
     }

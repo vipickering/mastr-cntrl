@@ -22,21 +22,25 @@ exports.instagram = function instagram(micropubContent) {
     try {
         content = micropubContent.properties.content[0];
     } catch (e) {
+        logger.info(e);
         logger.info('No content skipping..');
     }
     try {
         photo = micropubContent.properties.photo[0];
     } catch (e) {
+        logger.info(e);
         logger.info('No photo skipping..');
     }
     try {
         addrLat = micropubContent.properties.location[0].properties.latitude[0];
     } catch (e) {
+        logger.info(e);
         logger.info('No lattitude link skipping..');
     }
     try {
         addrLong = micropubContent.properties.location[0].properties.longitude[0];
     } catch (e) {
+        logger.info(e);
         logger.info('No longitude link skipping..');
     }
     try {
@@ -46,6 +50,7 @@ exports.instagram = function instagram(micropubContent) {
             tags += ' ';
         }
     } catch (e) {
+        logger.info(e);
         logger.info('No tags skipping');
     }
 
