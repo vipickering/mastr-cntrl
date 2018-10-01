@@ -110,7 +110,7 @@ exports.note = function note(micropubContent) {
         syndication = '';
         syndicationFlag = false;
     }
-logger.info('Note content created: ' + entry);
+
 let entry = `---
 layout: "${layout}"
 date: "${pubDate}"
