@@ -34,7 +34,7 @@ Currently webmentions are updated from [Webmention.io](https://webmention.io) on
 - [PESOS](https://indieweb.org/PESOS) 3rd party content posted on [Instagram](https://www.instagram.com) and [Swarm](https://www.swarmapp.com) is currently aggregated back to the blog via [https://ownyourgram.com](https://ownyourgram.com) and [https://ownyourswarm.p3k.io](https://ownyourswarm.p3k.io) respectively.
 - [PESOS](https://indieweb.org/PESOS) Notes created on [Quill](https://quill.p3k.io) are supported.
 - [Webmention](https://indieweb.org/webmention) Webmentions via Twitter and Medium are supported via [Brid.gy](https://brid.gy) and [Webmention.io](https://webmention.io).
-- Syndication Endpoint - Mastr Cntrl will supply a list of 3rd party site accounts to syndicated towards. But currently will not action them
+- Syndication Endpoint - Mastr Cntrl will supply a list of 3rd party social accounts to be syndicated. But will not currently action them.
 - [Webmention](https://indieweb.org/webmention) Like/Favourite is  supported and appear underneath posts.
 - Collecting [Webmention](https://indieweb.org/webmention) via (webmention.io) then saved to local JSON file.
 
