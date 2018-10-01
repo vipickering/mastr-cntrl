@@ -33,7 +33,7 @@ Currently webmentions are updated from [Webmention.io](https://webmention.io) on
 
 - [PESOS](https://indieweb.org/PESOS) 3rd party content posted on [Instagram](https://www.instagram.com) and [Swarm](https://www.swarmapp.com) is currently aggregated back to the blog via [https://ownyourgram.com](https://ownyourgram.com) and [https://ownyourswarm.p3k.io](https://ownyourswarm.p3k.io) respectively.
 - [PESOS](https://indieweb.org/PESOS) Notes created on [Quill](https://quill.p3k.io) are supported.
-- [Webmention](https://indieweb.org/webmention) Webmentions via Twitter and Medium are supported via [Brid.gy](https://brid.gy) and [Webmention.io](https://webmention.io). (Webmention.io will be deprecated once Mastrl Cntrl accepts Webmentions)
+- [Webmention](https://indieweb.org/webmention) Webmentions via Twitter and Medium are supported via [Brid.gy](https://brid.gy) and [Webmention.io](https://webmention.io).
 - Syndication Endpoint - Mastr Cntrl will supply a list of 3rd party site accounts to syndicated towards. But currently will not action them
 - [Webmention](https://indieweb.org/webmention) Like/Favourite is  supported and appear underneath posts.
 - Collecting [Webmention](https://indieweb.org/webmention) via (webmention.io) then saved to local JSON file.
@@ -46,6 +46,7 @@ Currently webmentions are updated from [Webmention.io](https://webmention.io) on
 - Media Endpoint - Mastrl Cntrl doesn't upload media from external sources yet.
 - Bookmarking In theory it is supported. But in practice nothing is being done on this yet.
 - Scheduled/Automated updating of webmentions (see above).
+- Accepting Webmentions.
 
 ## License
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fvipickering%2Fmastr-cntrl.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fvipickering%2Fmastr-cntrl?ref=badge_large)
