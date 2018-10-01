@@ -24,10 +24,10 @@ exports.note = function note(micropubContent) {
     // Could we litterally loop through and say if X = true Append, otherwise nothing?
     // E.g. var str = 'blah blah blah'; str += ' blah';
 
-    let replyFlag = true;
-    let tagFlag = true;
-    let locationFlag = true;
-    let syndicationFlag = true;
+    // let replyFlag = true;
+    // let tagFlag = true;
+    // let locationFlag = true;
+    // let syndicationFlag = true;
 
     //Debug
     logger.info('Note JSON: ' + JSON.stringify(micropubContent));
@@ -59,7 +59,7 @@ exports.note = function note(micropubContent) {
         logger.info(e);
         logger.info('Not reply type skipping');
         replyTo = '';
-        replyFlag = false;
+        // replyFlag = false;
     }
 
     try {
@@ -71,7 +71,7 @@ exports.note = function note(micropubContent) {
         logger.info(e);
         logger.info('No reply name skipping');
         replyTo = '';
-        replyFlag = false;
+        // replyFlag = false;
     }
 
     try {
@@ -84,7 +84,7 @@ exports.note = function note(micropubContent) {
         logger.info(e);
         logger.info('No tags skipping');
         tagArray = '';
-        tagFlag = false;
+        // tagFlag = false;
     }
 
     try {
@@ -97,7 +97,7 @@ exports.note = function note(micropubContent) {
         logger.info(e);
         logger.info('No location skipping');
         location = '';
-        locationFlag = false;
+        // locationFlag = false;
     }
 
     try {
@@ -106,41 +106,41 @@ exports.note = function note(micropubContent) {
         logger.info(e);
         logger.info('No Syndication skipping');
         syndication = '';
-        syndicationFlag = false;
+        // syndicationFlag = false;
     }
 
-let entry = `---
-layout: "${layout}"
-title: "${title}"
-date: "${pubDate}"
-meta: "${title}"
-category: "${category}"
-twitterCard: false
-${entryMeta}
----
-${content}
-`;
-
-if (replyFlag === true){ logger.info('reply logged'); entryMeta += 'replyUrl: "${replyTo}" replyName: "${replyName}"'}
-if (tagFlag === true){  logger.info('tags logged');  entryMeta += 'tags:  "${tags}"' }
-if (locationFlag === true){ entryMeta += 'location: "${location}"'}
-if (syndicationFlag === true){ entryMeta += 'syndication:  "${syndication}"'}
-
-//     let entry = `---
+// let entry = `---
 // layout: "${layout}"
 // title: "${title}"
 // date: "${pubDate}"
-// replyUrl: "${replyTo}"
-// replyName: "${replyName}"
 // meta: "${title}"
 // category: "${category}"
-// tags:  "${tags}"
-// syndication:  "${syndication}"
-// location: "${location}"
 // twitterCard: false
+// ${entryMeta}
 // ---
 // ${content}
 // `;
+
+// if (replyFlag === true){ logger.info('reply logged'); entryMeta += 'replyUrl: "${replyTo}" replyName: "${replyName}"'}
+// if (tagFlag === true){  logger.info('tags logged');  entryMeta += 'tags:  "${tags}"' }
+// if (locationFlag === true){ entryMeta += 'location: "${location}"'}
+// if (syndicationFlag === true){ entryMeta += 'syndication:  "${syndication}"'}
+
+    let entry = `---
+layout: "${layout}"
+title: "${title}"
+date: "${pubDate}"
+replyUrl: "${replyTo}"
+replyName: "${replyName}"
+meta: "${title}"
+category: "${category}"
+tags:  "${tags}"
+syndication:  "${syndication}"
+location: "${location}"
+twitterCard: false
+---
+${content}
+`;
 
     logger.info('Note content finished: ' + entry);
     strencode(entry);
