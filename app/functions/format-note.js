@@ -24,11 +24,11 @@ exports.note = function note(micropubContent) {
     // Could we litterally loop through and say if X = true Append, otherwise nothing?
     // E.g. var str = 'blah blah blah'; str += ' blah';
 
-    let titleFlag = true;
-    let replyFlag = true;
-    let tagFlag = true;
+    let titleFlag == true;
+    let replyFlag == true;
+    let tagFlag == true;
     let locationFlag = true;
-    let syndicationFlag = true;
+    let syndicationFlag == true;
 
     //Debug
     logger.info('Note JSON: ' + JSON.stringify(micropubContent));
