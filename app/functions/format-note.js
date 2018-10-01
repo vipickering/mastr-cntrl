@@ -19,16 +19,6 @@ exports.note = function note(micropubContent) {
     let replyName = '';
     let entryMeta= '';
 
-    // Create content flags. Assume we have all content supplied. If we don't have it, omit it.
-    // If we go this route we need to work out how to output the whole content.
-    // Could we litterally loop through and say if X = true Append, otherwise nothing?
-    // E.g. var str = 'blah blah blah'; str += ' blah';
-
-    // let replyFlag = true;
-    // let tagFlag = true;
-    // let locationFlag = true;
-    // let syndicationFlag = true;
-
     //Debug
     logger.info('Note JSON: ' + JSON.stringify(micropubContent));
 
@@ -59,7 +49,6 @@ exports.note = function note(micropubContent) {
         logger.info(e);
         logger.info('Not reply type skipping');
         replyTo = '';
-        // replyFlag = false;
     }
 
     try {
@@ -71,7 +60,6 @@ exports.note = function note(micropubContent) {
         logger.info(e);
         logger.info('No reply name skipping');
         replyTo = '';
-        // replyFlag = false;
     }
 
     try {
@@ -84,7 +72,6 @@ exports.note = function note(micropubContent) {
         logger.info(e);
         logger.info('No tags skipping');
         tagArray = '';
-        // tagFlag = false;
     }
 
     try {
@@ -97,7 +84,6 @@ exports.note = function note(micropubContent) {
         logger.info(e);
         logger.info('No location skipping');
         location = '';
-        // locationFlag = false;
     }
 
     try {
@@ -106,25 +92,7 @@ exports.note = function note(micropubContent) {
         logger.info(e);
         logger.info('No Syndication skipping');
         syndication = '';
-        // syndicationFlag = false;
     }
-
-// let entry = `---
-// layout: "${layout}"
-// title: "${title}"
-// date: "${pubDate}"
-// meta: "${title}"
-// category: "${category}"
-// twitterCard: false
-// ${entryMeta}
-// ---
-// ${content}
-// `;
-
-// if (replyFlag === true){ logger.info('reply logged'); entryMeta += 'replyUrl: "${replyTo}" replyName: "${replyName}"'}
-// if (tagFlag === true){  logger.info('tags logged');  entryMeta += 'tags:  "${tags}"' }
-// if (locationFlag === true){ entryMeta += 'location: "${location}"'}
-// if (syndicationFlag === true){ entryMeta += 'syndication:  "${syndication}"'}
 
     let entry = `---
 layout: "${layout}"
@@ -135,7 +103,7 @@ replyName: "${replyName}"
 meta: "${title}"
 category: "${category}"
 tags:  "${tags}"
-syndication:  "${syndication}"
+syndication: "${syndication}"
 location: "${location}"
 twitterCard: false
 ---
