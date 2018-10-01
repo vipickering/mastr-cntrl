@@ -20,6 +20,9 @@ exports.checkIn = function checkIn(micropubContent) {
     let locality = '';
     let region = '';
 
+    //Debug
+    // logger.info('Note JSON: ' + JSON.stringify(micropubContent));
+
     //https://gist.github.com/dougalcampbell/2024272
     function strencode(data) {
         return unescape(encodeURIComponent(JSON.stringify(data)));

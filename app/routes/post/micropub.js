@@ -85,6 +85,24 @@ exports.micropubPost = function micropubPost(req, res) {
                 logger.info('response location ' + responseLocation);
             }
 
+            // Needs to be here somewhere
+//  const webmention = require('send-webmention');
+// const concat = require('concat-stream');
+
+//Send webmention here. It's not a nice place to put it, but it will work for now.
+            // webmention('https://example.com/index.html', 'https://example.org/a_post', function(err, obj) {
+            //     if (err) throw err;
+
+            //     if (obj.success) {
+            //         obj.res.pipe(function(buf) {
+            //             logger.info('Success! Got back response:' +  buf.toString());
+            //         });
+            //     } else {
+            //         logger.info('Failure');
+            //     }
+            // });
+
+
             postDestination = github.postUrl + '/contents/_posts/' + postFileName;
 
             logger.info('Destination: ' + postDestination);

@@ -30,7 +30,7 @@ const limitEndpoint = limitMiddleware.middleware((req, res, next) => {
     res.status(429).json({message : 'rate limit exceeded'});
 });
 
-// Get Routes
+// GET Routes
 router.get('/micropub', limitEndpoint, micropubGetRoute.micropubGet);
 router.get('/webmention-update', limitEndpoint, webmentionUpdateGetRoute.webmentionUpdateGet);
 router.get('/', limitEndpoint, (req, res) => {

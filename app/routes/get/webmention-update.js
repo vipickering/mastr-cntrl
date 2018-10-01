@@ -119,7 +119,7 @@ exports.webmentionUpdateGet = function webmentionUpdateGet(req, res) {
                             },
                             body : {
                                 path : postFileName,
-                                branch : 'master',
+                                branch : github.branch,
                                 message : messageContent,
                                 sha : repos.sha,
                                 committer : {
