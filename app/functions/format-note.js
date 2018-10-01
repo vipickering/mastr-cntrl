@@ -24,7 +24,6 @@ exports.note = function note(micropubContent) {
     // Could we litterally loop through and say if X = true Append, otherwise nothing?
     // E.g. var str = 'blah blah blah'; str += ' blah';
 
-    let titleFlag = true;
     let replyFlag = true;
     let tagFlag = true;
     let locationFlag = true;
@@ -52,7 +51,6 @@ exports.note = function note(micropubContent) {
         logger.info(e);
         logger.info('No title skipping');
         title = '';
-        titleFlag = false;
     }
 
     try {
@@ -113,6 +111,7 @@ exports.note = function note(micropubContent) {
 
 let entry = `---
 layout: "${layout}"
+title: "${title}"
 date: "${pubDate}"
 meta: "${title}"
 category: "${category}"
@@ -122,9 +121,8 @@ ${entryMeta}
 ${content}
 `;
 
-if (titleFlag === true){ entryMeta += 'title: "${title}"'}
-if (replyFlag === true){ entryMeta += 'replyUrl: "${replyTo}" replyName: "${replyName}"'}
-if (tagFlag === true){ entryMeta += 'tags:  "${tags}"' }
+if (replyFlag === true){ logger.info('reply logged'); entryMeta += 'replyUrl: "${replyTo}" replyName: "${replyName}"'}
+if (tagFlag === true){  logger.info('tags logged');  entryMeta += 'tags:  "${tags}"' }
 if (locationFlag === true){ entryMeta += 'location: "${location}"'}
 if (syndicationFlag === true){ entryMeta += 'syndication:  "${syndication}"'}
 
