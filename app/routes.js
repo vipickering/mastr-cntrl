@@ -7,8 +7,9 @@ const redis = require('redis');
 
 const micropubGetRoute = require(appRootDirectory + '/app/routes/get/micropub');
 const webmentionUpdateGetRoute = require(appRootDirectory + '/app/routes/get/webmention-update');
+const webmentionSendGetRoute = require(appRootDirectory + '/app/routes/get/webmention-send');
 const micropubPostRoute = require(appRootDirectory + '/app/routes/post/micropub');
-
+const webmentionPostRoute = require(appRootDirectory + '/app/routes/post/webmention');
 let rtg;
 let redisClient;
 let redisClientOptions;
@@ -33,11 +34,12 @@ const limitEndpoint = limitMiddleware.middleware((req, res, next) => {
 // GET Routes
 router.get('/micropub', limitEndpoint, micropubGetRoute.micropubGet);
 router.get('/webmention-update', limitEndpoint, webmentionUpdateGetRoute.webmentionUpdateGet);
+// router.get('/webmention-send', limitEndpoint, webmentionSendGetRoute.webmentionSend);
 router.get('/', limitEndpoint, (req, res) => {
     res.json(serviceProfile);
 });
 
 //POST Routes
 router.post('/micropub', limitEndpoint, micropubPostRoute.micropubPost);
-
+router.post('/webmention', limitEndpoint, webmentionPostRoute.webmentionPost);
 module.exports = router;
