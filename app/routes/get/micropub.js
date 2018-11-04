@@ -33,7 +33,7 @@ exports.micropubGet = function micropubGet(req, res) {
                 logger.info('No Service Declared');
             }
 
-            if ((req.query.q === 'syndicate-to') && (serviceIdentifier === 'https://quill.p3k.io/')) {
+            if (req.query.q === 'syndicate-to') {
                 res.json(syndicateOptions);
             } else {
                 res.json({});
