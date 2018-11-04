@@ -8,7 +8,7 @@ const webhookKey = config.webmention.webhook;
 
 exports.webmentionPost = function webmentionPost(req, res) {
     const messageContent = ':robot: Webmentions updated by Mastrl Cntrl';
-    const postFileName = 'webmentions_test.json';
+    const postFileName = 'webmentions.json';
     const postDestination = github.postUrl + '/contents/_data/' + postFileName;
     const apiOptions = {
         uri : postDestination,
@@ -113,7 +113,7 @@ logger.info(req.body);
                     },
                     json : true
                 };
-
+                // Push file in to Github API.
                 rp(options)
                 .then(functionFinish)
                 .catch(handlePatchError);

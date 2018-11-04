@@ -33,13 +33,13 @@ const limitEndpoint = limitMiddleware.middleware((req, res, next) => {
 
 // GET Routes
 router.get('/micropub', limitEndpoint, micropubGetRoute.micropubGet);
-router.get('/webmention-update', limitEndpoint, webmentionUpdateGetRoute.webmentionUpdateGet);
+// router.get('/webmention-update', limitEndpoint, webmentionUpdateGetRoute.webmentionUpdateGet); // This will be deprecated soon.
 // router.get('/webmention-send', limitEndpoint, webmentionSendGetRoute.webmentionSend);
 router.get('/', limitEndpoint, (req, res) => {
     res.json(serviceProfile);
 });
 
 //POST Routes
-router.post('/micropub', limitEndpoint, micropubPostRoute.micropubPost);
-router.post('/webmention', limitEndpoint, webmentionPostRoute.webmentionPost);
+router.post('/micropub', limitEndpoint, micropubPostRoute.micropubPost); // For sending content in to the website via PESOS
+router.post('/webmention', limitEndpoint, webmentionPostRoute.webmentionPost); // For sending webmentions in to the website.
 module.exports = router;
