@@ -1,3 +1,6 @@
+/*
+// DEPRECATED DO NOT USE.
+*/
 const fetch = require('node-fetch');
 const rp = require('request-promise');
 const base64 = require('base64it');

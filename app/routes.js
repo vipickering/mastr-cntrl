@@ -6,11 +6,10 @@ const ExpressMiddleware = require('ratelimit.js').ExpressMiddleware;
 const redis = require('redis');
 
 const micropubGetRoute = require(appRootDirectory + '/app/routes/get/micropub');
-const webmentionUpdateGetRoute = require(appRootDirectory + '/app/routes/get/webmention-update');
 const webmentionSendGetRoute = require(appRootDirectory + '/app/routes/get/webmention-send');
 const micropubPostRoute = require(appRootDirectory + '/app/routes/post/micropub');
 const webmentionPostRoute = require(appRootDirectory + '/app/routes/post/webmention');
-const mediaPostRoute = require(appRootDirectory + '/app/routes/post/media');
+// const mediaPostRoute = require(appRootDirectory + '/app/routes/post/media');
 let rtg;
 let redisClient;
 let redisClientOptions;
