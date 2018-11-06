@@ -39,7 +39,7 @@ exports.note = function note(micropubContent) {
     } catch (e) {
         logger.info(e);
         logger.info('No title skipping');
-        title = '';
+        title = 'Note for ' + pubDate;
     }
 
     try {
@@ -70,7 +70,7 @@ exports.note = function note(micropubContent) {
     } catch (e) {
         logger.info(e);
         logger.info('No tags skipping');
-        tagArray = '';
+        tagArray = 'miscellaneous';
     }
 
     try {
