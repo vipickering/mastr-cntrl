@@ -23,8 +23,12 @@ exports.note = function note(micropubContent) {
     logger.info('Note JSON: ' + JSON.stringify(micropubContent));
 
     //https://gist.github.com/dougalcampbell/2024272
-    function strencode(data) {
-        return unescape(encodeURIComponent(JSON.stringify(data)));
+    // function strencode(data) {
+    //     return unescape(encodeURIComponent(JSON.stringify(data)));
+    // }
+
+    function strencode (data) {
+        return encodeURIComponent(JSON.stringify(data)).replace(/[!'()*]/g, escape);
     }
 
     try {
