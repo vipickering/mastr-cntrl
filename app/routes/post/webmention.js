@@ -61,16 +61,20 @@ exports.webmentionPost = function webmentionPost(req, res) {
     }
 
     //https://gist.github.com/dougalcampbell/2024272
-    function strencode(data) {
-        return unescape(encodeURIComponent(JSON.stringify(data)));
+    function strencode (data) {
+        return encodeURIComponent(JSON.stringify(data)).replace(/[!'()*]/g, escape);
     }
 
     //https://gist.github.com/dougalcampbell/2024272
-    function strdecode(data) {
-        return JSON.parse(decodeURIComponent(escape(data)));
+    // function strdecode(data) {
+    //     return JSON.parse(decodeURIComponent(escape(data)));
+    // }
+
+    function strdecode (data) {
+        return JSON.parse(decodeURIComponent(escape(data))).replace(/[!'()*]/g, escape);
     }
 
-logger.info(req.body);
+    logger.info(req.body);
 
     if (req.body.secret ===  webhookKey) {
         logger.info('Webmentions recieved');

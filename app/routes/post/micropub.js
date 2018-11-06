@@ -1,9 +1,7 @@
 const fetch = require('node-fetch');
 const moment = require('moment');
 const bodyParser = require('body-parser');
-const multer = require('multer');
 const request = require('request');
-const upload = multer();
 const config = require(appRootDirectory + '/app/config.js');
 const github = config.github;
 let serviceIdentifier = '';

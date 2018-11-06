@@ -1,6 +1,7 @@
 const fetch = require('node-fetch');
 const logger = require(appRootDirectory + '/app/functions/bunyan');
 const syndicateOptions = require(appRootDirectory + '/app/data/syndication.json');
+const configOptions = require(appRootDirectory + '/app/data/micropub-config.json');
 let serviceIdentifier = '';
 
 exports.micropubGet = function micropubGet(req, res) {
@@ -35,6 +36,8 @@ exports.micropubGet = function micropubGet(req, res) {
 
             if (req.query.q === 'syndicate-to') {
                 res.json(syndicateOptions);
+            } else if (req.query.q === 'config') {
+                res.json(configOptions);
             } else {
                 res.json({});
             }

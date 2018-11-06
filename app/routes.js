@@ -10,6 +10,7 @@ const webmentionUpdateGetRoute = require(appRootDirectory + '/app/routes/get/web
 const webmentionSendGetRoute = require(appRootDirectory + '/app/routes/get/webmention-send');
 const micropubPostRoute = require(appRootDirectory + '/app/routes/post/micropub');
 const webmentionPostRoute = require(appRootDirectory + '/app/routes/post/webmention');
+const mediaPostRoute = require(appRootDirectory + '/app/routes/post/media');
 let rtg;
 let redisClient;
 let redisClientOptions;
@@ -32,14 +33,14 @@ const limitEndpoint = limitMiddleware.middleware((req, res, next) => {
 });
 
 // GET Routes
-router.get('/micropub', limitEndpoint, micropubGetRoute.micropubGet);
-// router.get('/webmention-update', limitEndpoint, webmentionUpdateGetRoute.webmentionUpdateGet); // This will be deprecated soon.
+router.get('/micropub', limitEndpoint, micropubGetRoute.micropubGet); //This is called before posting to the micropub route. It provides authentication and routing to syndication and media also.
 // router.get('/webmention-send', limitEndpoint, webmentionSendGetRoute.webmentionSend);
 router.get('/', limitEndpoint, (req, res) => {
     res.json(serviceProfile);
 });
 
 //POST Routes
-router.post('/micropub', limitEndpoint, micropubPostRoute.micropubPost); // For sending content in to the website via PESOS
-router.post('/webmention', limitEndpoint, webmentionPostRoute.webmentionPost); // For sending webmentions in to the website.
+router.post('/micropub', limitEndpoint, micropubPostRoute.micropubPost); // For recieving content in to the website via PESOS
+router.post('/webmention', limitEndpoint, webmentionPostRoute.webmentionPost); // For recieving webmentions in to the website.
+// router.post('/media', limitEndpoint, mediaPostRoute.mediaPost); // For uploading media
 module.exports = router;
