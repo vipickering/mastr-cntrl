@@ -56,7 +56,6 @@ exports.micropubPost = function micropubPost(req, res) {
             serviceIdentifier = json.client_id;
             logger.info('Service Is: ' + serviceIdentifier);
 
-            if (micropubContent.content) {
                 // Format Note based on service sending. Or use standard Note format.
                 switch (serviceIdentifier) {
                 case 'https://ownyourswarm.p3k.io':
@@ -125,10 +124,6 @@ exports.micropubPost = function micropubPost(req, res) {
                         res.end('Thanks');
                     }
                 });
-            } else {
-                 res.status(400);
-                 res.send('content is empty');
-            }
         })
         .catch((err) => logger.error(err));
 };

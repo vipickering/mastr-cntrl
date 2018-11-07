@@ -32,6 +32,8 @@ exports.note = function note(micropubContent) {
         logger.info(e);
         logger.info('No content skipping');
         content = '';
+        res.status(400);
+        res.send('content is empty');
     }
 
     try {
