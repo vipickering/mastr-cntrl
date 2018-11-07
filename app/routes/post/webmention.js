@@ -62,16 +62,16 @@ exports.webmentionPost = function webmentionPost(req, res) {
 
     //https://gist.github.com/dougalcampbell/2024272
     function strencode (data) {
-        return encodeURIComponent(JSON.stringify(data)).replace(/[!'()*]/g, escape);
+        return encodeURIComponent(JSON.stringify(data));
     }
 
     //https://gist.github.com/dougalcampbell/2024272
     // function strdecode(data) {
-    //     return JSON.parse(decodeURIComponent(escape(data)));
+    //     return JSON.parse(decodeURIComponent(escape(data)).replace(/[!'()*]/g, escape);
     // }
 
     function strdecode (data) {
-        return JSON.parse(decodeURIComponent(escape(data))).replace(/[!'()*]/g, escape);
+        return JSON.parse(decodeURIComponent(escape(data)));
     }
 
     logger.info(req.body);
