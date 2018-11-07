@@ -60,17 +60,15 @@ exports.webmentionPost = function webmentionPost(req, res) {
         res.send('Accepted');
     }
 
+    // CAUTION apostrophes etc still do not work in webmentions
     //https://gist.github.com/dougalcampbell/2024272
-    function strencode (data) {
-        return encodeURIComponent(JSON.stringify(data));
+    function strencode(data) {
+        return unescape(encodeURIComponent(JSON.stringify(data)));
     }
 
+    // CAUTION apostrophes etc still do not work in webmentions
     //https://gist.github.com/dougalcampbell/2024272
-    // function strdecode(data) {
-    //     return JSON.parse(decodeURIComponent(escape(data)).replace(/[!'()*]/g, escape);
-    // }
-
-    function strdecode (data) {
+    function strdecode(data) {
         return JSON.parse(decodeURIComponent(escape(data)));
     }
 
