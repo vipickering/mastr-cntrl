@@ -15,7 +15,7 @@ exports.instagram = function instagram(micropubContent) {
     let tags = '';
 
     //Debug
-    // logger.info('Note JSON: ' + JSON.stringify(micropubContent));
+    logger.info('Note JSON: ' + JSON.stringify(micropubContent));
 
     //https://gist.github.com/dougalcampbell/2024272
     function strencode (data) {
@@ -48,6 +48,7 @@ exports.instagram = function instagram(micropubContent) {
     }
     try {
         tagArray = micropubContent.properties.category[0];
+        logger.info('Instagram tags are: ' + micropubContent.properties.category[0]);
         for (let i = 0; i < tagArray.length; i++) {
             tags += tagArray[i];
             tags += ' ';
