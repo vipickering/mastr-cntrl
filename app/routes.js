@@ -32,14 +32,24 @@ const limitEndpoint = limitMiddleware.middleware((req, res, next) => {
 });
 
 // GET Routes
-router.get('/micropub', limitEndpoint, micropubGetRoute.micropubGet); //This is called before posting to the micropub route. It provides authentication and routing to syndication and media also.
+// Called before posting to the micropub route. It provides authentication, routing to syndication and media.
+router.get('/micropub', limitEndpoint, micropubGetRoute.micropubGet);
+
+// Called by a Netlify webhook on publish. Checks for available webmentions to send. If it finds any in the feed, it POSTs them to Telegraph.
 // router.get('/webmention-send', limitEndpoint, webmentionSendGetRoute.webmentionSend);
+
+//Catch any route we don't know and return the JSON profile
 router.get('/', limitEndpoint, (req, res) => {
     res.json(serviceProfile);
 });
 
 //POST Routes
-router.post('/micropub', limitEndpoint, micropubPostRoute.micropubPost); // For recieving content in to the website via PESOS
-router.post('/webmention', limitEndpoint, webmentionPostRoute.webmentionPost); // For recieving webmentions in to the website.
-// router.post('/media', limitEndpoint, mediaPostRoute.mediaPost); // For uploading media
+// For recieving content in to the website via PESOS
+router.post('/micropub', limitEndpoint, micropubPostRoute.micropubPost);
+
+// Webmentions recieving in to the website. POSTs to the Github API
+router.post('/webmention', limitEndpoint, webmentionPostRoute.webmentionPost);
+
+// Media Endpoint. For uploading media to the blog
+// router.post('/media', limitEndpoint, mediaPostRoute.mediaPost);
 module.exports = router;

@@ -2,7 +2,7 @@ const rp = require('request-promise');
 const base64 = require('base64it');
 const logger = require(appRootDirectory + '/app/functions/bunyan');
 const config = require(appRootDirectory + '/app/config.js');
-const webmention = config.webmention;
+// const webmention = config.webmention;
 const github = config.github;
 const webhookKey = config.webmention.webhook;
 
@@ -25,20 +25,20 @@ exports.webmentionPost = function webmentionPost(req, res) {
     let currentWebmentions;
     let encodedContent;
 
-    function isEmptyObject(obj) {
-        return !Object.keys(obj).length;
-    }
+    // function isEmptyObject(obj) {
+    //     return !Object.keys(obj).length;
+    // }
 
-    function isEmptyObject(obj) {
-        let key;
+    // function isEmptyObject(obj) {
+    //     let key;
 
-        for (key in obj) {
-            if (Object.prototype.hasOwnProperty.call(obj, key)) {
-                return false;
-            }
-        }
-        return true;
-    }
+    //     for (key in obj) {
+    //         if (Object.prototype.hasOwnProperty.call(obj, key)) {
+    //             return false;
+    //         }
+    //     }
+    //     return true;
+    // }
 
     function handleGithubApiGet(err) {
         logger.info('Github API Get File Failed');
@@ -74,16 +74,16 @@ exports.webmentionPost = function webmentionPost(req, res) {
 
     logger.info(req.body);
 
-    if (req.body.secret ===  webhookKey) {
+    if (req.body.secret === webhookKey) {
         logger.info('Webmentions recieved');
         const webmentionsToAdd = req.body.post;
         logger.info('webmentions to add ' + strencode(webmentionsToAdd));
 
         rp(apiOptions)
-        .then((repos) => {
-            currentWebmentions = base64.decode(repos.content);
+            .then((repos) => {
+                currentWebmentions = base64.decode(repos.content);
 
-            const currentWebmentionsParsed = strdecode(currentWebmentions);
+                const currentWebmentionsParsed = strdecode(currentWebmentions);
                 currentWebmentionsParsed['links'].push(webmentionsToAdd);
 
                 // Prepare the code to send to Github API
@@ -117,14 +117,13 @@ exports.webmentionPost = function webmentionPost(req, res) {
                 };
                 // Push file in to Github API.
                 rp(options)
-                .then(functionFinish)
-                .catch(handlePatchError);
+                    .then(functionFinish)
+                    .catch(handlePatchError);
             })
-        .catch(handleGithubApiGet);
-
+            .catch(handleGithubApiGet);
     } else {
         res.status(400);
         res.send('Secret incorrect');
     }
-return;
+    // return;
 };
