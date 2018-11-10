@@ -36,7 +36,7 @@ const limitEndpoint = limitMiddleware.middleware((req, res, next) => {
 router.get('/micropub', limitEndpoint, micropubGetRoute.micropubGet);
 
 // Called by a Netlify webhook on publish. Checks for available webmentions to send. If it finds any in the feed, it POSTs them to Telegraph.
-// router.get('/webmention-send', limitEndpoint, webmentionSendGetRoute.webmentionSend);
+router.get('/webmention-send', limitEndpoint, webmentionSendGetRoute.webmentionSend);
 
 //Catch any route we don't know and return the JSON profile
 router.get('/', limitEndpoint, (req, res) => {

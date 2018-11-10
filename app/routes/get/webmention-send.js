@@ -1,4 +1,3 @@
-const fetch = require('node-fetch');
 const rp = require('request-promise');
 const base64 = require('base64it');
 const moment = require('moment');
@@ -24,25 +23,33 @@ exports.webmentionSend = function webmentionSend(req, res) {
         },
         json : true
     };
+    const webmentionsOptions = {
+        uri: 'https://vincentp.me/feeds/indieweb/webmentions.json',
+        headers: {
+            'User-Agent': 'Request-Promise'
+        },
+        json: true
+    };
+
     let payload;
     let options;
     let publishedTime;
     let encodedContent;
 
-    // function isEmptyObject(obj) {
-    //     return !Object.keys(obj).length;
-    // }
+    function isEmptyObject(obj) {
+        return !Object.keys(obj).length;
+    }
 
-    // function isEmptyObject(obj) {
-    //     let key;
+    function isEmptyObject(obj) {
+        let key;
 
-    //     for (key in obj) {
-    //         if (Object.prototype.hasOwnProperty.call(obj, key)) {
-    //             return false;
-    //         }
-    //     }
-    //     return true;
-    // }
+        for (key in obj) {
+            if (Object.prototype.hasOwnProperty.call(obj, key)) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     function handleGithubApiGet(err) {
         logger.info('Github API Get File Failed');
@@ -58,6 +65,13 @@ exports.webmentionSend = function webmentionSend(req, res) {
         res.send('Update failed');
     }
 
+    function webmentionError(err) {
+        logger.info('webmentions to send list not available');
+        logger.error(err);
+        res.status(400);
+        res.send('webmentions feed not available');
+    }
+
     function functionFinish() {
         logger.info('Webmentions sent');
         res.status(202);
@@ -69,70 +83,90 @@ exports.webmentionSend = function webmentionSend(req, res) {
         return unescape(encodeURIComponent(JSON.stringify(data)));
     }
 
-    //https://gist.github.com/dougalcampbell/2024272
-    function strdecode(data) {
-        return JSON.parse(decodeURIComponent(escape(data)));
-    }
-
     logger.info(githubApIFileOptions);
     logger.info('Getting current webmention date ');
 
-    // When pinged
+    // 1. Get the JSON feed from live.
+    // If empty, end. Otherwise proceed and update.
+    rp(webmentionsOptions)
+        .then(function (webmentionData) {
+            logger.info(webmentionData.webmentions);
+            if (isEmptyObject(webmentionData.webmentions)) {
+                logger.info('No Webmentions to send');
+                res.status(200);
+                res.send('Done');
+            } else{
+                logger.info('Webmentions to send found');
+                // loop through webmention and submit to Telegraph
 
-    // 1. Get the JSON feed from live . If empty, proceed to 2
-    //Otherwise loop through data and submit to Telegraph
+                    //HERE
+                    //POST to telegraph API
+                    let telegraphOptions = {
+                        method : 'POST',
+                        uri : 'https://telegraph.p3k.io/webmention',
+                        headers : {
+                            // 'User-Agent' : github.name
+                        },
+                        form : {
+                            token : webmention.telegraph,
+                            source: webmentionData.webmentions.source,
+                            target: webmentionData.webmentions.target
+                        }
+                    };
 
-    //CODE HERE.
+                    rp(telegraphOptions)
+                    .then(functionFinish)
+                    .catch(handlePatchError);
 
-    // 2. Get the date file from Github, update the date to current date. POST back.
-    rp(githubApIFileOptions)
-        .then((repos) => {
-            //Get previous published time
-            publishedTime = base64.decode(repos.content);
-            logger.info('old publish time: ' + publishedTime);
 
-            // reassign published time with current time
-            publishedTime = 'time: ' + currentTime;
-            logger.info('current publish time: ' + publishedTime);
+                // 2. Get the date file from Github, update the date to current date. POST back.
+                rp(githubApIFileOptions)
+                    .then((repos) => {
+                        //Get previous published time
+                        publishedTime = base64.decode(repos.content);
+                        logger.info('old publish time: ' + publishedTime);
 
-            // Prepare the code to send to Github API
-            payload = strencode(publishedTime);
-            logger.info('payload created');
+                        // reassign published time with current time
+                        publishedTime = 'time: ' + currentTime;
+                        logger.info('current publish time: ' + publishedTime);
 
-            //Base 64 Encode for Github API
-            encodedContent = base64.encode(payload);
-            logger.info('payload encoded');
+                        // Prepare the code to send to Github API
+                        payload = strencode(publishedTime);
+                        logger.info('payload created');
 
-            //Configure options to PUT file back in Github API
-            options = {
-                method : 'PUT',
-                uri : webmentionsDateFileDestination,
-                headers : {
-                    Authorization : 'token ' + github.key,
-                    'Content-Type' : 'application/vnd.github.v3+json; charset=UTF-8',
-                    'User-Agent' : github.name
-                },
-                body : {
-                    path : webmentionsDateFileName,
-                    branch : github.branch,
-                    message : messageContent,
-                    sha : repos.sha,
-                    committer : {
-                        'name' : github.user,
-                        'email' : github.email
-                    },
-                    content : encodedContent
-                },
-                json : true
-            };
-            //Push file in to Github API.
-            rp(options)
-                .then(functionFinish)
-                .catch(handlePatchError);
+                        //Base 64 Encode for Github API
+                        encodedContent = base64.encode(payload);
+                        logger.info('payload encoded');
+
+                        //Configure options to PUT file back in Github API
+                        options = {
+                            method : 'PUT',
+                            uri : webmentionsDateFileDestination,
+                            headers : {
+                                Authorization : 'token ' + github.key,
+                                'Content-Type' : 'application/vnd.github.v3+json; charset=UTF-8',
+                                'User-Agent' : github.name
+                            },
+                            body : {
+                                path : webmentionsDateFileName,
+                                branch : github.branch,
+                                message : messageContent,
+                                sha : repos.sha,
+                                committer : {
+                                    'name' : github.user,
+                                    'email' : github.email
+                                },
+                                content : encodedContent
+                            },
+                            json : true
+                        };
+                        //Push file in to Github API.
+                        rp(options)
+                            .then(functionFinish)
+                            .catch(handlePatchError);
+                    })
+                    .catch(handleGithubApiGet);
+            }
         })
-        .catch(handleGithubApiGet);
-
-    // logger.info('success!');
-    // res.status(200);
-    // res.send('Done');
+        .catch(webmentionError);
 };
