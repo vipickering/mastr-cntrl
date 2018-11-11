@@ -95,12 +95,10 @@ exports.webmentionSend = function webmentionSend(req, res) {
                 logger.info('No Webmentions to send');
                 res.status(200);
                 res.send('Done');
-            } else{
+            } else {
                 logger.info('Webmentions to send found');
-                // loop through webmention and submit to Telegraph
+                // Submit webmention to Telegraph
 
-                    //HERE
-                    //POST to telegraph API
                     let telegraphOptions = {
                         method : 'POST',
                         uri : 'https://telegraph.p3k.io/webmention',
@@ -114,58 +112,60 @@ exports.webmentionSend = function webmentionSend(req, res) {
                         }
                     };
 
+                    //POST to telegraph API
                     rp(telegraphOptions)
-                    .then(functionFinish)
+                    .then(updateWebmentionPubDate)
                     .catch(handlePatchError);
 
+                    // 2. Get the date file from Github, update the date to current date. POST back.
+                    function updateWebmentionPubDate(err) {
+                        rp(githubApIFileOptions)
+                            .then((repos) => {
+                                //Get previous published time
+                                publishedTime = base64.decode(repos.content);
+                                logger.info('old publish time: ' + publishedTime);
 
-                // 2. Get the date file from Github, update the date to current date. POST back.
-                rp(githubApIFileOptions)
-                    .then((repos) => {
-                        //Get previous published time
-                        publishedTime = base64.decode(repos.content);
-                        logger.info('old publish time: ' + publishedTime);
+                                // reassign published time with current time
+                                publishedTime = 'time: ' + currentTime;
+                                logger.info('current publish time: ' + publishedTime);
 
-                        // reassign published time with current time
-                        publishedTime = 'time: ' + currentTime;
-                        logger.info('current publish time: ' + publishedTime);
+                                // Prepare the code to send to Github API
+                                payload = strencode(publishedTime);
+                                logger.info('payload created');
 
-                        // Prepare the code to send to Github API
-                        payload = strencode(publishedTime);
-                        logger.info('payload created');
+                                //Base 64 Encode for Github API
+                                encodedContent = base64.encode(payload);
+                                logger.info('payload encoded');
 
-                        //Base 64 Encode for Github API
-                        encodedContent = base64.encode(payload);
-                        logger.info('payload encoded');
-
-                        //Configure options to PUT file back in Github API
-                        options = {
-                            method : 'PUT',
-                            uri : webmentionsDateFileDestination,
-                            headers : {
-                                Authorization : 'token ' + github.key,
-                                'Content-Type' : 'application/vnd.github.v3+json; charset=UTF-8',
-                                'User-Agent' : github.name
-                            },
-                            body : {
-                                path : webmentionsDateFileName,
-                                branch : github.branch,
-                                message : messageContent,
-                                sha : repos.sha,
-                                committer : {
-                                    'name' : github.user,
-                                    'email' : github.email
-                                },
-                                content : encodedContent
-                            },
-                            json : true
-                        };
-                        //Push file in to Github API.
-                        rp(options)
-                            .then(functionFinish)
-                            .catch(handlePatchError);
-                    })
-                    .catch(handleGithubApiGet);
+                                //Configure options to PUT file back in Github API
+                                options = {
+                                    method : 'PUT',
+                                    uri : webmentionsDateFileDestination,
+                                    headers : {
+                                        Authorization : 'token ' + github.key,
+                                        'Content-Type' : 'application/vnd.github.v3+json; charset=UTF-8',
+                                        'User-Agent' : github.name
+                                    },
+                                    body : {
+                                        path : webmentionsDateFileName,
+                                        branch : github.branch,
+                                        message : messageContent,
+                                        sha : repos.sha,
+                                        committer : {
+                                            'name' : github.user,
+                                            'email' : github.email
+                                        },
+                                        content : encodedContent
+                                    },
+                                    json : true
+                                };
+                                //Push file in to Github API.
+                                rp(options)
+                                    .then(functionFinish)
+                                    .catch(handlePatchError);
+                            })
+                            .catch(handleGithubApiGet);
+                    }
             }
         })
         .catch(webmentionError);

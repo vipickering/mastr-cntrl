@@ -6,7 +6,7 @@ const ExpressMiddleware = require('ratelimit.js').ExpressMiddleware;
 const redis = require('redis');
 
 const micropubGetRoute = require(appRootDirectory + '/app/routes/get/micropub');
-const webmentionSendGetRoute = require(appRootDirectory + '/app/routes/get/webmention-send');
+const webmentionSendGetRoute = require(appRootDirectory + '/app/routes/post/webmention-send');
 const micropubPostRoute = require(appRootDirectory + '/app/routes/post/micropub');
 const webmentionPostRoute = require(appRootDirectory + '/app/routes/post/webmention');
 // const mediaPostRoute = require(appRootDirectory + '/app/routes/post/media');
@@ -35,9 +35,6 @@ const limitEndpoint = limitMiddleware.middleware((req, res, next) => {
 // Called before posting to the micropub route. It provides authentication, routing to syndication and media.
 router.get('/micropub', limitEndpoint, micropubGetRoute.micropubGet);
 
-// Called by a Netlify webhook on publish. Checks for available webmentions to send. If it finds any in the feed, it POSTs them to Telegraph.
-router.get('/webmention-send', limitEndpoint, webmentionSendGetRoute.webmentionSend);
-
 //Catch any route we don't know and return the JSON profile
 router.get('/', limitEndpoint, (req, res) => {
     res.json(serviceProfile);
@@ -49,6 +46,9 @@ router.post('/micropub', limitEndpoint, micropubPostRoute.micropubPost);
 
 // Webmentions recieving in to the website. POSTs to the Github API
 router.post('/webmention', limitEndpoint, webmentionPostRoute.webmentionPost);
+
+// Called by a Netlify webhook on publish. Checks for available webmentions to send. If it finds any in the feed, it POSTs them to Telegraph.
+router.post('/webmention-send', limitEndpoint, webmentionSendGetRoute.webmentionSend);
 
 // Media Endpoint. For uploading media to the blog
 // router.post('/media', limitEndpoint, mediaPostRoute.mediaPost);
