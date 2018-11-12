@@ -21,7 +21,7 @@ config.api = {
 config.webmention = {
     'token' : process.env.WEBMENTION_TOKEN,
     'webhook' : process.env.WEBMENTION_WEBHOOK_TOKEN,
-    'telegraph': process.env.WEBMENTION_WEBHOOK_TELEGRAPH,
+    'telegraph': process.env.WEBMENTION_TELEGRAPH,
 };
 
 module.exports = config;

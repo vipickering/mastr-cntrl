@@ -99,6 +99,10 @@ exports.webmentionSend = function webmentionSend(req, res) {
                 logger.info('Webmentions to send found');
                 // Submit webmention to Telegraph
 
+                    logger.info(webmention.telegraph);
+                    logger.info(webmentionData.webmentions.source);
+                    logger.info(webmentionData.webmentions.target);
+
                     let telegraphOptions = {
                         method : 'POST',
                         uri : 'https://telegraph.p3k.io/webmention',
@@ -112,6 +116,7 @@ exports.webmentionSend = function webmentionSend(req, res) {
                         }
                     };
 
+                    logger.info(telegraphOptions);
                     //POST to telegraph API
                     rp(telegraphOptions)
                     .then(updateWebmentionPubDate)
