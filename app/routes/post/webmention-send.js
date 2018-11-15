@@ -131,7 +131,7 @@ exports.webmentionSend = function webmentionSend(req, res) {
                                 logger.info('old publish time: ' + publishedTime);
 
                                 // reassign published time with current time
-                                publishedTime = 'time: ' + currentTime;
+                                publishedTime = '"time:"' + '"' + currentTime + '"';
                                 logger.info('current publish time: ' + publishedTime);
 
                                 // Prepare the code to send to Github API
