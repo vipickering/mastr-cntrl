@@ -15,7 +15,7 @@ exports.instagram = function instagram(micropubContent) {
     let tags = '';
 
     //Debug
-    logger.info('Note JSON: ' + JSON.stringify(micropubContent));
+    logger.info('Instagram JSON: ' + JSON.stringify(micropubContent));
 
     //https://gist.github.com/dougalcampbell/2024272
     function strencode (data) {
@@ -50,8 +50,8 @@ exports.instagram = function instagram(micropubContent) {
         tagArray = micropubContent.properties.category[0];
         logger.info('Instagram tags are: ' + micropubContent.properties.category[0]);
         for (let i = 0; i < tagArray.length; i++) {
+             tags += '\n- ';
             tags += tagArray[i];
-            tags += ' ';
         }
     } catch (e) {
         logger.info(e);
@@ -68,7 +68,7 @@ category: "${category}"
 syndication: "${syndication}"
 latitude: "${addrLat}"
 longitude: "${addrLong}"
-tags:  "${tags}"
+tags:${tags}
 twitterCard: false
 ---
 ${content}
