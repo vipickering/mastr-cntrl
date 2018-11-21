@@ -47,8 +47,8 @@ exports.instagram = function instagram(micropubContent) {
         logger.info('No longitude link skipping..');
     }
     try {
-        tagArray = micropubContent.properties.category[0];
-        logger.info('Instagram tags are: ' + micropubContent.properties.category[0]);
+        tagArray = micropubContent.properties.category;
+        logger.info('Instagram tags are: ' + micropubContent.properties.category);
         for (let i = 0; i < tagArray.length; i++) {
              tags += '\n- ';
             tags += tagArray[i];
