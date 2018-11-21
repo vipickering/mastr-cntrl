@@ -66,8 +66,8 @@ exports.note = function note(micropubContent) {
     try {
         tagArray = micropubContent.category;
         for (let i = 0; i < tagArray.length; i++) {
+            tags += '\n- ';
             tags += tagArray[i];
-            tags += ' ';
         }
     } catch (e) {
         logger.info(e);
@@ -103,7 +103,7 @@ replyUrl: "${replyTo}"
 replyName: "${replyName}"
 meta: "${title}"
 category: "${category}"
-tags:  "${tags}"
+tags:${tags}
 syndication: "${syndication}"
 location: "${location}"
 twitterCard: false
