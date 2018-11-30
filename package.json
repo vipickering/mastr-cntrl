@@ -2,9 +2,9 @@
   "name": "vincentp.micropub-api",
   "version": "1.0.0",
   "description": "The Micropub REST API that publishes to vincentp.me",
-  "main": "https://vincentp.me",
+  "main": "http://mastr-cntrl.herokuapp.com",
   "author": "Vincent Pickering",
-  "homepage": "https://github.com/vipickering/micropub-API/#readme",
+  "homepage": "https://github.com/vipickering/mastr-cntrl#readme",
   "license": "MIT",
   "scripts": {
     "start": "NODE_ENV=prod node ./bin/server.js | bunyan -o short",

@@ -44,6 +44,7 @@ exports.note = function note(micropubContent) {
         title = 'Note for ' + pubDate;
     }
 
+    //Reply targets can accept multiple if hand coded. But we will limit it to a single item array, as this isn't standard functionality.
     try {
         replyTo = micropubContent['in-reply-to'];
     } catch (e) {
@@ -53,13 +54,13 @@ exports.note = function note(micropubContent) {
     }
 
     try {
-        const uri = new URI(replyTo);
+        const uri = new URI(replyTo); // Extend this for other webmention types and match formatter
         if (typeof uri !== 'undefined') {
             replyName = uri.domain();
         }
     } catch (e) {
         logger.info(e);
-        logger.info('No reply name skipping');
+        logger.info('No Webmention skipping');
         replyTo = '';
     }
 
@@ -95,12 +96,12 @@ exports.note = function note(micropubContent) {
         syndication = '';
     }
 
+//Make this only output front matter needed.
     let entry = `---
 layout: "${layout}"
 title: "${title}"
 date: "${pubDate}"
-replyUrl: "${replyTo}"
-replyName: "${replyName}"
+target: "${replyTo}"
 meta: "${title}"
 category: "${category}"
 tags:${tags}

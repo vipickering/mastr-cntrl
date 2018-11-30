@@ -15,7 +15,7 @@ const github = config.github;
 const api = config.api;
 const app = express();
 const port = api.port;
-const isDev = app.get('env') === 'development';
+// const isDev = app.get('env') === 'development';
 
 const upload = multer();
 

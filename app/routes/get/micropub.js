@@ -34,10 +34,11 @@ exports.micropubGet = function micropubGet(req, res) {
                 logger.info('No Service Declared');
             }
 
+            // What gets returned is in a state of flux at the moment. I am returning both syndication and media endpoint data for either request.
             if (req.query.q === 'syndicate-to') {
-                res.json(syndicateOptions);
+                res.json(syndicationOptions);
             } else if (req.query.q === 'config') {
-                res.json(configOptions);
+                res.json(syndicationOptions);
             } else {
                 res.json({});
             }

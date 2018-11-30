@@ -14,9 +14,9 @@ let rtg;
 let redisClient;
 let redisClientOptions;
 
-// Make Redis work on Heroku Or local using Redis To Go
+// Make Redis work on Heroku or local; using Redis-To-Go
 if (process.env.REDISTOGO_URL) {
-    rtg   = require('url').parse(process.env.REDISTOGO_URL);
+    rtg  = require('url').parse(process.env.REDISTOGO_URL);
     redisClient = redis.createClient(rtg.port, rtg.hostname);
     redisClient.auth(rtg.auth.split(':')[1]);
 } else {
@@ -44,10 +44,11 @@ router.get('/', limitEndpoint, (req, res) => {
 // For recieving content in to the website via PESOS
 router.post('/micropub', limitEndpoint, micropubPostRoute.micropubPost);
 
-// Webmentions recieving in to the website. POSTs to the Github API
+// Webmentions receiving in to the website. POSTs to the Github API
 router.post('/webmention', limitEndpoint, webmentionPostRoute.webmentionPost);
 
-// Called by a Netlify webhook on publish. Checks for available webmentions to send. If it finds any in the feed, it POSTs them to Telegraph.
+// Called by a Netlify webhook on publish.
+// Checks for available webmentions to send. If it finds any in the feed, it POSTs them to Telegraph.
 router.post('/webmention-send', limitEndpoint, webmentionSendGetRoute.webmentionSend);
 
 // Media Endpoint. For uploading media to the blog

@@ -1,4 +1,5 @@
 {
+    "media-endpoint": "https://mastr-cntrl.herokuapp.com/media",
     "syndicate-to" : [
         {
             "uid" : "https://twitter.com/vincentlistens/",
@@ -11,6 +12,10 @@
          {
             "uid" : "https://mastodon.social/@vincentlistens",
             "name" : "Mastodon"
+        },
+        {
+            "uid" : "https://news.indieweb.org/en",
+            "name" : "Indienews"
         }
     ]
 }

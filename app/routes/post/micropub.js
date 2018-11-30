@@ -1,6 +1,5 @@
 const fetch = require('node-fetch');
 const moment = require('moment');
-// const bodyParser = require('body-parser');
 const request = require('request');
 const config = require(appRootDirectory + '/app/config.js');
 const github = config.github;

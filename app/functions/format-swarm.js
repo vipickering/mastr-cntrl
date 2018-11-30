@@ -21,7 +21,7 @@ exports.checkIn = function checkIn(micropubContent) {
     let region = '';
 
     //Debug
-    // logger.info('Note JSON: ' + JSON.stringify(micropubContent));
+    logger.info('Swarm JSON: ' + JSON.stringify(micropubContent));
 
     //https://gist.github.com/dougalcampbell/2024272
     function strencode (data) {

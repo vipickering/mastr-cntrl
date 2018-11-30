@@ -13,9 +13,7 @@ config.github = {
 };
 
 config.api = {
-    'url' : process.env.MICROPUB_SITE_URL,
-    'token' : process.env.MICROPUB_TOKEN_ENDPOINT,
-    'port' : process.env.MICROPUB_PORT
+    'port' : process.env.API_PORT
 };
 
 config.webmention = {
@@ -24,5 +22,8 @@ config.webmention = {
     'telegraph': process.env.WEBMENTION_TELEGRAPH,
 };
 
-module.exports = config;
+config.website = {
+    'url' : process.env.WEBSITE_URL
+};
 
+module.exports = config;
