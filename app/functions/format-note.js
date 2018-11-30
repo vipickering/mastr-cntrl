@@ -6,7 +6,7 @@ const URI = require('urijs');
 exports.note = function note(micropubContent) {
     const layout = 'notes';
     const category = 'Notes';
-    const pubDate  = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss+01:00');
+    const pubDate  = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss');
 
     let content = '';
     let replyTo = '';
