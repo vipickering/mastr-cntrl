@@ -54,7 +54,7 @@ exports.micropubPost = function micropubPost(req, res) {
         .then(function(json) {
             serviceIdentifier = json.client_id;
             logger.info('Service Is: ' + serviceIdentifier);
-
+            logger.info('JSON received is: ' + micropubContent);
             // Format Note based on service sending. Or use standard Note format.
             switch (serviceIdentifier) {
             case 'https://ownyourswarm.p3k.io':
@@ -90,7 +90,7 @@ exports.micropubPost = function micropubPost(req, res) {
                 url : postDestination,
                 headers : {
                     Authorization : 'token ' + github.key,
-                    'Content-Type' : 'application/vnd.github.v3+json; charset=UTF-8', //Request v3 API
+                    'Content-Type' : 'application/vnd.github.v3+json; charset=UTF-8',
                     'User-Agent' : github.name
                 },
                 body : {
