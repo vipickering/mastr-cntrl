@@ -1,15 +1,16 @@
-const fetch = require('node-fetch');
+const rp = require('request-promise');
+const fetch = require('node-fetch'); //Swap for RP
+const request = require('request'); //Swap for RP
 const moment = require('moment');
-const request = require('request');
 const config = require(appRootDirectory + '/app/config.js');
 const github = config.github;
-let serviceIdentifier = '';
+let serviceIdentifier = ''; //Does this need to be outside the function?
 
 //Define Function Locations
 const logger = require(appRootDirectory + '/app/functions/bunyan');
-const formatCheckin = require(appRootDirectory + '/app/functions/format-swarm');
-const formatInstagram = require(appRootDirectory + '/app/functions/format-instagram');
-const formatNote = require(appRootDirectory + '/app/functions/format-note');
+const formatCheckin = require(appRootDirectory + '/app/functions/formatters/swarm');
+const formatInstagram = require(appRootDirectory + '/app/functions/formatters/instagram');
+const formatNote = require(appRootDirectory + '/app/functions/formatters/note');
 
 exports.micropubPost = function micropubPost(req, res) {
     let postFileName;
@@ -19,6 +20,12 @@ exports.micropubPost = function micropubPost(req, res) {
     let payloadOptions;
     let publishedDate;
     let postDestination;
+    let noteType;
+    let serviceType;
+    let postFileNameDate;
+    let postFileNameTime;
+    let responseDate;
+    let responseLocationTime;
     const micropubContent = req.body;
     const token = req.headers.authorization;
     const indieauth = 'https://tokens.indieauth.com/token';
@@ -30,20 +37,25 @@ exports.micropubPost = function micropubPost(req, res) {
     //Log packages sent, for debug
     logger.info('json body ' + JSON.stringify(req.body));
 
+    //Some P3K services send the published date-time. Others do not. Check if it exists, and if not do it ourselves.
     try {
         publishedDate = req.body.properties.published[0];
     } catch (e) {
-        publishedDate = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss+01:00');
+        publishedDate = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss');
     }
 
     //Format date time for naming file.
-    const postFileNameDate = publishedDate.slice(0, 10);
-    const postFileNameTime = publishedDate.replace(/:/g, '-').slice(11, -9);
-    const responseDate = postFileNameDate.replace(/-/g, '/');
-    const responseLocationTime = publishedDate.slice(11, -12) + '-' + publishedDate.slice(14, -9);
+    postFileNameDate = publishedDate.slice(0, 10);
+    postFileNameTime = publishedDate.replace(/:/g, '-').slice(11, -9);
+    responseDate = postFileNameDate.replace(/-/g, '/');
+    responseLocationTime = publishedDate.slice(11, -12) + '-' + publishedDate.slice(14, -9);
 
-    logger.info('Token Received: ' + token);
+    // logger.info('Token Received: ' + token);
 
+    // rewrite with rp here
+
+
+// Remove FETCH and REQUEST. Replace with Request Promise
     fetch(indieauth, {
         method : 'GET',
         headers : authHeaders
@@ -52,44 +64,51 @@ exports.micropubPost = function micropubPost(req, res) {
             return response.json();
         })
         .then(function(json) {
+            logger.info(JSON.stringify(json));
             serviceIdentifier = json.client_id;
             logger.info('Service Is: ' + serviceIdentifier);
-            logger.info('JSON received is: ' + micropubContent);
-            // Format Note based on service sending. Or use standard Note format.
+            // Format Note based on service sending. Or try to use standard Note format.
+            // Better format than nested Switch statements
+            // https://stackoverflow.com/questions/38370979/nested-switch-statement-in-javascript#38371110
             switch (serviceIdentifier) {
             case 'https://ownyourswarm.p3k.io':
+                serviceType = 'Checkin';
+                noteType = 'checkins';
                 logger.info('Creating Swarm checkin');
                 payload = formatCheckin.checkIn(micropubContent);
-                messageContent = ':robot: Checkin submitted by Mastrl Cntrl';
-                postFileName = postFileNameDate + '-' + postFileNameTime + '.md';
-                responseLocation = 'https://vincentp.me/checkins/' + responseDate + '/' + responseLocationTime + '/';
-                logger.info('response location ' + responseLocation);
                 break;
             case 'https://ownyourgram.com/':
+                serviceType = 'Photo';
+                noteType = 'notes';
                 logger.info('Creating Instagram note');
                 payload = formatInstagram.instagram(micropubContent);
-                messageContent = ':robot: Instagram photo submitted by Mastrl Cntrl';
-                postFileName = postFileNameDate + '-' + postFileNameTime + '.md';
-                responseLocation = 'https://vincentp.me/notes/' + responseDate + '/' + responseLocationTime + '/';
-                logger.info('response ' + responseLocation);
+                break;
+            case 'https://quill.p3k.io/':
+                // At this point I need to look at the note types and route in to the correct formatter.
+                serviceType = 'Note'; // Needs updating to different types
+                noteType = 'notes'; // Separate Likes, etc?
+                logger.info('Creating Quill xxx');
+                payload = formatNote.note(micropubContent);
                 break;
             default:
-                logger.info('Creating Note');
+                serviceType = 'Note';
+                noteType = 'notes';
+                logger.info('Creating default Note');
                 payload = formatNote.note(micropubContent);
-                messageContent = ':robot: Note  submitted by Mastrl Cntrl';
-                postFileName = postFileNameDate + '-' + postFileNameTime + '.md';
-                responseLocation = 'https://vincentp.me/notes/' + responseDate + '/' + responseLocationTime + '/';
-                logger.info('response location ' + responseLocation);
             }
 
-            postDestination = github.postUrl + '/contents/_posts/' + postFileName;
-            logger.info('Destination: ' + postDestination);
+            messageContent = `:robot: ${serviceType}  submitted by Mastrl Cntrl`;
+            postFileName = `${postFileNameDate}-${postFileNameTime}.md`;
+            responseLocation = `https://vincentp.me/${noteType}/${responseDate}/${responseLocationTime}`;
+            logger.info(`Response: ${responseLocation}`);
+            postDestination = `${github.postUrl}/contents/_posts/${postFileName}`;
+            logger.info(`Destination: ${postDestination}`);
 
             payloadOptions = {
                 method : 'PUT',
                 url : postDestination,
                 headers : {
-                    Authorization : 'token ' + github.key,
+                    Authorization : `token ${github.key}`,
                     'Content-Type' : 'application/vnd.github.v3+json; charset=UTF-8',
                     'User-Agent' : github.name
                 },
@@ -111,9 +130,9 @@ exports.micropubPost = function micropubPost(req, res) {
                 if (error) {
                     res.status(400);
                     res.send('Error Sending Payload');
-                    logger.error('Git creation failed:' + error);
+                    logger.error(`Git creation failed: ${error}`);
                     res.end('Error Sending Payload');
-                    throw new Error('failed to send ' + error);
+                    throw new Error(`Failed to send: ${error}`);
                 } else {
                     logger.info('Git creation successful!  Server responded with:', body);
                     res.writeHead(201, {
