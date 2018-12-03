@@ -22,10 +22,6 @@ exports.micropubPost = function micropubPost(req, res) {
     let postDestination;
     let noteType;
     let serviceType;
-    let postFileNameDate;
-    let postFileNameTime;
-    let responseDate;
-    let responseLocationTime;
     const micropubContent = req.body;
     const token = req.headers.authorization;
     const indieauth = 'https://tokens.indieauth.com/token';
@@ -45,10 +41,10 @@ exports.micropubPost = function micropubPost(req, res) {
     }
 
     //Format date time for naming file.
-    postFileNameDate = publishedDate.slice(0, 10);
-    postFileNameTime = publishedDate.replace(/:/g, '-').slice(11, -9);
-    responseDate = postFileNameDate.replace(/-/g, '/');
-    responseLocationTime = publishedDate.slice(11, -12) + '-' + publishedDate.slice(14, -9);
+    const postFileNameDate = publishedDate.slice(0, 10);
+    const postFileNameTime = publishedDate.replace(/:/g, '-').slice(11, -9);
+    const responseDate = postFileNameDate.replace(/-/g, '/');
+    const responseLocationTime = publishedDate.slice(11, -12) + '-' + publishedDate.slice(14, -9);
 
     // logger.info('Token Received: ' + token);
 
