@@ -29,7 +29,6 @@ exports.note = function note(micropubContent) {
     try {
         content = micropubContent.content;
     } catch (e) {
-        logger.info(e);
         logger.info('No content skipping');
         content = '';
         res.status(400);
@@ -39,7 +38,6 @@ exports.note = function note(micropubContent) {
     try {
         title = micropubContent.content.substring(0, 100);
     } catch (e) {
-        logger.info(e);
         logger.info('No title skipping');
         title = 'Note for ' + pubDate;
     }
@@ -69,7 +67,6 @@ exports.note = function note(micropubContent) {
             tags += tagArray[i];
         }
     } catch (e) {
-        logger.info(e);
         logger.info('No tags skipping');
         tagArray = 'miscellaneous';
     }
@@ -81,7 +78,6 @@ exports.note = function note(micropubContent) {
             location ='';
         }
     } catch (e) {
-        logger.info(e);
         logger.info('No location skipping');
         location = '';
     }
@@ -89,7 +85,6 @@ exports.note = function note(micropubContent) {
     try {
         syndication = micropubContent['mp-syndicate-to'][0];
     } catch (e) {
-        logger.info(e);
         logger.info('No Syndication skipping');
         syndication = '';
     }
