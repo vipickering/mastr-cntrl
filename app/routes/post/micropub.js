@@ -1,6 +1,6 @@
 const rp = require('request-promise');
 const fetch = require('node-fetch'); //Swap for RP
-// const request = require('request'); //Swap for RP
+const request = require('request'); //Swap for RP
 const moment = require('moment');
 const config = require(appRootDirectory + '/app/config.js');
 const github = config.github;
@@ -31,19 +31,6 @@ exports.micropubPost = function micropubPost(req, res) {
         'Accept' : 'application/json',
         'Authorization' : token
     };
-
-    function handleError(err) {
-        logger.info('Micropub update to Github API Failed');
-        logger.error(err);
-        res.status(400);
-        res.send('Update failed');
-    }
-
-    function functionFinish() {
-        logger.info('Micropub complete');
-        res.status(202);
-        res.send('Accepted');
-    }
 
     //Log packages sent, for debug
     logger.info('json body ' + JSON.stringify(req.body));
@@ -107,7 +94,7 @@ exports.micropubPost = function micropubPost(req, res) {
             postDestination = `${github.postUrl}/contents/_posts/${postFileName}`;
             logger.info(`Destination: ${postDestination}`);
 
-            options = {
+            payloadOptions = {
                 method : 'PUT',
                 url : postDestination,
                 headers : {
@@ -128,10 +115,22 @@ exports.micropubPost = function micropubPost(req, res) {
                 json : true
             };
 
-           logger.info('Options are: ' + JSON.stringify(options));
-            rp(options)
-                .then(functionFinish)
-                .catch(handleError);
+            // The error checking here is poor. We are not handling if GIT throws an error.
+            request(payloadOptions, function sendIt(error, response, body) {
+                if (error) {
+                    res.status(400);
+                    res.send('Error Sending Payload');
+                    logger.error(`Git creation failed: ${error}`);
+                    res.end('Error Sending Payload');
+                    throw new Error(`Failed to send: ${error}`);
+                } else {
+                    logger.info('Git creation successful!  Server responded with:', body);
+                    res.writeHead(201, {
+                        'location' : responseLocation
+                    });
+                    res.end('Thanks');
+                }
+            });
         })
         .catch((err) => logger.error(err));
 };
