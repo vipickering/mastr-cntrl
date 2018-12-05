@@ -48,7 +48,6 @@ exports.note = function note(micropubContent) {
     try {
         replyTo = micropubContent['in-reply-to'];
     } catch (e) {
-        logger.info(e);
         logger.info('Not reply type skipping');
         replyTo = '';
     }
@@ -59,7 +58,6 @@ exports.note = function note(micropubContent) {
             replyName = uri.domain();
         }
     } catch (e) {
-        logger.info(e);
         logger.info('No Webmention skipping');
         replyTo = '';
     }

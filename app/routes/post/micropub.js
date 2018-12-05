@@ -37,7 +37,7 @@ exports.micropubPost = function micropubPost(req, res) {
         res.send('IndieAuth login denied');
     }
 
-    function handlePatchError(err) {
+    function handleError(err) {
         logger.info('Micropub update to Github API Failed');
         logger.error(err);
         res.status(400);
@@ -132,7 +132,7 @@ exports.micropubPost = function micropubPost(req, res) {
         logger.info('Options are: ' + JSON.stringify(options));
         rp(options)
             .then(functionFinish)
-            .catch(handlePatchError);
+            .catch(handleError);
     }
     // logger.info('Token Received: ' + token);
 
