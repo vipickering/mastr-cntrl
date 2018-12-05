@@ -25,21 +25,6 @@ exports.webmentionPost = function webmentionPost(req, res) {
     let currentWebmentions;
     let encodedContent;
 
-    // function isEmptyObject(obj) {
-    //     return !Object.keys(obj).length;
-    // }
-
-    // function isEmptyObject(obj) {
-    //     let key;
-
-    //     for (key in obj) {
-    //         if (Object.prototype.hasOwnProperty.call(obj, key)) {
-    //             return false;
-    //         }
-    //     }
-    //     return true;
-    // }
-
     function handleGithubApiGet(err) {
         logger.info('Github API Get File Failed');
         logger.error(err);

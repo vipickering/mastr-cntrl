@@ -1,7 +1,7 @@
 const fetch = require('node-fetch');
 const logger = require(appRootDirectory + '/app/functions/bunyan');
-const syndicateOptions = require(appRootDirectory + '/app/data/syndication.json');
-const configOptions = require(appRootDirectory + '/app/data/micropub-config.json');
+const syndicationOptions = require(appRootDirectory + '/app/data/syndication.json');
+// const configOptions = require(appRootDirectory + '/app/data/micropub-config.json');
 let serviceIdentifier = '';
 
 exports.micropubGet = function micropubGet(req, res) {
@@ -18,14 +18,15 @@ exports.micropubGet = function micropubGet(req, res) {
         logger.info('No Indie Auth Token Received');
     }
 
+    //Needs rationalising in to one function
     fetch(indieauth, {
         method : 'GET',
         headers : authHeaders
     })
-        .then(function(response) {
+        .then(function authResponse(response) {
             return response.json();
         })
-        .then(function(json) {
+        .then(function micropubResponse(json) {
             serviceIdentifier = json.client_id;
 
             if (serviceIdentifier) {
