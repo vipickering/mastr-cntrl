@@ -2,15 +2,13 @@ const rp = require('request-promise');
 const moment = require('moment');
 const config = require(appRootDirectory + '/app/config.js');
 const github = config.github;
-let serviceIdentifier = ''; //Does this need to be outside the function?
-
-//Define Function Locations
 const logger = require(appRootDirectory + '/app/functions/bunyan');
 const formatCheckin = require(appRootDirectory + '/app/functions/formatters/swarm');
 const formatInstagram = require(appRootDirectory + '/app/functions/formatters/instagram');
 const formatNote = require(appRootDirectory + '/app/functions/formatters/note');
 
 exports.micropubPost = function micropubPost(req, res) {
+    let serviceIdentifier = '';
     let postFileName;
     let responseLocation;
     let payload;
@@ -40,14 +38,14 @@ exports.micropubPost = function micropubPost(req, res) {
     }
 
     function handlePatchError(err) {
-        logger.info('Webmention update to Github API Failed');
+        logger.info('Micropub update to Github API Failed');
         logger.error(err);
         res.status(400);
         res.send('Update failed');
     }
 
     function functionFinish() {
-        logger.info('Webmentions complete');
+        logger.info('Micropub complete');
         res.status(202);
         res.send('Accepted');
     }
@@ -69,17 +67,13 @@ exports.micropubPost = function micropubPost(req, res) {
     const responseLocationTime = publishedDate.slice(11, -12) + '-' + publishedDate.slice(14, -9);
 
     function authResponse(response) {
-        logger.info('I am here ' + JSON.stringify(response));
         return response;
     }
 
     function micropubResponse(json) {
-        logger.info(JSON.stringify(json));
         serviceIdentifier = json.client_id;
         logger.info('Service Is: ' + serviceIdentifier);
-        // Format Note based on service sending. Or try to use standard Note format.
-        // Better format than nested Switch statements
-        // https://stackoverflow.com/questions/38370979/nested-switch-statement-in-javascript#38371110
+
         switch (serviceIdentifier) {
         case 'https://ownyourswarm.p3k.io':
             serviceType = 'Checkin';
@@ -135,6 +129,7 @@ exports.micropubPost = function micropubPost(req, res) {
             json : true
         };
 
+        logger.info('Options are: ' + options);
         rp(options)
             .then(functionFinish)
             .catch(handlePatchError);
