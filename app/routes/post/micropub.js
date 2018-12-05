@@ -70,7 +70,7 @@ exports.micropubPost = function micropubPost(req, res) {
 
     function authResponse(response) {
         logger.info('I am here ' + JSON.stringify(response));
-        return response.json();
+        return response;
     }
 
     function micropubResponse(json) {
