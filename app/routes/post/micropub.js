@@ -129,7 +129,7 @@ exports.micropubPost = function micropubPost(req, res) {
             json : true
         };
 
-        logger.info('Options are: ' + options);
+        logger.info('Options are: ' + JSON.stringify(options));
         rp(options)
             .then(functionFinish)
             .catch(handlePatchError);
