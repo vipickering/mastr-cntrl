@@ -69,7 +69,7 @@ exports.micropubPost = function micropubPost(req, res) {
     const responseLocationTime = publishedDate.slice(11, -12) + '-' + publishedDate.slice(14, -9);
 
     function authResponse(response) {
-        logger.info('I am here ' + response);
+        logger.info('I am here ' + JSON.stringify(response));
         return response.json();
     }
 
