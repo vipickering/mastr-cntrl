@@ -15,7 +15,7 @@ exports.micropubPost = function micropubPost(req, res) {
     let responseLocation;
     let payload;
     let messageContent;
-    let payloadOptions;
+    let options;
     let publishedDate;
     let postDestination;
     let noteType;
@@ -94,7 +94,7 @@ exports.micropubPost = function micropubPost(req, res) {
             postDestination = `${github.postUrl}/contents/_posts/${postFileName}`;
             logger.info(`Destination: ${postDestination}`);
 
-            payloadOptions = {
+            options = {
                 method : 'PUT',
                 url : postDestination,
                 headers : {
@@ -116,21 +116,9 @@ exports.micropubPost = function micropubPost(req, res) {
             };
 
             // The error checking here is poor. We are not handling if GIT throws an error.
-            request(payloadOptions, function sendIt(error, response, body) {
-                if (error) {
-                    res.status(400);
-                    res.send('Error Sending Payload');
-                    logger.error(`Git creation failed: ${error}`);
-                    res.end('Error Sending Payload');
-                    throw new Error(`Failed to send: ${error}`);
-                } else {
-                    logger.info('Git creation successful!  Server responded with:', body);
-                    res.writeHead(201, {
-                        'location' : responseLocation
-                    });
-                    res.end('Thanks');
-                }
-            });
+            rp(options)
+            .then(functionFinish)
+            .catch(handleError);
         })
         .catch((err) => logger.error(err));
 };
