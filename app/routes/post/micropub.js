@@ -32,6 +32,19 @@ exports.micropubPost = function micropubPost(req, res) {
         'Authorization' : token
     };
 
+     function handleError(err) {
+        logger.info('Micropub update to Github API Failed');
+        logger.error(err);
+        res.status(400);
+        res.send('Update failed');
+    }
+
+    function functionFinish() {
+        logger.info('Micropub complete');
+        res.status(202);
+        res.send('Accepted');
+    }
+
     //Log packages sent, for debug
     logger.info('json body ' + JSON.stringify(req.body));
 
