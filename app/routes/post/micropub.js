@@ -32,6 +32,19 @@ exports.micropubPost = function micropubPost(req, res) {
         'Authorization' : token
     };
 
+    function handleError(err) {
+        logger.info('Micropub update to Github API Failed');
+        logger.error(err);
+        res.status(400);
+        res.send('Update failed');
+    }
+
+    function functionFinish() {
+        logger.info('Micropub complete');
+        res.status(202);
+        res.send('Accepted');
+    }
+
     //Log packages sent, for debug
     logger.info('json body ' + JSON.stringify(req.body));
 
@@ -116,21 +129,9 @@ exports.micropubPost = function micropubPost(req, res) {
             };
 
             // The error checking here is poor. We are not handling if GIT throws an error.
-            request(payloadOptions, function sendIt(error, response, body) {
-                if (error) {
-                    res.status(400);
-                    res.send('Error Sending Payload');
-                    logger.error(`Git creation failed: ${error}`);
-                    res.end('Error Sending Payload');
-                    throw new Error(`Failed to send: ${error}`);
-                } else {
-                    logger.info('Git creation successful!  Server responded with:', body);
-                    res.writeHead(201, {
-                        'location' : responseLocation
-                    });
-                    res.end('Thanks');
-                }
-            });
+            rp(options)
+            .then(functionFinish)
+            .catch(handleError);
         })
         .catch((err) => logger.error(err));
 };
