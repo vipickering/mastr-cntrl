@@ -1,4 +1,6 @@
 const rp = require('request-promise');
+const fetch = require('node-fetch'); //Swap for RP
+const request = require('request'); //Swap for RP
 const moment = require('moment');
 const config = require(appRootDirectory + '/app/config.js');
 const github = config.github;
@@ -13,21 +15,21 @@ exports.micropubPost = function micropubPost(req, res) {
     let responseLocation;
     let payload;
     let messageContent;
-    let options;
+    let payloadOptions;
     let publishedDate;
     let postDestination;
     let noteType;
     let serviceType;
+    let postFileNameDate;
+    let postFileNameTime;
+    let responseDate;
+    let responseLocationTime;
     const micropubContent = req.body;
     const token = req.headers.authorization;
+    const indieauth = 'https://tokens.indieauth.com/token';
     const authOptions = {
-        uri : 'https://tokens.indieauth.com/token',
-        headers : {
-            'User-Agent' : 'Request-Promise',
-            'Accept' : 'application/json',
-            'Authorization' : token
-        },
-        json : true
+        'Accept' : 'application/json',
+        'Authorization' : token
     };
 
     function authError(err) {
@@ -35,19 +37,6 @@ exports.micropubPost = function micropubPost(req, res) {
         logger.error(err);
         res.status(400);
         res.send('IndieAuth login denied');
-    }
-
-    function handleError(err) {
-        logger.info('Micropub update to Github API Failed');
-        logger.error(err);
-        res.status(400);
-        res.send('Update failed');
-    }
-
-    function functionFinish() {
-        logger.info('Micropub complete');
-        res.status(201);
-        res.send('Accepted');
     }
 
     //Log packages sent, for debug
@@ -61,81 +50,92 @@ exports.micropubPost = function micropubPost(req, res) {
     }
 
     //Format date time for naming file.
-    const postFileNameDate = publishedDate.slice(0, 10);
-    const postFileNameTime = publishedDate.replace(/:/g, '-').slice(11, -9);
-    const responseDate = postFileNameDate.replace(/-/g, '/');
-    const responseLocationTime = publishedDate.slice(11, -12) + '-' + publishedDate.slice(14, -9);
+    postFileNameDate = publishedDate.slice(0, 10);
+    postFileNameTime = publishedDate.replace(/:/g, '-').slice(11, -9);
+    responseDate = postFileNameDate.replace(/-/g, '/');
+    responseLocationTime = publishedDate.slice(11, -12) + '-' + publishedDate.slice(14, -9);
 
-    function authResponse(response) {
+function authResponse(response) {
         return response;
     }
 
     function micropubResponse(json) {
-        serviceIdentifier = json.client_id;
-        logger.info('Service Is: ' + serviceIdentifier);
+            logger.info(JSON.stringify(json));
+            serviceIdentifier = json.client_id;
+            logger.info('Service Is: ' + serviceIdentifier);
 
-        switch (serviceIdentifier) {
-        case 'https://ownyourswarm.p3k.io':
-            serviceType = 'Checkin';
-            noteType = 'checkins';
-            logger.info('Creating Swarm checkin');
-            payload = formatCheckin.checkIn(micropubContent);
-            break;
-        case 'https://ownyourgram.com/':
-            serviceType = 'Photo';
-            noteType = 'notes';
-            logger.info('Creating Instagram note');
-            payload = formatInstagram.instagram(micropubContent);
-            break;
-        case 'https://quill.p3k.io/':
-            // At this point I need to look at the note types and route in to the correct formatter.
-            serviceType = 'Note'; // Needs updating to different types
-            noteType = 'notes'; // Separate Likes, etc?
-            logger.info('Creating Quill xxx');
-            payload = formatNote.note(micropubContent);
-            break;
-        default:
-            serviceType = 'Note';
-            noteType = 'notes';
-            logger.info('Creating default Note');
-            payload = formatNote.note(micropubContent);
-        }
+            switch (serviceIdentifier) {
+            case 'https://ownyourswarm.p3k.io':
+                serviceType = 'Checkin';
+                noteType = 'checkins';
+                logger.info('Creating Swarm checkin');
+                payload = formatCheckin.checkIn(micropubContent);
+                break;
+            case 'https://ownyourgram.com/':
+                serviceType = 'Photo';
+                noteType = 'notes';
+                logger.info('Creating Instagram note');
+                payload = formatInstagram.instagram(micropubContent);
+                break;
+            case 'https://quill.p3k.io/':
+                // At this point I need to look at the note types and route in to the correct formatter.
+                serviceType = 'Note'; // Needs updating to different types
+                noteType = 'notes'; // Separate Likes, etc?
+                logger.info('Creating Quill xxx');
+                payload = formatNote.note(micropubContent);
+                break;
+            default:
+                serviceType = 'Note';
+                noteType = 'notes';
+                logger.info('Creating default Note');
+                payload = formatNote.note(micropubContent);
+            }
 
-        messageContent = `:robot: ${serviceType}  submitted by Mastrl Cntrl`;
-        postFileName = `${postFileNameDate}-${postFileNameTime}.md`;
-        responseLocation = `https://vincentp.me/${noteType}/${responseDate}/${responseLocationTime}`;
-        logger.info(`Response: ${responseLocation}`);
-        postDestination = `${github.postUrl}/contents/_posts/${postFileName}`;
-        logger.info(`Destination: ${postDestination}`);
+            messageContent = `:robot: ${serviceType}  submitted by Mastrl Cntrl`;
+            postFileName = `${postFileNameDate}-${postFileNameTime}.md`;
+            responseLocation = `https://vincentp.me/${noteType}/${responseDate}/${responseLocationTime}`;
+            logger.info(`Response: ${responseLocation}`);
+            postDestination = `${github.postUrl}/contents/_posts/${postFileName}`;
+            logger.info(`Destination: ${postDestination}`);
 
-        options = {
-            method : 'PUT',
-            url : postDestination,
-            headers : {
-                Authorization : `token ${github.key}`,
-                'Content-Type' : 'application/vnd.github.v3+json; charset=UTF-8',
-                'User-Agent' : github.name
-            },
-            body : {
-                path : postFileName,
-                branch : github.branch,
-                message : messageContent,
-                committer : {
-                    'name' : github.user,
-                    'email' : github.email
+            payloadOptions = {
+                method : 'PUT',
+                url : postDestination,
+                headers : {
+                    Authorization : `token ${github.key}`,
+                    'Content-Type' : 'application/vnd.github.v3+json; charset=UTF-8',
+                    'User-Agent' : github.name
                 },
-                content : payload
-            },
-            json : true
-        };
+                body : {
+                    path : postFileName,
+                    branch : github.branch,
+                    message : messageContent,
+                    committer : {
+                        'name' : github.user,
+                        'email' : github.email
+                    },
+                    content : payload
+                },
+                json : true
+            };
 
-        logger.info('Options are: ' + JSON.stringify(options));
-        rp(options)
-            .then(functionFinish)
-            .catch(handleError);
-    }
-    // logger.info('Token Received: ' + token);
-
+            // The error checking here is poor. We are not handling if GIT throws an error.
+            request(payloadOptions, function sendIt(error, response, body) {
+                if (error) {
+                    res.status(400);
+                    res.send('Error Sending Payload');
+                    logger.error(`Git creation failed: ${error}`);
+                    res.end('Error Sending Payload');
+                    throw new Error(`Failed to send: ${error}`);
+                } else {
+                    logger.info('Git creation successful!  Server responded with:', body);
+                    res.writeHead(201, {
+                        'location' : responseLocation
+                    });
+                    res.end('Thanks');
+                }
+            });
+   }
     rp(authOptions)
         .then(authResponse)
         .then(micropubResponse)
