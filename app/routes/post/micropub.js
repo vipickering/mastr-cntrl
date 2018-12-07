@@ -81,7 +81,7 @@ exports.micropubPost = function micropubPost(req, res) {
             logger.info('Creating Instagram note');
             payload = formatInstagram.instagram(micropubContent);
             break;
-        case: 'https://indigenous.abode.pub/ios/':
+        case 'https://indigenous.abode.pub/ios/':
             serviceType = 'Note';
             noteType = 'notes';
             logger.info('Service Indigenous. Creating note');
