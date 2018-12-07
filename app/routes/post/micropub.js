@@ -1,5 +1,5 @@
-const fetch = require('node-fetch'); //Swap for RP
-const request = require('request'); //Swap for RP
+const fetch = require('node-fetch');
+const request = require('request');
 const moment = require('moment');
 const config = require(appRootDirectory + '/app/config.js');
 const github = config.github;
@@ -65,6 +65,9 @@ exports.micropubPost = function micropubPost(req, res) {
         serviceIdentifier = json.client_id;
         logger.info('Service Is: ' + serviceIdentifier);
 
+        logger.info(`Payload is: ` ${micropubContent});
+        logger.info('Payload JSON: ' + JSON.stringify(micropubContent));
+
         switch (serviceIdentifier) {
         case 'https://ownyourswarm.p3k.io':
             serviceType = 'Checkin';
@@ -78,7 +81,17 @@ exports.micropubPost = function micropubPost(req, res) {
             logger.info('Creating Instagram note');
             payload = formatInstagram.instagram(micropubContent);
             break;
+        case: 'https://indigenous.abode.pub/ios/':
+            serviceType = 'Note';
+            noteType = 'notes';
+            logger.info('Service Indigenous. Creating note');
+            payload = formatNote.note(micropubContent);
+            break;
         case 'https://quill.p3k.io/':
+
+
+        // needs to be case https://quill.p3k.io/ & like-of
+        // etc then else
             // At this point I need to look at the note types and route in to the correct formatter.
             serviceType = 'Note'; // Needs updating to different types
             noteType = 'notes'; // Separate Likes, etc?
@@ -88,7 +101,7 @@ exports.micropubPost = function micropubPost(req, res) {
         default:
             serviceType = 'Note';
             noteType = 'notes';
-            logger.info('Creating default Note');
+            logger.info('Service not recognised. Creating default Note');
             payload = formatNote.note(micropubContent);
         }
 
