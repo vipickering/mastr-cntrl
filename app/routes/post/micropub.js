@@ -65,7 +65,7 @@ exports.micropubPost = function micropubPost(req, res) {
         serviceIdentifier = json.client_id;
         logger.info('Service Is: ' + serviceIdentifier);
 
-        logger.info(`Payload is: ` ${micropubContent});
+        logger.info(`Payload is: ${micropubContent}`);
         logger.info('Payload JSON: ' + JSON.stringify(micropubContent));
 
         switch (serviceIdentifier) {
@@ -88,8 +88,6 @@ exports.micropubPost = function micropubPost(req, res) {
             payload = formatNote.note(micropubContent);
             break;
         case 'https://quill.p3k.io/':
-
-
         // needs to be case https://quill.p3k.io/ & like-of
         // etc then else
             // At this point I need to look at the note types and route in to the correct formatter.
