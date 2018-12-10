@@ -28,7 +28,7 @@ exports.note = function note(micropubContent) {
     // }
 
     //Convert to array for quick tests
-    const arr = JSON.parse(micropubContent);
+    const arr = Object.values(micropubContent);
     logger.info(arr);
     // let contentFlag = arr.includes(micropubContent.content);
     // let replyFlag = arr.includes(micropubContent['in-reply-to']);
