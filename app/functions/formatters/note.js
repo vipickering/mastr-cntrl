@@ -23,28 +23,6 @@ exports.note = function note(micropubContent) {
     //Debug
     logger.info('Note JSON: ' + JSON.stringify(micropubContent));
 
-    // function strencode (data) {
-    //     return encodeURIComponent(JSON.stringify(data)).replace(/[!'()*]/g, escape);
-    // }
-
-    //Convert to array for quick tests
-    const arr = Object.values(micropubContent);
-    logger.info(arr);
-    // let contentFlag = arr.includes(micropubContent.content);
-    // let replyFlag = arr.includes(micropubContent['in-reply-to']);
-    // let tagFlag = arr.includes(micropubContent.category);
-    // let locationFlag = arr.includes(micropubContent.location);
-    // let syndicationFlag = arr.includes(micropubContent['mp-syndicate-to'][0]);
-    // logger.info(`Content Flag: ${contentFlag}`);
-    // logger.info(`Reply Flag: ${replyFlag}`);
-    // logger.info(`Tag Flag: ${tagFlag}`);
-    // logger.info(`Location Flag: ${locationFlag}`);
-    // logger.info(`Syndication Flag: ${syndicationFlag}`);
-
-    // if (contentFlag) {
-    //     logger.info(`Content exists!`);
-    // }
-
     try {
         content = micropubContent.content;
     } catch (e) {
@@ -124,9 +102,7 @@ twitterCard: false
 ---
 ${content}
 `;
-
     logger.info('Note content finished: ' + entry);
-    // strencode(entry);
     stringEncode.strencode(entry);
     const micropubContentFormatted = base64.encode(entry);
     return micropubContentFormatted;

@@ -1,5 +1,6 @@
 const base64 = require('base64it');
 const logger = require(appRootDirectory + '/app/functions/bunyan');
+const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
 
 exports.instagram = function instagram(micropubContent) {
     const layout = 'instagram';
@@ -16,11 +17,6 @@ exports.instagram = function instagram(micropubContent) {
 
     //Debug
     logger.info('Instagram JSON: ' + JSON.stringify(micropubContent));
-
-    //https://gist.github.com/dougalcampbell/2024272
-    function strencode (data) {
-        return encodeURIComponent(JSON.stringify(data)).replace(/[!'()*]/g, escape);
-    }
 
     try {
         content = micropubContent.properties.content[0];
@@ -74,7 +70,7 @@ twitterCard: false
 ${content}
 `;
     logger.info('Instragram content: ' + entry);
-    strencode(entry);
+    stringEncode.strencode(entry);
     const micropubContentFormatted = base64.encode(entry);
     return micropubContentFormatted;
 };
