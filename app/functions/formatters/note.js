@@ -21,26 +21,7 @@ exports.note = function note(micropubContent) {
     // let entryMeta= '';
 
     //Debug
-    // logger.info('Note JSON: ' + JSON.stringify(micropubContent));
-    logger.info('Note JSON: ' + Array.of(micropubContent));
-
-    //Convert to array for quick tests
-    // const arr = Array.of(micropubContent);
-    // logger.info(arr);
-    // let contentFlag = arr.includes(micropubContent.content);
-    // let replyFlag = arr.includes(micropubContent['in-reply-to']);
-    // let tagFlag = arr.includes(micropubContent.category);
-    // let locationFlag = arr.includes(micropubContent.location);
-    // let syndicationFlag = arr.includes(micropubContent['mp-syndicate-to'][0]);
-    // logger.info(`Content Flag: ${contentFlag}`);
-    // logger.info(`Reply Flag: ${replyFlag}`);
-    // logger.info(`Tag Flag: ${tagFlag}`);
-    // logger.info(`Location Flag: ${locationFlag}`);
-    // logger.info(`Syndication Flag: ${syndicationFlag}`);
-
-    // if (contentFlag) {
-    //     logger.info(`Content exists!`);
-    // }
+    logger.info('Note JSON: ' + JSON.stringify(micropubContent));
 
     try {
         content = micropubContent.content;
