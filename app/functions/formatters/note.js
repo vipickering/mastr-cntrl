@@ -21,11 +21,12 @@ exports.note = function note(micropubContent) {
     // let entryMeta= '';
 
     //Debug
-    logger.info('Note JSON: ' + JSON.stringify(micropubContent));
+    // logger.info('Note JSON: ' + JSON.stringify(micropubContent));
+    logger.info('Note JSON: ' + Array.of(micropubContent));
 
     //Convert to array for quick tests
-    const arr = Array.of(micropubContent);
-    logger.info(arr);
+    // const arr = Array.of(micropubContent);
+    // logger.info(arr);
     // let contentFlag = arr.includes(micropubContent.content);
     // let replyFlag = arr.includes(micropubContent['in-reply-to']);
     // let tagFlag = arr.includes(micropubContent.category);
