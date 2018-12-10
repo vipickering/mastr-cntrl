@@ -2,6 +2,7 @@ const base64 = require('base64it');
 const logger = require(appRootDirectory + '/app/functions/bunyan');
 const moment = require('moment');
 const URI = require('urijs');
+const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
 
 exports.note = function note(micropubContent) {
     const layout = 'notes';
@@ -17,14 +18,32 @@ exports.note = function note(micropubContent) {
     let title = '';
     let syndication = '';
     let replyName = '';
-    let entryMeta= '';
+    // let entryMeta= '';
 
     //Debug
     logger.info('Note JSON: ' + JSON.stringify(micropubContent));
 
-    function strencode (data) {
-        return encodeURIComponent(JSON.stringify(data)).replace(/[!'()*]/g, escape);
-    }
+    // function strencode (data) {
+    //     return encodeURIComponent(JSON.stringify(data)).replace(/[!'()*]/g, escape);
+    // }
+
+    //Convert to array for quick tests
+    const arr = JSON.parse(micropubContent);
+    logger.info(arr);
+    // let contentFlag = arr.includes(micropubContent.content);
+    // let replyFlag = arr.includes(micropubContent['in-reply-to']);
+    // let tagFlag = arr.includes(micropubContent.category);
+    // let locationFlag = arr.includes(micropubContent.location);
+    // let syndicationFlag = arr.includes(micropubContent['mp-syndicate-to'][0]);
+    // logger.info(`Content Flag: ${contentFlag}`);
+    // logger.info(`Reply Flag: ${replyFlag}`);
+    // logger.info(`Tag Flag: ${tagFlag}`);
+    // logger.info(`Location Flag: ${locationFlag}`);
+    // logger.info(`Syndication Flag: ${syndicationFlag}`);
+
+    // if (contentFlag) {
+    //     logger.info(`Content exists!`);
+    // }
 
     try {
         content = micropubContent.content;
@@ -50,6 +69,7 @@ exports.note = function note(micropubContent) {
         replyTo = '';
     }
 
+    //Work this out if the flag is true above
     try {
         const uri = new URI(replyTo); // Extend this for other webmention types and match formatter
         if (typeof uri !== 'undefined') {
@@ -106,7 +126,8 @@ ${content}
 `;
 
     logger.info('Note content finished: ' + entry);
-    strencode(entry);
+    // strencode(entry);
+    stringEncode.strencode(entry);
     const micropubContentFormatted = base64.encode(entry);
     return micropubContentFormatted;
 };
