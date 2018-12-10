@@ -46,7 +46,7 @@ exports.instagram = function instagram(micropubContent) {
         tagArray = micropubContent.properties.category;
         logger.info('Instagram tags are: ' + micropubContent.properties.category);
         for (let i = 0; i < tagArray.length; i++) {
-             tags += '\n- ';
+            tags += '\n- ';
             tags += tagArray[i];
         }
     } catch (e) {
@@ -69,7 +69,7 @@ twitterCard: false
 ---
 ${content}
 `;
-    logger.info('Instragram content: ' + entry);
+    logger.info('Instragram formatter finished: ' + entry);
     stringEncode.strencode(entry);
     const micropubContentFormatted = base64.encode(entry);
     return micropubContentFormatted;

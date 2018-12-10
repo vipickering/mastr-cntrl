@@ -106,7 +106,7 @@ twitterCard: false
 ---
 ${content}
 `;
-    logger.info('Swarm content: ' + entry);
+    logger.info('Swarm formatter finished: ' + entry);
     stringEncode.strencode(entry);
     const micropubContentFormatted = base64.encode(entry);
     return micropubContentFormatted;

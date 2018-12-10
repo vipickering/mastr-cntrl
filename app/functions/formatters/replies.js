@@ -4,11 +4,12 @@ const moment = require('moment');
 const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
 
 exports.note = function note(micropubContent) {
-    const layout = 'notes';
-    const category = 'Notes';
+    const layout = 'replies';
+    const category = 'Replies';
     const pubDate  = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss');
 
     let content = '';
+    let replyTo = '';
     let location = '';
     // let photo = '';
     let tags = '';
@@ -17,12 +18,12 @@ exports.note = function note(micropubContent) {
     let syndication = '';
 
     //Debug
-    logger.info('Note JSON: ' + JSON.stringify(micropubContent));
+    logger.info('Reply JSON: ' + JSON.stringify(micropubContent));
 
     try {
         content = micropubContent.content;
     } catch (e) {
-        logger.info('No Content. Ending');
+        logger.info('No content skipping');
         content = '';
         res.status(400);
         res.send('content is empty');
@@ -33,6 +34,16 @@ exports.note = function note(micropubContent) {
     } catch (e) {
         logger.info('No title skipping');
         title = 'Note for ' + pubDate;
+    }
+
+    //Reply targets can accept multiple if hand coded. But we will limit it to a single item array, as this isn't standard functionality.
+    try {
+        replyTo = micropubContent['in-reply-to'];
+    } catch (e) {
+        logger.info('Reply contains no URL. Ending');
+        replyTo = '';
+        res.status(400);
+        res.send('Reply URL is empty');
     }
 
     try {
@@ -68,6 +79,7 @@ exports.note = function note(micropubContent) {
 layout: "${layout}"
 title: "${title}"
 date: "${pubDate}"
+target: "${replyTo}"
 meta: "${title}"
 category: "${category}"
 tags:${tags}
@@ -77,7 +89,7 @@ twitterCard: false
 ---
 ${content}
 `;
-    logger.info('Note formatter finished: ' + entry);
+    logger.info('Reply formatter finished: ' + entry);
     stringEncode.strencode(entry);
     const micropubContentFormatted = base64.encode(entry);
     return micropubContentFormatted;

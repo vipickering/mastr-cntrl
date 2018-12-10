@@ -3,18 +3,16 @@ const logger = require(appRootDirectory + '/app/functions/bunyan');
 const moment = require('moment');
 const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
 
-exports.note = function note(micropubContent) {
-    const layout = 'notes';
-    const category = 'Notes';
+exports.bookmark = function bookmark(micropubContent) {
+    const layout = 'bookmark';
+    const category = 'Bookmarks';
     const pubDate  = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss');
 
     let content = '';
-    let location = '';
-    // let photo = '';
     let tags = '';
     let tagArray = '';
     let title = '';
-    let syndication = '';
+    let bookmarkLink = '';
 
     //Debug
     logger.info('Note JSON: ' + JSON.stringify(micropubContent));
@@ -22,17 +20,26 @@ exports.note = function note(micropubContent) {
     try {
         content = micropubContent.content;
     } catch (e) {
-        logger.info('No Content. Ending');
+        logger.info('No content. Ending');
         content = '';
         res.status(400);
         res.send('content is empty');
     }
 
     try {
-        title = micropubContent.content.substring(0, 100);
+        title = micropubContent.name;
     } catch (e) {
-        logger.info('No title skipping');
-        title = 'Note for ' + pubDate;
+        logger.info('No name skipping');
+        title = `Bookmark for  ${pubDate}`;
+    }
+
+    //Reply targets can accept multiple if hand coded. But we will limit it to a single item array, as this isn't standard functionality.
+    try {
+        bookmarkLink = micropubContent['bookmark-of'];
+    } catch (e) {
+        logger.info('Bookmark is blank. Ending.');
+        res.status(400);
+        res.send('Bookmark is empty');
     }
 
     try {
@@ -46,38 +53,19 @@ exports.note = function note(micropubContent) {
         tagArray = 'miscellaneous';
     }
 
-    try {
-        location = micropubContent.location;
-        if (typeof location === 'undefined') {
-            logger.info('No location provided');
-            location = '';
-        }
-    } catch (e) {
-        logger.info('No location skipping');
-        location = '';
-    }
-
-    try {
-        syndication = micropubContent['mp-syndicate-to'][0];
-    } catch (e) {
-        logger.info('No Syndication skipping');
-        syndication = '';
-    }
-
     const entry = `---
 layout: "${layout}"
 title: "${title}"
 date: "${pubDate}"
+target: "${bookmarkLink}"
 meta: "${title}"
 category: "${category}"
 tags:${tags}
-syndication: "${syndication}"
-location: "${location}"
 twitterCard: false
 ---
 ${content}
 `;
-    logger.info('Note formatter finished: ' + entry);
+    logger.info('Bookmark formatter finished: ' + entry);
     stringEncode.strencode(entry);
     const micropubContentFormatted = base64.encode(entry);
     return micropubContentFormatted;

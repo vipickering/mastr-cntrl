@@ -7,6 +7,9 @@ const logger = require(appRootDirectory + '/app/functions/bunyan');
 const formatCheckin = require(appRootDirectory + '/app/functions/formatters/swarm');
 const formatInstagram = require(appRootDirectory + '/app/functions/formatters/instagram');
 const formatNote = require(appRootDirectory + '/app/functions/formatters/note');
+const formatBookmark = require(appRootDirectory + '/app/functions/formatters/bookmark');
+const formatFavourite = require(appRootDirectory + '/app/functions/formatters/favourite');
+const formatReplies= require(appRootDirectory + '/app/functions/formatters/replies');
 
 exports.micropubPost = function micropubPost(req, res) {
     let serviceIdentifier = '';
@@ -64,44 +67,89 @@ exports.micropubPost = function micropubPost(req, res) {
         logger.info(JSON.stringify(json));
         serviceIdentifier = json.client_id;
         logger.info('Service Is: ' + serviceIdentifier);
-
-        logger.info(`Payload is: ${micropubContent}`);
         logger.info('Payload JSON: ' + JSON.stringify(micropubContent));
 
-        switch (serviceIdentifier) {
-        case 'https://ownyourswarm.p3k.io':
-            serviceType = 'Checkin';
-            noteType = 'checkins';
-            logger.info('Creating Swarm checkin');
-            payload = formatCheckin.checkIn(micropubContent);
-            break;
-        case 'https://ownyourgram.com/':
-            serviceType = 'Photo';
-            noteType = 'notes';
-            logger.info('Creating Instagram note');
-            payload = formatInstagram.instagram(micropubContent);
-            break;
-        case 'https://indigenous.abode.pub/ios/':
-            serviceType = 'Note';
-            noteType = 'notes';
-            logger.info('Service Indigenous. Creating note');
-            payload = formatNote.note(micropubContent);
-            break;
-        case 'https://quill.p3k.io/':
-        // needs to be case https://quill.p3k.io/ & like-of
-        // etc then else
-            // At this point I need to look at the note types and route in to the correct formatter.
-            serviceType = 'Note'; // Needs updating to different types
-            noteType = 'notes'; // Separate Likes, etc?
-            logger.info('Creating Quill xxx');
-            payload = formatNote.note(micropubContent);
-            break;
-        default:
-            serviceType = 'Note';
-            noteType = 'notes';
-            logger.info('Service not recognised. Creating default Note');
-            payload = formatNote.note(micropubContent);
+        switch (true) {
+            case (serviceIdentifier === 'https://ownyourswarm.p3k.io') :
+                serviceType = 'Checkin';
+                noteType = 'checkins';
+                logger.info('Creating Swarm checkin');
+                payload = formatCheckin.checkIn(micropubContent);
+                break;
+            case (serviceIdentifier === 'https://ownyourgram.com/') :
+                serviceType = 'Photo';
+                noteType = 'notes';
+                logger.info('Creating Instagram note');
+                payload = formatInstagram.instagram(micropubContent);
+                break;
+            case (serviceIdentifier === 'https://indigenous.abode.pub/ios/') :
+                serviceType = 'Note';
+                noteType = 'notes';
+                logger.info('Service Indigenous. Creating note');
+                payload = formatNote.note(micropubContent);
+                break;
+            case ((serviceIdentifier === 'https://quill.p3k.io/') && (micropubContent['bookmark-of'] === true)):
+                serviceType = 'Bookmark';
+                noteType = 'bookmarks';
+                logger.info('Service Quill. Creating Bookmark');
+                payload = formatBookmark.bookmark(micropubContent);
+                break;
+            case ((serviceIdentifier === 'https://quill.p3k.io/') && (micropubContent['like-of'] === true)):
+                serviceType = 'Favourites';
+                noteType = 'favourites';
+                logger.info('Service Quill. Creating Favourite');
+                payload = formatFavourite.favourite(micropubContent);
+                break;
+            case ((serviceIdentifier === 'https://quill.p3k.io/') && (micropubContent['in-reply-to'] === true)):
+                serviceType = 'Replies';
+                noteType = 'replies';
+                logger.info('Service Quill. Creating Reply');
+                payload = formatReplies.replies(micropubContent);
+                break;
+            case ((serviceIdentifier === 'https://quill.p3k.io/') && (micropubContent.content === true)):
+                serviceType = 'Note';
+                noteType = 'notes';
+                logger.info('Service Quill. Creating Note');
+                payload = formatNote.note(micropubContent);
+                break;
+            default:
+                serviceType = 'Note';
+                noteType = 'notes';
+                logger.info('Service not recognised. Creating default Note');
+                payload = formatNote.note(micropubContent);
         }
+
+        // switch (serviceIdentifier) {
+        // case 'https://ownyourswarm.p3k.io':
+        //     serviceType = 'Checkin';
+        //     noteType = 'checkins';
+        //     logger.info('Creating Swarm checkin');
+        //     payload = formatCheckin.checkIn(micropubContent);
+        //     break;
+        // case 'https://ownyourgram.com/':
+        //     serviceType = 'Photo';
+        //     noteType = 'notes';
+        //     logger.info('Creating Instagram note');
+        //     payload = formatInstagram.instagram(micropubContent);
+        //     break;
+        // case 'https://indigenous.abode.pub/ios/':
+        //     serviceType = 'Note';
+        //     noteType = 'notes';
+        //     logger.info('Service Indigenous. Creating note');
+        //     payload = formatNote.note(micropubContent);
+        //     break;
+        // case 'https://quill.p3k.io/':
+        //     serviceType = 'Note';
+        //     noteType = 'notes';
+        //     logger.info('Service Quill');
+        //     payload = formatNote.note(micropubContent);
+        //     break;
+        // default:
+        //     serviceType = 'Note';
+        //     noteType = 'notes';
+        //     logger.info('Service not recognised. Creating default Note');
+        //     payload = formatNote.note(micropubContent);
+        // }
 
         messageContent = `:robot: ${serviceType}  submitted by Mastrl Cntrl`;
         postFileName = `${postFileNameDate}-${postFileNameTime}.md`;

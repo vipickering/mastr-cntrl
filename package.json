@@ -11,6 +11,7 @@
     "dev": "NODE_ENV=dev node ./bin/server.js | bunyan -o short",
     "redis:dev": "redis-server",
     "lint:functions": "eslint app/functions/*.js",
+    "lint:formatters": "eslint app/functions/formatters/*.js",
     "lint:routes": "eslint app/routes.js",
     "lint:routing": "eslint app/routes/**/*.js",
     "lint:server": "eslint bin/server.js"
