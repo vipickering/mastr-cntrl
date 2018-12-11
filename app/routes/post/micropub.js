@@ -88,25 +88,25 @@ exports.micropubPost = function micropubPost(req, res) {
                 logger.info('Service Indigenous. Creating note');
                 payload = formatNote.note(micropubContent);
                 break;
-            case ((serviceIdentifier === 'https://quill.p3k.io/') && (micropubContent.hasOwnProperty('bookmark-of'))): //Can't see extra condition. How to fix?
+            case ((serviceIdentifier === 'https://quill.p3k.io/') && (micropubContent.hasOwnProperty('bookmark-of'))):
                 serviceType = 'Bookmark';
                 noteType = 'bookmarks';
                 logger.info('Service Quill. Creating Bookmark');
                 payload = formatBookmark.bookmark(micropubContent);
                 break;
-            case ((serviceIdentifier === 'https://quill.p3k.io/') && (micropubContent['like-of'] === true)):
+            case ((serviceIdentifier === 'https://quill.p3k.io/') && (micropubContent.hasOwnProperty('like-of'))):
                 serviceType = 'Favourites';
                 noteType = 'favourites';
                 logger.info('Service Quill. Creating Favourite');
                 payload = formatFavourite.favourite(micropubContent);
                 break;
-            case ((serviceIdentifier === 'https://quill.p3k.io/') && (micropubContent['in-reply-to'] === true)):
+            case ((serviceIdentifier === 'https://quill.p3k.io/') && (micropubContent.hasOwnProperty('in-reply-to'))):
                 serviceType = 'Replies';
                 noteType = 'replies';
                 logger.info('Service Quill. Creating Reply');
                 payload = formatReplies.replies(micropubContent);
                 break;
-            case ((serviceIdentifier === 'https://quill.p3k.io/') && (micropubContent.content === true)):
+            case (serviceIdentifier === 'https://quill.p3k.io/'):
                 serviceType = 'Note';
                 noteType = 'notes';
                 logger.info('Service Quill. Creating Note');
