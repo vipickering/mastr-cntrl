@@ -3,7 +3,7 @@ const logger = require(appRootDirectory + '/app/functions/bunyan');
 const moment = require('moment');
 const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
 
-exports.note = function note(micropubContent) {
+exports.replies = function replies(micropubContent) {
     const layout = 'replies';
     const category = 'Replies';
     const pubDate  = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss');
