@@ -88,7 +88,7 @@ exports.micropubPost = function micropubPost(req, res) {
                 logger.info('Service Indigenous. Creating note');
                 payload = formatNote.note(micropubContent);
                 break;
-            case ((serviceIdentifier === 'https://quill.p3k.io/') && (micropubContent['bookmark-of'] === true)):
+            case ((serviceIdentifier === 'https://quill.p3k.io/') && (micropubContent['bookmark-of'])): //Can't see extra condition. How to fix?
                 serviceType = 'Bookmark';
                 noteType = 'bookmarks';
                 logger.info('Service Quill. Creating Bookmark');
