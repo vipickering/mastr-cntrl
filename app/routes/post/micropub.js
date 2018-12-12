@@ -89,8 +89,8 @@ exports.micropubPost = function micropubPost(req, res) {
                 payload = formatNote.note(micropubContent);
                 break;
             case ((serviceIdentifier === 'https://quill.p3k.io/') && (micropubContent.hasOwnProperty('bookmark-of'))):
-                serviceType = 'Bookmark';
-                noteType = 'bookmarks';
+                serviceType = 'Links';
+                noteType = 'links';
                 logger.info('Service Quill. Creating Bookmark');
                 payload = formatBookmark.bookmark(micropubContent);
                 break;
@@ -118,38 +118,6 @@ exports.micropubPost = function micropubPost(req, res) {
                 logger.info('Service not recognised. Creating default Note');
                 payload = formatNote.note(micropubContent);
         }
-
-        // switch (serviceIdentifier) {
-        // case 'https://ownyourswarm.p3k.io':
-        //     serviceType = 'Checkin';
-        //     noteType = 'checkins';
-        //     logger.info('Creating Swarm checkin');
-        //     payload = formatCheckin.checkIn(micropubContent);
-        //     break;
-        // case 'https://ownyourgram.com/':
-        //     serviceType = 'Photo';
-        //     noteType = 'notes';
-        //     logger.info('Creating Instagram note');
-        //     payload = formatInstagram.instagram(micropubContent);
-        //     break;
-        // case 'https://indigenous.abode.pub/ios/':
-        //     serviceType = 'Note';
-        //     noteType = 'notes';
-        //     logger.info('Service Indigenous. Creating note');
-        //     payload = formatNote.note(micropubContent);
-        //     break;
-        // case 'https://quill.p3k.io/':
-        //     serviceType = 'Note';
-        //     noteType = 'notes';
-        //     logger.info('Service Quill');
-        //     payload = formatNote.note(micropubContent);
-        //     break;
-        // default:
-        //     serviceType = 'Note';
-        //     noteType = 'notes';
-        //     logger.info('Service not recognised. Creating default Note');
-        //     payload = formatNote.note(micropubContent);
-        // }
 
         messageContent = `:robot: ${serviceType}  submitted by Mastrl Cntrl`;
         postFileName = `${postFileNameDate}-${postFileNameTime}.md`;

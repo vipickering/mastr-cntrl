@@ -10,7 +10,7 @@ exports.replies = function replies(micropubContent) {
 
     let content = '';
     let replyTo = '';
-    let location = '';
+    let location = '';g
     // let photo = '';
     let tags = '';
     let tagArray = '';
