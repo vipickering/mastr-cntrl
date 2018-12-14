@@ -4,8 +4,8 @@ const moment = require('moment');
 const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
 
 exports.bookmark = function bookmark(micropubContent) {
-    const layout = 'bookmark';
-    const category = 'Bookmarks';
+    const layout = 'links';
+    const category = 'Links';
     const pubDate  = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss');
 
     let content = '';

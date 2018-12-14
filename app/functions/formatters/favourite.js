@@ -4,7 +4,7 @@ const moment = require('moment');
 const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
 
 exports.favourite = function favourite(micropubContent) {
-    const layout = 'favourites';
+    const layout = 'favourite';
     const category = 'Favourites';
     const pubDate  = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss');
     let like = '';
