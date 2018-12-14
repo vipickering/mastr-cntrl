@@ -98,8 +98,8 @@ exports.webmentionSend = function webmentionSend(req, res) {
                 // Submit webmention to Telegraph
 
                     logger.info(webmention.telegraph);
-                    logger.info(webmentionData.webmentions[0].source);
-                    logger.info(webmentionData.webmentions[0].target);
+                    logger.info(webmentionData.webmentions.source);
+                    logger.info(webmentionData.webmentions.target);
 
                     let telegraphOptions = {
                         method : 'POST',
