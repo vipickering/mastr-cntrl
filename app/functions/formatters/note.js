@@ -41,11 +41,14 @@ exports.note = function note(micropubContent) {
     // The photo and alt tag are not extracted correctly.
     try {
         photoArray = micropubContent.photo;
-        for (let i = 0; i < photoArray.length; i++) {
+        logger.info(`photoArray: ${photoArray}`);
+        for (let j = 0; j < photoArray.length; j++) {
             photo += '\n- ';
-            photo += photoArray[i].value;
+            photo += photoArray[j].value;
+            logger.info( photoArray[j].value);
             alt += '\n- ';
-            alt +=photoArray[i].alt;
+            alt +=photoArray[j].alt;
+            logger.info( photoArray[j].alt);
         }
     } catch (e) {
         logger.info(e);
