@@ -10,8 +10,9 @@ exports.replies = function replies(micropubContent) {
 
     let content = '';
     let replyTo = '';
-    let location = '';g
+    let location = '';
     let photo = '';
+    let photoArray = '';
     let tags = '';
     let tagArray = '';
     let title = '';
@@ -47,7 +48,11 @@ exports.replies = function replies(micropubContent) {
     }
 
     try {
-        photo = micropubContent.photo;
+        photoArray = micropubContent.photo;
+         for (let i = 0; i < photoArray.length; i++) {
+            photo += '\n- ';
+            photo += photoArray[i];
+        }
     } catch (e) {
         logger.info(e);
         logger.info('No photo skipping..');
