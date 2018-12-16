@@ -9,7 +9,7 @@ const formatInstagram = require(appRootDirectory + '/app/functions/formatters/in
 const formatNote = require(appRootDirectory + '/app/functions/formatters/note');
 const formatBookmark = require(appRootDirectory + '/app/functions/formatters/bookmark');
 const formatFavourite = require(appRootDirectory + '/app/functions/formatters/favourite');
-const formatReplies= require(appRootDirectory + '/app/functions/formatters/replies');
+const formatReplies = require(appRootDirectory + '/app/functions/formatters/replies');
 
 exports.micropubPost = function micropubPost(req, res) {
     let serviceIdentifier = '';
@@ -22,10 +22,6 @@ exports.micropubPost = function micropubPost(req, res) {
     let postDestination;
     let noteType;
     let serviceType;
-    let postFileNameDate;
-    let postFileNameTime;
-    let responseDate;
-    let responseLocationTime;
     const micropubContent = req.body;
     const token = req.headers.authorization;
     const indieauth = 'https://tokens.indieauth.com/token';
@@ -41,10 +37,10 @@ exports.micropubPost = function micropubPost(req, res) {
     }
 
     //Format date time for naming file.
-    postFileNameDate = publishedDate.slice(0, 10);
-    postFileNameTime = publishedDate.replace(/:/g, '-').slice(11, -9);
-    responseDate = postFileNameDate.replace(/-/g, '/');
-    responseLocationTime = publishedDate.slice(11, -12) + '-' + publishedDate.slice(14, -9);
+    const postFileNameDate = publishedDate.slice(0, 10);
+    const postFileNameTime = publishedDate.replace(/:/g, '-').slice(11, -9);
+    const responseDate = postFileNameDate.replace(/-/g, '/');
+    const responseLocationTime = publishedDate.slice(11, -12) + '-' + publishedDate.slice(14, -9);
 
     function sendtoGithub(error, response, body) {
         // The error checking here is poor. We are not handling if GIT throws an error.
@@ -70,53 +66,53 @@ exports.micropubPost = function micropubPost(req, res) {
         logger.info('Payload JSON: ' + JSON.stringify(micropubContent));
 
         switch (true) {
-            case (serviceIdentifier === 'https://ownyourswarm.p3k.io') :
-                serviceType = 'Checkin';
-                noteType = 'checkins';
-                logger.info('Creating Swarm checkin');
-                payload = formatCheckin.checkIn(micropubContent);
-                break;
-            case (serviceIdentifier === 'https://ownyourgram.com/') :
-                serviceType = 'Photo';
-                noteType = 'notes';
-                logger.info('Creating Instagram note');
-                payload = formatInstagram.instagram(micropubContent);
-                break;
-            case (serviceIdentifier === 'https://indigenous.abode.pub/ios/') :
-                serviceType = 'Note';
-                noteType = 'notes';
-                logger.info('Service Indigenous. Creating note');
-                payload = formatNote.note(micropubContent);
-                break;
-            case ((serviceIdentifier === 'https://quill.p3k.io/') && (micropubContent.hasOwnProperty('bookmark-of'))):
-                serviceType = 'Links';
-                noteType = 'links';
-                logger.info('Service Quill. Creating Bookmark');
-                payload = formatBookmark.bookmark(micropubContent);
-                break;
-            case ((serviceIdentifier === 'https://quill.p3k.io/') && (micropubContent.hasOwnProperty('like-of'))):
-                serviceType = 'Favourites';
-                noteType = 'favourites';
-                logger.info('Service Quill. Creating Favourite');
-                payload = formatFavourite.favourite(micropubContent);
-                break;
-            case ((serviceIdentifier === 'https://quill.p3k.io/') && (micropubContent.hasOwnProperty('in-reply-to'))):
-                serviceType = 'Replies';
-                noteType = 'replies';
-                logger.info('Service Quill. Creating Reply');
-                payload = formatReplies.replies(micropubContent);
-                break;
-            case (serviceIdentifier === 'https://quill.p3k.io/'):
-                serviceType = 'Note';
-                noteType = 'notes';
-                logger.info('Service Quill. Creating Note');
-                payload = formatNote.note(micropubContent);
-                break;
-            default:
-                serviceType = 'Note';
-                noteType = 'notes';
-                logger.info('Service not recognised. Creating default Note');
-                payload = formatNote.note(micropubContent);
+        case (serviceIdentifier === 'https://ownyourswarm.p3k.io') :
+            serviceType = 'Checkin';
+            noteType = 'checkins';
+            logger.info('Creating Swarm checkin');
+            payload = formatCheckin.checkIn(micropubContent);
+            break;
+        case (serviceIdentifier === 'https://ownyourgram.com/') :
+            serviceType = 'Photo';
+            noteType = 'notes';
+            logger.info('Creating Instagram note');
+            payload = formatInstagram.instagram(micropubContent);
+            break;
+        case (serviceIdentifier === 'https://indigenous.abode.pub/ios/') :
+            serviceType = 'Note';
+            noteType = 'notes';
+            logger.info('Service Indigenous. Creating note');
+            payload = formatNote.note(micropubContent);
+            break;
+        case ((serviceIdentifier === 'https://quill.p3k.io/') && (micropubContent.hasOwnProperty('bookmark-of'))):
+            serviceType = 'Links';
+            noteType = 'links';
+            logger.info('Service Quill. Creating Bookmark');
+            payload = formatBookmark.bookmark(micropubContent);
+            break;
+        case ((serviceIdentifier === 'https://quill.p3k.io/') && (micropubContent.hasOwnProperty('like-of'))):
+            serviceType = 'Favourites';
+            noteType = 'favourites';
+            logger.info('Service Quill. Creating Favourite');
+            payload = formatFavourite.favourite(micropubContent);
+            break;
+        case ((serviceIdentifier === 'https://quill.p3k.io/') && (micropubContent.hasOwnProperty('in-reply-to'))):
+            serviceType = 'Replies';
+            noteType = 'replies';
+            logger.info('Service Quill. Creating Reply');
+            payload = formatReplies.replies(micropubContent);
+            break;
+        case (serviceIdentifier === 'https://quill.p3k.io/'):
+            serviceType = 'Note';
+            noteType = 'notes';
+            logger.info('Service Quill. Creating Note');
+            payload = formatNote.note(micropubContent);
+            break;
+        default:
+            serviceType = 'Note';
+            noteType = 'notes';
+            logger.info('Service not recognised. Creating default Note');
+            payload = formatNote.note(micropubContent);
         }
 
         messageContent = `:robot: ${serviceType}  submitted by Mastrl Cntrl`;
@@ -148,19 +144,19 @@ exports.micropubPost = function micropubPost(req, res) {
         };
 
         request(payloadOptions, sendtoGithub);
-        }
+    }
 
-        function authResponse(response) {
-            return response.json();
-        }
+    function authResponse(response) {
+        return response.json();
+    }
 
-        fetch(indieauth, {
-            method : 'GET',
-            headers : {
-                'Accept' : 'application/json',
-                'Authorization' : token
-            }
-        })
+    fetch(indieauth, {
+        method : 'GET',
+        headers : {
+            'Accept' : 'application/json',
+            'Authorization' : token
+        }
+    })
         .then(authResponse)
         .then(authAction)
         .catch((err) => logger.error(err));

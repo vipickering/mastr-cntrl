@@ -4,12 +4,14 @@ const serviceProfile = require(appRootDirectory + '/app/data/serviceProfile.json
 const RateLimit = require('ratelimit.js').RateLimit;
 const ExpressMiddleware = require('ratelimit.js').ExpressMiddleware;
 const redis = require('redis');
-
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 const micropubGetRoute = require(appRootDirectory + '/app/routes/get/micropub');
 const webmentionSendGetRoute = require(appRootDirectory + '/app/routes/post/webmention-send');
 const micropubPostRoute = require(appRootDirectory + '/app/routes/post/micropub');
 const webmentionPostRoute = require(appRootDirectory + '/app/routes/post/webmention');
-// const mediaPostRoute = require(appRootDirectory + '/app/routes/post/media');
+const mediaPostRoute = require(appRootDirectory + '/app/routes/post/media');
 let rtg;
 let redisClient;
 let redisClientOptions;
@@ -52,5 +54,5 @@ router.post('/webmention', limitEndpoint, webmentionPostRoute.webmentionPost);
 router.post('/webmention-send', limitEndpoint, webmentionSendGetRoute.webmentionSend);
 
 // Media Endpoint. For uploading media to the blog
-// router.post('/media', limitEndpoint, mediaPostRoute.mediaPost);
+router.post('/media', limitEndpoint, upload.any(), mediaPostRoute.mediaPost);
 module.exports = router;
