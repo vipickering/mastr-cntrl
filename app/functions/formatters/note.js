@@ -88,8 +88,8 @@ title: "${title}"
 date: "${pubDate}"
 meta: "${title}"
 category: "${category}"
-photo: "${photoURL}"
-alt: "${alt}"
+photo:${photoURL}
+alt:${alt}
 tags:${tags}
 syndication: "${syndication}"
 location: "${location}"

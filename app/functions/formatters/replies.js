@@ -11,7 +11,7 @@ exports.replies = function replies(micropubContent) {
     let content = '';
     let replyTo = '';
     let location = '';
-    let photo = '';
+    let photoURL = '';
     let photoArray = '';
     let alt = '';
     let tags = '';
@@ -49,12 +49,13 @@ exports.replies = function replies(micropubContent) {
     }
 
     try {
-        photoArray = micropubContent.photo;
-         for (let i = 0; i < photoArray.length; i++) {
-            photo += '\n- ';
-            photo += photoArray[i].value;
+        photoArray = micropubContent.properties.photo;
+
+        for (let j = 0; j < photoArray.length; j++) {
+            photoURL += '\n- ';
+            photoURL += photoArray[j].value;
             alt += '\n- ';
-            alt +=photoArray[i].alt;
+            alt +=photoArray[j].alt;
         }
     } catch (e) {
         logger.info(e);
@@ -97,8 +98,8 @@ date: "${pubDate}"
 target: "${replyTo}"
 meta: "${title}"
 category: "${category}"
-photo: "${photo}"
-alt: "${alt}"
+photo:${photoURL}
+alt:${alt}
 tags:${tags}
 syndication: "${syndication}"
 location: "${location}"
