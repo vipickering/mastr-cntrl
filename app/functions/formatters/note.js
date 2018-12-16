@@ -35,12 +35,12 @@ exports.note = function note(micropubContent) {
         title = 'Note for ' + pubDate;
     }
 
-    // try {
-    //     photo = micropubContent.properties.photo[0];
-    // } catch (e) {
-    //     logger.info(e);
-    //     logger.info('No photo skipping..');
-    // }
+    try {
+        photo = micropubContent.photo;
+    } catch (e) {
+        logger.info(e);
+        logger.info('No photo skipping..');
+    }
 
     try {
         tagArray = micropubContent.category;
@@ -77,6 +77,7 @@ title: "${title}"
 date: "${pubDate}"
 meta: "${title}"
 category: "${category}"
+photo: "${photo}"
 tags:${tags}
 syndication: "${syndication}"
 location: "${location}"
