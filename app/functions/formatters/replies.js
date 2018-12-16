@@ -46,9 +46,8 @@ exports.replies = function replies(micropubContent) {
         res.send('Reply URL is empty');
     }
 
-
     try {
-        photo = micropubContent.properties.photo[0];
+        photo = micropubContent.photo;
     } catch (e) {
         logger.info(e);
         logger.info('No photo skipping..');
