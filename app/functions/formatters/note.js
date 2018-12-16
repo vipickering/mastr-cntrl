@@ -10,7 +10,7 @@ exports.note = function note(micropubContent) {
 
     let content = '';
     let location = '';
-    let photo = '';
+    let photoURL = '';
     let photoArray = '';
     let alt = '';
     let tags = '';
@@ -40,15 +40,13 @@ exports.note = function note(micropubContent) {
     // Add logging around photo array.
     // The photo and alt tag are not extracted correctly.
     try {
-        photoArray = micropubContent.photo;
-        logger.info(`photoArray: ${photoArray}`);
+        photoArray = micropubContent.properties.photo;
+
         for (let j = 0; j < photoArray.length; j++) {
-            photo += '\n- ';
-            photo += photoArray[j].value;
-            logger.info( photoArray[j].value);
+            photoURL += '\n- ';
+            photoURL += photoArray[j].value;
             alt += '\n- ';
             alt +=photoArray[j].alt;
-            logger.info( photoArray[j].alt);
         }
     } catch (e) {
         logger.info(e);
@@ -90,7 +88,7 @@ title: "${title}"
 date: "${pubDate}"
 meta: "${title}"
 category: "${category}"
-photo: "${photo}"
+photo: "${photoURL}"
 alt: "${alt}"
 tags:${tags}
 syndication: "${syndication}"
