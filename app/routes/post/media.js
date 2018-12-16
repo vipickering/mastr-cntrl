@@ -11,7 +11,7 @@ const github = config.github;
 const logger = require(appRootDirectory + '/app/functions/bunyan');
 
 exports.mediaPost = function mediaPost(req, res) {
-    const publishedDate = moment(new Date()).format('YYYY-MM-DDT');
+    const publishedDate = moment(new Date()).format('YYYY-MM-DD');
     const filename = shortid.characters('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_');
     const photoName = `${filename}.jpg`; //Need to identify other mimetypes
     const payload = base64.encode(req.files[0].buffer);
