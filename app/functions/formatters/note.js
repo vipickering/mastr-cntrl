@@ -12,6 +12,7 @@ exports.note = function note(micropubContent) {
     let location = '';
     let photo = '';
     let photoArray = '';
+    let alt = '';
     let tags = '';
     let tagArray = '';
     let title = '';
@@ -36,11 +37,13 @@ exports.note = function note(micropubContent) {
         title = 'Note for ' + pubDate;
     }
 
-   try {
+    try {
         photoArray = micropubContent.photo;
          for (let i = 0; i < photoArray.length; i++) {
             photo += '\n- ';
-            photo += photoArray[i];
+            photo += photoArray[i].value;
+            alt += '\n- ';
+            alt +=photoArray[i].alt;
         }
     } catch (e) {
         logger.info(e);
@@ -83,6 +86,7 @@ date: "${pubDate}"
 meta: "${title}"
 category: "${category}"
 photo: "${photo}"
+alt: "${alt}"
 tags:${tags}
 syndication: "${syndication}"
 location: "${location}"

@@ -13,6 +13,7 @@ exports.replies = function replies(micropubContent) {
     let location = '';
     let photo = '';
     let photoArray = '';
+    let alt = '';
     let tags = '';
     let tagArray = '';
     let title = '';
@@ -51,7 +52,9 @@ exports.replies = function replies(micropubContent) {
         photoArray = micropubContent.photo;
          for (let i = 0; i < photoArray.length; i++) {
             photo += '\n- ';
-            photo += photoArray[i];
+            photo += photoArray[i].value;
+            alt += '\n- ';
+            alt +=photoArray[i].alt;
         }
     } catch (e) {
         logger.info(e);
@@ -95,6 +98,7 @@ target: "${replyTo}"
 meta: "${title}"
 category: "${category}"
 photo: "${photo}"
+alt: "${alt}"
 tags:${tags}
 syndication: "${syndication}"
 location: "${location}"
