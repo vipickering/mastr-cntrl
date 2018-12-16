@@ -23,7 +23,7 @@ exports.replies = function replies(micropubContent) {
     logger.info('Reply JSON: ' + JSON.stringify(micropubContent));
 
     try {
-        content = micropubContent.content;
+        content = micropubContent.properties.content;
     } catch (e) {
         logger.info('No content skipping');
         content = '';
@@ -32,7 +32,7 @@ exports.replies = function replies(micropubContent) {
     }
 
     try {
-        title = micropubContent.content.substring(0, 100);
+        title = micropubContent.properties.content.substring(0, 100);
     } catch (e) {
         logger.info('No title skipping');
         title = 'Note for ' + pubDate;
@@ -63,7 +63,7 @@ exports.replies = function replies(micropubContent) {
     }
 
     try {
-        tagArray = micropubContent.category;
+        tagArray = micropubContent.properties.category;
         for (let i = 0; i < tagArray.length; i++) {
             tags += '\n- ';
             tags += tagArray[i];
@@ -74,7 +74,7 @@ exports.replies = function replies(micropubContent) {
     }
 
     try {
-        location = micropubContent.location;
+        location = micropubContent.properties.location;
         if (typeof location === 'undefined') {
             logger.info('No location provided');
             location = '';
@@ -85,7 +85,7 @@ exports.replies = function replies(micropubContent) {
     }
 
     try {
-        syndication = micropubContent['mp-syndicate-to'][0];
+        syndication = micropubContent.properties['mp-syndicate-to'][0]; //untested.
     } catch (e) {
         logger.info('No Syndication skipping');
         syndication = '';
