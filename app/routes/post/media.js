@@ -1,3 +1,4 @@
+const fetch = require('node-fetch');
 const multer = require('multer');
 const request = require('request');
 const base64 = require('base64it');
