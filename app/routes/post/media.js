@@ -32,7 +32,7 @@ exports.mediaPost = function mediaPost(req, res) {
             'User-Agent' : github.name
         },
         body : {
-            path : postFileName,
+            path : photoName,
             branch : github.branch,
             message : messageContent,
             committer : {

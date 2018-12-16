@@ -11,7 +11,7 @@ exports.replies = function replies(micropubContent) {
     let content = '';
     let replyTo = '';
     let location = '';g
-    // let photo = '';
+    let photo = '';
     let tags = '';
     let tagArray = '';
     let title = '';
@@ -44,6 +44,14 @@ exports.replies = function replies(micropubContent) {
         replyTo = '';
         res.status(400);
         res.send('Reply URL is empty');
+    }
+
+
+    try {
+        photo = micropubContent.properties.photo[0];
+    } catch (e) {
+        logger.info(e);
+        logger.info('No photo skipping..');
     }
 
     try {
@@ -82,6 +90,7 @@ date: "${pubDate}"
 target: "${replyTo}"
 meta: "${title}"
 category: "${category}"
+photo: "${photo}"
 tags:${tags}
 syndication: "${syndication}"
 location: "${location}"
