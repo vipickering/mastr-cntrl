@@ -67,11 +67,6 @@ exports.mediaPost = function mediaPost(req, res) {
         }
     }
 
-    function failure(err){
-        logger.info('something went wrong');
-        logger.info(err);
-    }
-
     logger.info(`response location: ${responseLocation}`);
     logger.info(`postDestination destination: ${postDestination}`);
 
@@ -84,5 +79,5 @@ exports.mediaPost = function mediaPost(req, res) {
         })
             .then(authResponse)
             .then(request(payloadOptions, sendtoGithub))
-            .catch(failure(err));
+            .catch((err) => logger.error(err));
 };
