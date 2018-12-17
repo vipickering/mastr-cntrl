@@ -7,6 +7,7 @@ const github = config.github;
 const website = config.website;
 const webmention = config.webmention;
 const currentTime  =  moment().format('YYYY-MM-DDTHH:mm:ss');
+const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
 
 exports.webmentionSend = function webmentionSend(req, res) {
     const messageContent = ':robot: webmentions last sent date updated by Mastrl Cntrl';
@@ -76,10 +77,10 @@ exports.webmentionSend = function webmentionSend(req, res) {
         res.send('Accepted');
     }
 
-    //https://gist.github.com/dougalcampbell/2024272
-    function strencode(data) {
-        return unescape(encodeURIComponent(JSON.stringify(data)));
-    }
+    // //https://gist.github.com/dougalcampbell/2024272
+    // function strencode(data) {
+    //     return unescape(encodeURIComponent(JSON.stringify(data)));
+    // }
 
     logger.info(githubApIFileOptions);
     logger.info('Getting current webmention date ');
@@ -133,7 +134,7 @@ exports.webmentionSend = function webmentionSend(req, res) {
                             logger.info('current publish time: ' + publishedTime);
 
                             // Prepare the code to send to Github API
-                            payload = strencode(publishedTime);
+                            payload = stringEncode.strencode(publishedTime);
                             logger.info('payload created');
 
                             //Base 64 Encode for Github API
