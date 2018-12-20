@@ -77,11 +77,6 @@ exports.webmentionSend = function webmentionSend(req, res) {
         res.send('Accepted');
     }
 
-    // //https://gist.github.com/dougalcampbell/2024272
-    // function strencode(data) {
-    //     return unescape(encodeURIComponent(JSON.stringify(data)));
-    // }
-
     logger.info(githubApIFileOptions);
     logger.info('Getting current webmention date ');
 
@@ -130,7 +125,7 @@ exports.webmentionSend = function webmentionSend(req, res) {
                             logger.info('old publish time: ' + publishedTime);
 
                             // reassign published time with current time
-                            publishedTime = `time : "${currentTime}"`;
+                            publishedTime = `time : "${currentTime}"`; // We might need to strip out the slashes here is the encoding doesn't capture it.
                             logger.info('current publish time: ' + publishedTime);
 
                             // Prepare the code to send to Github API

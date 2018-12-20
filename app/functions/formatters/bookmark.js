@@ -20,10 +20,8 @@ exports.bookmark = function bookmark(micropubContent) {
     try {
         content = micropubContent.content;
     } catch (e) {
-        logger.info('No content. Ending');
+        logger.info('No content');
         content = '';
-        res.status(400);
-        res.send('content is empty');
     }
 
     try {
@@ -37,9 +35,7 @@ exports.bookmark = function bookmark(micropubContent) {
     try {
         bookmarkLink = micropubContent['bookmark-of'];
     } catch (e) {
-        logger.info('Bookmark is blank. Ending.');
-        res.status(400);
-        res.send('Bookmark is empty');
+        logger.info('Bookmark is blank.');
     }
 
     try {

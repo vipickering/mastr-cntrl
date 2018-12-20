@@ -15,10 +15,8 @@ exports.favourite = function favourite(micropubContent) {
     try {
         like = micropubContent['like-of'];
     } catch (e) {
-        logger.info('No Favourite Content. Ending');
+        logger.info('No Favourite Content.');
         like = '';
-        res.status(400);
-        res.send('Favourite is empty');
     }
 
     const entry = `---

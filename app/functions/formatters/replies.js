@@ -27,8 +27,6 @@ exports.replies = function replies(micropubContent) {
     } catch (e) {
         logger.info('No content skipping');
         content = '';
-        res.status(400);
-        res.send('content is empty');
     }
 
     try {
@@ -42,10 +40,8 @@ exports.replies = function replies(micropubContent) {
     try {
         replyTo = micropubContent['in-reply-to'];
     } catch (e) {
-        logger.info('Reply contains no URL. Ending');
+        logger.info('Reply contains no URL');
         replyTo = '';
-        res.status(400);
-        res.send('Reply URL is empty');
     }
 
     try {

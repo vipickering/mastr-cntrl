@@ -24,10 +24,8 @@ exports.note = function note(micropubContent) {
     try {
         content = micropubContent.properties.content;
     } catch (e) {
-        logger.info('No Content. Ending');
+        logger.info('No Content');
         content = '';
-        res.status(400);
-        res.send('content is empty');
     }
 
     try {
