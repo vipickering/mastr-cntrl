@@ -2,7 +2,6 @@ const rp = require('request-promise');
 const base64 = require('base64it');
 const logger = require(appRootDirectory + '/app/functions/bunyan');
 const config = require(appRootDirectory + '/app/config.js');
-// const webmention = config.webmention;
 const github = config.github;
 const webhookKey = config.webmention.webhook;
 
@@ -46,6 +45,7 @@ exports.webmentionPost = function webmentionPost(req, res) {
     }
 
     // CAUTION apostrophes etc still do not work in webmentions
+    // TODO Investiagate if shared encoding function fixed this.
     //https://gist.github.com/dougalcampbell/2024272
     function strencode(data) {
         return unescape(encodeURIComponent(JSON.stringify(data)));
@@ -110,5 +110,4 @@ exports.webmentionPost = function webmentionPost(req, res) {
         res.status(400);
         res.send('Secret incorrect');
     }
-    // return;
 };

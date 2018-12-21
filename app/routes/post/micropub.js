@@ -117,7 +117,7 @@ exports.micropubPost = function micropubPost(req, res) {
 
         messageContent = `:robot: ${serviceType}  submitted by Mastrl Cntrl`;
         postFileName = `${postFileNameDate}-${postFileNameTime}.md`;
-        responseLocation = `https://vincentp.me/${noteType}/${responseDate}/${responseLocationTime}`;
+        responseLocation = `https://vincentp.me/${noteType}/${responseDate}/${responseLocationTime}/`;
         logger.info(`Response: ${responseLocation}`);
         postDestination = `${github.postUrl}/contents/_posts/${postFileName}`;
         logger.info(`Destination: ${postDestination}`);
