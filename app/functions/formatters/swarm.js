@@ -12,7 +12,9 @@ exports.checkIn = function checkIn(micropubContent) {
     const syndication = micropubContent.properties.syndication[0];
     const checkinName = micropubContent.properties.checkin[0].properties.name[0];
     let content = '';
-    let photo = '';
+    let photoURL = '';
+    let photoArray = '';
+    let alt = '';
     let foursquare = '';
     let addrLat = '';
     let addrLong  = '';
@@ -32,7 +34,14 @@ exports.checkIn = function checkIn(micropubContent) {
     }
 
     try {
-        photo = micropubContent.properties.photo[0];
+        photoArray = micropubContent.properties.photo;
+
+         for (let j = 0; j < photoArray.length; j++) {
+            photoURL += '\n- ';
+            photoURL += photoArray[j].value;
+            alt += '\n- ';
+            alt +=photoArray[j].alt;
+        }
     } catch (e) {
         logger.info(e);
         logger.info('No photo skipping..');
@@ -90,7 +99,8 @@ exports.checkIn = function checkIn(micropubContent) {
     const entry = `---
 layout: "${layout}"
 title: "${checkinName}"
-photo: "${photo}"
+photo:${photoURL}
+alt:${alt}
 date: "${pubDate}"
 meta: "Checked in at ${checkinName}"
 category: "${category}"

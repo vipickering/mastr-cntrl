@@ -35,8 +35,6 @@ exports.note = function note(micropubContent) {
         title = 'Note for ' + pubDate;
     }
 
-    // Add logging around photo array.
-    // The photo and alt tag are not extracted correctly.
     try {
         photoArray = micropubContent.properties.photo;
 

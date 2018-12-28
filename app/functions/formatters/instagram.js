@@ -9,7 +9,9 @@ exports.instagram = function instagram(micropubContent) {
     const syndication = micropubContent.properties.syndication[0];
     const title = micropubContent.properties.content[0].substring(0, 100);
     let content = '';
-    let photo = '';
+    let photoURL = '';
+    let photoArray = '';
+    let alt = '';
     let addrLat = '';
     let addrLong  = '';
     let tagArray = '';
@@ -25,7 +27,14 @@ exports.instagram = function instagram(micropubContent) {
         logger.info('No content skipping..');
     }
     try {
-        photo = micropubContent.properties.photo[0];
+        photoArray = micropubContent.properties.photo;
+
+        for (let j = 0; j < photoArray.length; j++) {
+            photoURL += '\n- ';
+            photoURL += photoArray[j].value;
+            alt += '\n- ';
+            alt +=photoArray[j].alt;
+        }
     } catch (e) {
         logger.info(e);
         logger.info('No photo skipping..');
@@ -44,7 +53,6 @@ exports.instagram = function instagram(micropubContent) {
     }
     try {
         tagArray = micropubContent.properties.category;
-        logger.info('Instagram tags are: ' + micropubContent.properties.category);
         for (let i = 0; i < tagArray.length; i++) {
             tags += '\n- ';
             tags += tagArray[i];
@@ -57,7 +65,8 @@ exports.instagram = function instagram(micropubContent) {
     const entry = `---
 layout: "${layout}"
 title: "${title}"
-photo: "${photo}"
+photo:${photoURL}
+alt:${alt}
 date: "${pubDate}"
 meta: "${title}"
 category: "${category}"
