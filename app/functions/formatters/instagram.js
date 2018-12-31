@@ -29,11 +29,9 @@ exports.instagram = function instagram(micropubContent) {
     try {
         photoArray = micropubContent.properties.photo;
 
-        for (let j = 0; j < photoArray.length; j++) {
-            photoURL += '\n- ';
-            photoURL += photoArray[j].value;
-            alt += '\n- ';
-            alt +=photoArray[j].alt;
+         for (let j = 0; j < photoArray.length; j++) {
+            photoURL += `photo${j+1}_url: "${photoArray[j].value}"\n`;
+            alt += `photo${j+1}_alt: "${photoArray[j].alt}"\n`;
         }
     } catch (e) {
         logger.info(e);
@@ -65,8 +63,8 @@ exports.instagram = function instagram(micropubContent) {
     const entry = `---
 layout: "${layout}"
 title: "${title}"
-photo:${photoURL}
-alt:${alt}
+${photoURL}
+${alt}
 date: "${pubDate}"
 meta: "${title}"
 category: "${category}"

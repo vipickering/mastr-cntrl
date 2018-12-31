@@ -47,10 +47,8 @@ exports.checkIn = function checkIn(micropubContent) {
         photoArray = micropubContent.properties.photo;
 
          for (let j = 0; j < photoArray.length; j++) {
-            photoURL += '\n- ';
-            photoURL += photoArray[j].value;
-            alt += '\n- ';
-            alt +=photoArray[j].alt;
+            photoURL += `photo${j+1}_url: "${photoArray[j].value}"\n`;
+            alt += `photo${j+1}_alt: "${photoArray[j].alt}"\n`;
         }
     } catch (e) {
         logger.info(e);
@@ -109,8 +107,8 @@ exports.checkIn = function checkIn(micropubContent) {
     const entry = `---
 layout: "${layout}"
 title: "${checkinName}"
-photo:${photoURL}
-alt:${alt}
+${photoURL}
+${alt}
 date: "${pubDate}"
 meta: "Checked in at ${checkinName}"
 category: "${category}"
