@@ -39,8 +39,8 @@ exports.note = function note(micropubContent) {
         photoArray = micropubContent.properties.photo;
 
          for (let j = 0; j < photoArray.length; j++) {
-            photoURL += `\nphoto${j}_url:  "${photoArray[j].value}"`;
-            alt += `\nphoto${j}_alt:  "${photoArray[j].alt}"`;
+            photoURL += `photo${j+1}_url:  "${photoArray[j+1].value}"`;
+            alt += `\nphoto${j+1}_alt:  "${photoArray[j+1].alt}"\n`;
         }
     } catch (e) {
         logger.info(e);
