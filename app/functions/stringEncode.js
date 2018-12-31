@@ -2,3 +2,8 @@
 exports.strencode = function strencode(data) {
     return encodeURIComponent(JSON.stringify(data)).replace(/[!'()*]/g, escape);
 };
+
+//Used for updating publish time
+function strentimecode(data) {
+    return unescape(encodeURIComponent(JSON.stringify(data)));
+}

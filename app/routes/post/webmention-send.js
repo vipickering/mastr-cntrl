@@ -129,8 +129,8 @@ exports.webmentionSend = function webmentionSend(req, res) {
                             logger.info('current publish time: ' + publishedTime);
 
                             // Prepare the code to send to Github API
-                            payload = stringEncode.strencode(publishedTime);
-                            logger.info('payload created');
+                            payload = stringEncode.strentimecode(publishedTime);
+                            logger.info('published time encoded');
 
                             //Base 64 Encode for Github API
                             encodedContent = base64.encode(payload);

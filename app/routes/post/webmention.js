@@ -57,12 +57,12 @@ exports.webmentionPost = function webmentionPost(req, res) {
         return JSON.parse(decodeURIComponent(escape(data)));
     }
 
-    logger.info(req.body);
+    logger.info('Webmention JSON: ' + req.body);
 
     if (req.body.secret === webhookKey) {
         logger.info('Webmentions recieved');
         const webmentionsToAdd = req.body.post;
-        logger.info('webmentions to add ' + strencode(webmentionsToAdd));
+        logger.info('Adding Webmention: ' + strencode(webmentionsToAdd));
 
         rp(apiOptions)
             .then((repos) => {
