@@ -4,6 +4,6 @@ exports.strencode = function strencode(data) {
 };
 
 //Used for updating publish time
-function strentimecode(data) {
+exports.strentimecode = function strentimecode(data) {
     return unescape(encodeURIComponent(JSON.stringify(data)));
 }
