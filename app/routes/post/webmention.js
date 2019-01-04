@@ -1,5 +1,6 @@
 const rp = require('request-promise');
 const base64 = require('base64it');
+const moment = require('moment');
 const logger = require(appRootDirectory + '/app/functions/bunyan');
 const config = require(appRootDirectory + '/app/config.js');
 const github = config.github;
@@ -7,21 +8,11 @@ const webhookKey = config.webmention.webhook;
 
 exports.webmentionPost = function webmentionPost(req, res) {
     const messageContent = ':robot: Webmentions updated by Mastrl Cntrl';
-    const postFileName = 'webmentions.json';
-    const postDestination = github.postUrl + '/contents/_data/' + postFileName;
-    const apiOptions = {
-        uri : postDestination,
-        headers : {
-            Authorization : 'token ' + github.key,
-            'Content-Type' : 'application/vnd.github.v3+json; charset=UTF-8',
-            'User-Agent' : github.name
-        },
-        json : true
-    };
+    // const postFileName = 'webmentions.json';
 
     let payload;
     let options;
-    let currentWebmentions;
+    // let currentWebmentions;
     let encodedContent;
 
     function handleGithubApiGet(err) {
@@ -57,55 +48,62 @@ exports.webmentionPost = function webmentionPost(req, res) {
         return JSON.parse(decodeURIComponent(escape(data)));
     }
 
-    logger.info('Webmention JSON: ' + req.body);
+    logger.info('Webmention Debug: ' + req.body);
 
     if (req.body.secret === webhookKey) {
-        logger.info('Webmentions recieved');
-        const webmentionsToAdd = req.body.post;
-        logger.info('Adding Webmention: ' + strencode(webmentionsToAdd));
+        logger.info('Webmention recieved');
+        const webmention = req.body.post;
+        logger.info('Creating Webmention: ' + strencode(webmention));
 
-        rp(apiOptions)
-            .then((repos) => {
-                currentWebmentions = base64.decode(repos.content);
+        // Prepare the code to send to Github API
+        payload = strencode(webmention);
+        logger.info('payload combined');
 
-                const currentWebmentionsParsed = strdecode(currentWebmentions);
-                currentWebmentionsParsed['links'].push(webmentionsToAdd);
+        //Base 64 Encode for Github API
+        encodedContent = base64.encode(payload);
+        logger.info('payload encoded');
 
-                // Prepare the code to send to Github API
-                payload = strencode(currentWebmentionsParsed);
-                logger.info('payload combined');
+        // WE NEED TO WORK OUT THE YEAR, MONTH AND DAY OF THE MENTION
+        // Use "wm-received":"2018-12-29T13:00:42Z",
+        // use moment -> const currentTime  =  moment().format('YYYY-MM-DDTHH:mm:ss');
+        const filePath =moment(webmention['wm-received'][0]).format('YYYY/MM/DD');
+        // Get file name from wm-id
+        const postDestination = `${github.postUrl}/contents/_data/${filePath}/${webmention['wm-id'][0]}`;
+        const apiOptions = {
+            uri : postDestination,
+            headers : {
+                Authorization : 'token ' + github.key,
+                'Content-Type' : 'application/vnd.github.v3+json; charset=UTF-8',
+                'User-Agent' : github.name
+            },
+            json : true
+        };
 
-                //Base 64 Encode for Github API
-                encodedContent = base64.encode(payload);
-                logger.info('payload encoded');
-
-                options = {
-                    method : 'PUT',
-                    uri : postDestination,
-                    headers : {
-                        Authorization : 'token ' + github.key,
-                        'Content-Type' : 'application/vnd.github.v3+json; charset=UTF-8',
-                        'User-Agent' : github.name
-                    },
-                    body : {
-                        path : postFileName,
-                        branch : github.branch,
-                        message : messageContent,
-                        sha : repos.sha,
-                        committer : {
-                            'name' : github.user,
-                            'email' : github.email
-                        },
-                        content : encodedContent
-                    },
-                    json : true
-                };
-                // Push file in to Github API.
-                rp(options)
-                    .then(functionFinish)
-                    .catch(handlePatchError);
-            })
-            .catch(handleGithubApiGet);
+        options = {
+            method : 'PUT',
+            uri : postDestination,
+            headers : {
+                Authorization : 'token ' + github.key,
+                'Content-Type' : 'application/vnd.github.v3+json; charset=UTF-8',
+                'User-Agent' : github.name
+            },
+            body : {
+                path : postFileName,
+                branch : github.branch,
+                message : messageContent,
+                sha : repos.sha,
+                committer : {
+                    'name' : github.user,
+                    'email' : github.email
+                },
+                content : encodedContent
+            },
+            json : true
+        };
+        // Push file in to Github API.
+        rp(options)
+            .then(functionFinish)
+            .catch(handlePatchError);
     } else {
         res.status(400);
         res.send('Secret incorrect');

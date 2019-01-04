@@ -7,7 +7,7 @@ exports.note = function note(micropubContent) {
     const layout = 'notes';
     const category = 'Notes';
     const pubDate  = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss');
-
+    const pubPrettyDate = moment(new Date()).format('YYYY-MM-DD HH:mm');
     let content = '';
     let location = '';
     let photoURL = '';
@@ -22,28 +22,27 @@ exports.note = function note(micropubContent) {
     logger.info('Note JSON: ' + JSON.stringify(micropubContent));
 
     try {
-        content = micropubContent.properties.content;
+        content = micropubContent.content;
     } catch (e) {
         logger.info('No Content');
         content = '';
     }
 
     try {
-        title = micropubContent.properties.content.substring(0, 100);
+        title = micropubContent.content.substring(0, 100);
     } catch (e) {
         logger.info('No title skipping');
-        title = 'Note for ' + pubDate;
+        title = 'Note for ' + pubPrettyDate;
     }
 
     try {
-        photoArray = micropubContent.properties.photo;
+        photoArray = micropubContent.photo;
 
          for (let j = 0; j < photoArray.length; j++) {
             photoURL += `photo${j+1}_url: "${photoArray[j].value}"\n`;
             alt += `photo${j+1}_alt: "${photoArray[j].alt}"\n`;
         }
     } catch (e) {
-        logger.info(e);
         logger.info('No photo skipping..');
     }
 
