@@ -47,7 +47,7 @@ exports.note = function note(micropubContent) {
     }
 
     try {
-        tagArray = micropubContent.properties.category;
+        tagArray = micropubContent.category;
         for (let i = 0; i < tagArray.length; i++) {
             tags += '\n- ';
             tags += tagArray[i];
@@ -58,7 +58,7 @@ exports.note = function note(micropubContent) {
     }
 
     try {
-        location = micropubContent.properties.location;
+        location = micropubContent.location;
         if (typeof location === 'undefined') {
             logger.info('No location provided');
             location = '';
@@ -69,7 +69,7 @@ exports.note = function note(micropubContent) {
     }
 
     try {
-        syndication = micropubContent.properties['mp-syndicate-to'][0]; //untested.
+        syndication = micropubContent['mp-syndicate-to'][0];
     } catch (e) {
         logger.info('No Syndication skipping');
         syndication = '';

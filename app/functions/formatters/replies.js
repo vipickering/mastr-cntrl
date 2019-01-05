@@ -23,14 +23,14 @@ exports.replies = function replies(micropubContent) {
     logger.info('Reply JSON: ' + JSON.stringify(micropubContent));
 
     try {
-        content = micropubContent.properties.content;
+        content = micropubContent.content;
     } catch (e) {
         logger.info('No content skipping');
         content = '';
     }
 
     try {
-        title = micropubContent.properties.content.substring(0, 100);
+        title = micropubContent.content.substring(0, 100);
     } catch (e) {
         logger.info('No title skipping');
         title = 'Note for ' + pubDate;
@@ -45,7 +45,7 @@ exports.replies = function replies(micropubContent) {
     }
 
     try {
-        photoArray = micropubContent.properties.photo;
+        photoArray = micropubContent.photo;
 
          for (let j = 0; j < photoArray.length; j++) {
             photoURL += `photo${j+1}_url: "${photoArray[j].value}"\n`;
@@ -57,7 +57,7 @@ exports.replies = function replies(micropubContent) {
     }
 
     try {
-        tagArray = micropubContent.properties.category;
+        tagArray = micropubContent.category;
         for (let i = 0; i < tagArray.length; i++) {
             tags += '\n- ';
             tags += tagArray[i];
@@ -68,7 +68,7 @@ exports.replies = function replies(micropubContent) {
     }
 
     try {
-        location = micropubContent.properties.location;
+        location = micropubContent.location;
         if (typeof location === 'undefined') {
             logger.info('No location provided');
             location = '';
@@ -79,7 +79,7 @@ exports.replies = function replies(micropubContent) {
     }
 
     try {
-        syndication = micropubContent.properties['mp-syndicate-to'][0]; //untested.
+        syndication = micropubContent['mp-syndicate-to'][0];
     } catch (e) {
         logger.info('No Syndication skipping');
         syndication = '';
