@@ -77,6 +77,10 @@ exports.note = function note(micropubContent) {
 
     try {
         location = micropubContent.location;
+         if (typeof location === 'undefined') {
+            logger.info('No location provided');
+            location = '';
+        }
     } catch (e) {
         logger.info('No location provided');
         location = '';
