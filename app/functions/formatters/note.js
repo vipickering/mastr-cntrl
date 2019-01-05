@@ -17,26 +17,38 @@ exports.note = function note(micropubContent) {
     let tagArray = '';
     let title = '';
     let syndication = '';
+    let syndicationArray = '';
 
     //Debug
     logger.info('Note JSON: ' + JSON.stringify(micropubContent));
 
+    //Sometimes Quill is sending JSON in different structures. Try each to make sure we snag the data
     try {
         content = micropubContent.content;
     } catch (e) {
-        logger.info('No Content');
-        content = '';
+        logger.info('No micropubContent.content');
+    }
+
+    try {
+        content = micropubContent.properties.content[0];
+    } catch (e) {
+        logger.info('No micropubContent.properties.content[0]');
     }
 
     try {
         title = micropubContent.content.substring(0, 100);
     } catch (e) {
-        logger.info('No title skipping');
-        title = 'Note for ' + pubPrettyDate;
+        logger.info('No micropubContent.content');
     }
 
     try {
-        photoArray = micropubContent.photo;
+        title = micropubContent.properties.content[0].substring(0, 100);
+    } catch (e) {
+        logger.info('No micropubContent.properties.content[0]');
+    }
+
+    try {
+        photoArray = micropubContent.properties.photo;
 
          for (let j = 0; j < photoArray.length; j++) {
             photoURL += `photo${j+1}_url: "${photoArray[j].value}"\n`;
@@ -59,21 +71,22 @@ exports.note = function note(micropubContent) {
 
     try {
         location = micropubContent.location;
-        if (typeof location === 'undefined') {
-            logger.info('No location provided');
-            location = '';
-        }
     } catch (e) {
-        logger.info('No location skipping');
+        logger.info('No location provided');
         location = '';
     }
 
-    try {
-        syndication = micropubContent['mp-syndicate-to'][0];
+     try {
+        syndicationArray = micropubContent['mp-syndicate-to'];
+        for (let i = 0; i < syndicationArray.length; i++) {
+            syndication += '\n- ';
+            syndication += syndicationArray[i];
+        }
     } catch (e) {
         logger.info('No Syndication skipping');
-        syndication = '';
+        syndicationArray = 'miscellaneous';
     }
+
 
     const entry = `---
 layout: "${layout}"
@@ -84,7 +97,7 @@ category: "${category}"
 ${photoURL}
 ${alt}
 tags:${tags}
-syndication: "${syndication}"
+syndication: ${syndication}
 location: "${location}"
 twitterCard: false
 ---
