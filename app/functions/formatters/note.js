@@ -55,7 +55,18 @@ exports.note = function note(micropubContent) {
             alt += `photo${j+1}_alt: "${photoArray[j].alt}"\n`;
         }
     } catch (e) {
-        logger.info('No photo skipping..');
+        logger.info('No photo micropubContent.properties.photo');
+    }
+
+      try {
+        photoArray = micropubContent.photo;
+
+         for (let j = 0; j < photoArray.length; j++) {
+            photoURL += `photo${j+1}_url: "${photoArray[j].value}"\n`;
+            alt += `photo${j+1}_alt: "${photoArray[j].alt}"\n`;
+        }
+    } catch (e) {
+        logger.info('No photo micropubContent.photo');
     }
 
     try {
