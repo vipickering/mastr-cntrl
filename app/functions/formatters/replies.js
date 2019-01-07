@@ -52,9 +52,8 @@ exports.replies = function replies(micropubContent) {
             alt += `photo${j+1}_alt: "${photoArray[j].alt}"\n`;
         }
     } catch (e) {
-        logger.info(e);
-        photoURL = `photo1:_url ''`;
-        alt = `photo1_alt: ''`;
+        photoURL = `photo1_url: ""`;
+        alt = `photo1_alt: ""`;
         logger.info('No photo skipping..');
     }
 

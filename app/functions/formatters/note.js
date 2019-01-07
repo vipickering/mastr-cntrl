@@ -56,8 +56,8 @@ exports.note = function note(micropubContent) {
         }
     } catch (e) {
         logger.info('No photo micropubContent.properties.photo');
-        photoURL = `photo1: ''`;
-        alt = `photo1_alt: ''`;
+        photoURL = `photo1_url: ""`;
+        alt = `photo1_alt: ""`;
     }
 
     try {

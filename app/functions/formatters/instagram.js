@@ -23,7 +23,6 @@ exports.instagram = function instagram(micropubContent) {
     try {
         content = micropubContent.properties.content[0];
     } catch (e) {
-        logger.info(e);
         logger.info('No content skipping..');
     }
     try {
@@ -34,21 +33,18 @@ exports.instagram = function instagram(micropubContent) {
             alt += `photo${j+1}_alt: "${photoArray[j].alt}"\n`;
         }
     } catch (e) {
-        logger.info(e);
-        photoURL = `photo1:_url ''`;
-        alt = `photo1_alt: ''`;
+        photoURL = `photo1_url: ""`;
+        alt = `photo1_alt: ""`;
         logger.info('No photo skipping..');
     }
     try {
         addrLat = micropubContent.properties.location[0].properties.latitude[0];
     } catch (e) {
-        logger.info(e);
         logger.info('No lattitude link skipping..');
     }
     try {
         addrLong = micropubContent.properties.location[0].properties.longitude[0];
     } catch (e) {
-        logger.info(e);
         logger.info('No longitude link skipping..');
     }
     try {
@@ -58,7 +54,6 @@ exports.instagram = function instagram(micropubContent) {
             tags += tagArray[i];
         }
     } catch (e) {
-        logger.info(e);
         logger.info('No tags skipping');
     }
 

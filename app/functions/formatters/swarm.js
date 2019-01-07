@@ -29,7 +29,6 @@ exports.checkIn = function checkIn(micropubContent) {
     try {
         content = micropubContent.properties.content[0];
     } catch (e) {
-        logger.info(e);
         logger.info('No content skipping..');
     }
 
@@ -41,58 +40,50 @@ exports.checkIn = function checkIn(micropubContent) {
             alt += `photo${j+1}_alt: "${photoArray[j].alt}"\n`;
         }
     } catch (e) {
-        logger.info(e);
-        photoURL = `photo1:_url ''`;
-        alt = `photo1_alt: ''`;
+        photoURL = `photo1_url: ""`;
+        alt = `photo1_alt: ""`;
         logger.info('No photo skipping..');
     }
 
     try {
         foursquare = micropubContent.properties.checkin[0].properties.url[0];
     } catch (e) {
-        logger.info(e);
         logger.info('No foursquare link skipping..');
     }
 
     try {
         addrLat = micropubContent.properties.checkin[0].properties.latitude[0];
     } catch (e) {
-        logger.info(e);
         logger.info('No lattitude link skipping..');
     }
 
     try {
         addrLong = micropubContent.properties.checkin[0].properties.longitude[0];
     } catch (e) {
-        logger.info(e);
         logger.info('No longitude link skipping..');
     }
 
     try {
         locality = micropubContent.properties.checkin[0].properties.locality[0];
     } catch (e) {
-        logger.info(e);
         logger.info('No locality link skipping..');
     }
 
     try {
         address  = micropubContent.properties.checkin[0].properties.address[0];
     } catch (e) {
-        logger.info(e);
         logger.info('No address link skipping..');
     }
 
     try {
         region = micropubContent.properties.checkin[0].properties.region[0];
     } catch (e) {
-        logger.info(e);
         logger.info('No region link skipping..');
     }
 
     try {
         addrCountry = micropubContent.properties.checkin[0].properties['country-name'][0];
     } catch (e) {
-        logger.info(e);
         logger.info('No country link skipping..');
     }
 
