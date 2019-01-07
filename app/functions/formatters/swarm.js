@@ -12,9 +12,9 @@ exports.checkIn = function checkIn(micropubContent) {
     const syndication = micropubContent.properties.syndication[0];
     const checkinName = micropubContent.properties.checkin[0].properties.name[0];
     let content = '';
-    let photoURL = '""';
+    let photoURL = '';
     let photoArray = '';
-    let alt = '""';
+    let alt = '';
     let foursquare = '';
     let addrLat = '';
     let addrLong  = '';
@@ -29,7 +29,8 @@ exports.checkIn = function checkIn(micropubContent) {
     try {
         content = micropubContent.properties.content[0];
     } catch (e) {
-        logger.info('No content skipping..');
+        logger.info('No content');
+         content = '';
     }
 
     try {
@@ -42,43 +43,43 @@ exports.checkIn = function checkIn(micropubContent) {
     } catch (e) {
         photoURL = `photo1_url: ""`;
         alt = `photo1_alt: ""`;
-        logger.info('No photo skipping..');
+        logger.info('No photo');
     }
 
     try {
         foursquare = micropubContent.properties.checkin[0].properties.url[0];
     } catch (e) {
-        logger.info('No foursquare link skipping..');
+        logger.info('No foursquare');
     }
 
     try {
         addrLat = micropubContent.properties.checkin[0].properties.latitude[0];
     } catch (e) {
-        logger.info('No lattitude link skipping..');
+        logger.info('No lattitude');
     }
 
     try {
         addrLong = micropubContent.properties.checkin[0].properties.longitude[0];
     } catch (e) {
-        logger.info('No longitude link skipping..');
+        logger.info('No longitude');
     }
 
     try {
         locality = micropubContent.properties.checkin[0].properties.locality[0];
     } catch (e) {
-        logger.info('No locality link skipping..');
+        logger.info('No locality');
     }
 
     try {
         address  = micropubContent.properties.checkin[0].properties.address[0];
     } catch (e) {
-        logger.info('No address link skipping..');
+        logger.info('No address');
     }
 
     try {
         region = micropubContent.properties.checkin[0].properties.region[0];
     } catch (e) {
-        logger.info('No region link skipping..');
+        logger.info('No region');
     }
 
     try {

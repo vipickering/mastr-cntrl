@@ -50,7 +50,6 @@ exports.mediaPost = function mediaPost(req, res) {
         return responseLocation;
     }
 
-
     function sendtoGithub(error, response, body) {
         if (error) {
             res.status(400);
