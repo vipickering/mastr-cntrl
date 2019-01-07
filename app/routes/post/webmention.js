@@ -69,6 +69,7 @@ exports.webmentionPost = function webmentionPost(req, res) {
         const filePath =moment(webmention['wm-received'][0]).format('YYYY/MM/DD');
         // Get file name from wm-id
         const postDestination = `${github.postUrl}/contents/_data/${filePath}/${webmention['wm-id'][0]}`;
+        const postFileName = `${webmention['wm-id'][0]}.json`;
         const apiOptions = {
             uri : postDestination,
             headers : {
