@@ -25,16 +25,6 @@ exports.checkIn = function checkIn(micropubContent) {
 
     //Debug
     logger.info('Swarm JSON Complete Content: ' + JSON.stringify(micropubContent));
-    logger.info('Swarm JSON published: ' + JSON.stringify(micropubContent.properties.published[0]));
-    logger.info('Swarm JSON syndication: ' + JSON.stringify(micropubContent.properties.syndication[0]));
-    logger.info('Swarm JSON checkin name: ' + JSON.stringify(micropubContent.properties.checkin[0].properties.name[0]));
-    logger.info('Swarm JSON foursquare link: ' + JSON.stringify(micropubContent.properties.checkin[0].properties.url[0]));
-    logger.info('Swarm JSON lattitude: ' + JSON.stringify(micropubContent.properties.checkin[0].properties.latitude[0]));
-    logger.info('Swarm JSON longitude: ' + JSON.stringify(micropubContent.properties.checkin[0].properties.longitude[0]));
-    logger.info('Swarm JSON locality: ' + JSON.stringify(micropubContent.properties.checkin[0].properties.locality[0]));
-    logger.info('Swarm JSON address: ' + JSON.stringify(micropubContent.properties.checkin[0].properties.address[0]));
-    logger.info('Swarm JSON region: ' + JSON.stringify(micropubContent.properties.checkin[0].properties.region[0]));
-    logger.info('Swarm JSON county: ' + JSON.stringify(micropubContent.properties.checkin[0].properties['country-name'][0]));
 
     try {
         content = micropubContent.properties.content[0];
