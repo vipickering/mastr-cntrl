@@ -42,6 +42,8 @@ exports.checkIn = function checkIn(micropubContent) {
         }
     } catch (e) {
         logger.info(e);
+        photoURL = `photo1:_url ''`;
+        alt = `photo1_alt: ''`;
         logger.info('No photo skipping..');
     }
 
