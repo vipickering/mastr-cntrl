@@ -60,6 +60,8 @@ exports.micropubPost = function micropubPost(req, res) {
     }
 
     function authAction(json) {
+        //This is the function that checks if the token matches.
+
         logger.info(JSON.stringify(json));
         serviceIdentifier = json.client_id;
         logger.info('Service Is: ' + serviceIdentifier);
@@ -147,7 +149,9 @@ exports.micropubPost = function micropubPost(req, res) {
     }
 
     function authResponse(response) {
-        return response.json();
+        //This is the function that checks if the token matches.
+        logger.info(response);
+        return responseLocation;
     }
 
     fetch(indieauth, {

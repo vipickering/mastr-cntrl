@@ -15,7 +15,7 @@ exports.mediaPost = function mediaPost(req, res) {
     const filename = shortid.generate();
     const photoName = `${filename}.jpg`; //Need to identify other mimetypes
     const payload = base64.encode(req.files[0].buffer);
-    const messageContent = ':robot: Media  submitted by Mastrl Cntrl';
+    const messageContent = ':robot: Media submitted by Mastrl Cntrl';
     const responseLocation = `https://vincentp.me/images/blog/${publishedDate}/${photoName}`;
     const postDestination = `${github.postUrl}/contents/images/blog/${publishedDate}/${photoName}`;
     const token = req.headers.authorization;
@@ -46,7 +46,8 @@ exports.mediaPost = function mediaPost(req, res) {
     };
 
     function authResponse(response) {
-        //Return the location and filename here.
+        //This is the function that checks if the token matches.
+        logger.info(response);
         return responseLocation;
     }
 

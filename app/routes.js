@@ -12,6 +12,7 @@ const webmentionSendGetRoute = require(appRootDirectory + '/app/routes/post/webm
 const micropubPostRoute = require(appRootDirectory + '/app/routes/post/micropub');
 const webmentionPostRoute = require(appRootDirectory + '/app/routes/post/webmention');
 const mediaPostRoute = require(appRootDirectory + '/app/routes/post/media');
+
 let rtg;
 let redisClient;
 let redisClientOptions;
@@ -43,7 +44,8 @@ router.get('/', limitEndpoint, (req, res) => {
 });
 
 //POST Routes
-// For recieving content in to the website via PESOS
+// For recieving content in to the website via Micropub
+// Secured by IndieAuth
 router.post('/micropub', limitEndpoint, micropubPostRoute.micropubPost);
 
 // Webmentions receiving in to the website. POSTs to the Github API
@@ -53,6 +55,7 @@ router.post('/webmention', limitEndpoint, webmentionPostRoute.webmentionPost);
 // Checks for available webmentions to send. If it finds any in the feed, it POSTs them to Telegraph.
 router.post('/webmention-send', limitEndpoint, webmentionSendGetRoute.webmentionSend);
 
-// Media Endpoint. For uploading media to the blog
+// Media Endpoint. For uploading media to the blog via Micropub
+// Secured by IndieAuth
 router.post('/media', limitEndpoint, upload.any(), mediaPostRoute.mediaPost);
 module.exports = router;

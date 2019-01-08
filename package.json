@@ -1,6 +1,6 @@
 {
   "name": "vincentp.micropub-api",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "The Micropub REST API that publishes to vincentp.me",
   "main": "http://mastr-cntrl.herokuapp.com",
   "author": "Vincent Pickering",
