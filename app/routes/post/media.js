@@ -48,6 +48,8 @@ exports.mediaPost = function mediaPost(req, res) {
     function authResponse(response) {
         //This is the function that checks if the token matches.
         logger.info(response);
+        logger.info(res);
+        logger.info(req);
         return responseLocation;
     }
 
@@ -70,14 +72,12 @@ exports.mediaPost = function mediaPost(req, res) {
     logger.info(`response location: ${responseLocation}`);
     logger.info(`postDestination destination: ${postDestination}`);
 
-    // 1 or more photos? need both use cases
-    // Multiple photos needed? (photo1 photo2 etc).
-
-     fetch(indieauth, {
-            method : 'GET',
-            headers : authHeaders
-        })
-            .then(authResponse)
-            .then(request(payloadOptions, sendtoGithub))
-            .catch((err) => logger.error(err));
+    // Verify Token. If OK proceed.
+    fetch(indieauth, {
+        method : 'GET',
+        headers : authHeaders
+    })
+        .then(authResponse)
+        .then(request(payloadOptions, sendtoGithub))
+        .catch((err) => logger.error(err));
 };

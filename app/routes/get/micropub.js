@@ -16,6 +16,7 @@ exports.micropubGet = function micropubGet(req, res) {
     }
 
     function micropubResponse(json) {
+        logger.info(JSON.stringify(json));
         serviceIdentifier = json.client_id;
 
         if (serviceIdentifier) {
@@ -25,14 +26,14 @@ exports.micropubGet = function micropubGet(req, res) {
         }
 
         switch (req.query.q) {
-            case ('syndicate-to') :
-                 res.json(syndicationOptions);
-                break;
-            case ('config') :
-                res.json(syndicationOptions);
-                break;
-            default:
-                res.json({});
+        case ('syndicate-to') :
+            res.json(syndicationOptions);
+            break;
+        case ('config') :
+            res.json(syndicationOptions);
+            break;
+        default:
+            res.json({});
         }
     }
 
@@ -42,6 +43,7 @@ exports.micropubGet = function micropubGet(req, res) {
         logger.info('No Indie Auth Token Received');
     }
 
+    // Verify Token. If OK proceed
     fetch(indieauth, {
         method : 'GET',
         headers : authHeaders

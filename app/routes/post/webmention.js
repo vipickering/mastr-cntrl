@@ -8,19 +8,10 @@ const webhookKey = config.webmention.webhook;
 
 exports.webmentionPost = function webmentionPost(req, res) {
     const messageContent = ':robot: Webmentions updated by Mastrl Cntrl';
-    // const postFileName = 'webmentions.json';
 
     let payload;
     let options;
-    // let currentWebmentions;
     let encodedContent;
-
-    function handleGithubApiGet(err) {
-        logger.info('Github API Get File Failed');
-        logger.error(err);
-        res.status(400);
-        res.send('Internal Error Please Contact Author');
-    }
 
     function handlePatchError(err) {
         logger.info('Webmention update to Github API Failed');
@@ -44,9 +35,9 @@ exports.webmentionPost = function webmentionPost(req, res) {
 
     // CAUTION apostrophes etc still do not work in webmentions
     //https://gist.github.com/dougalcampbell/2024272
-    function strdecode(data) {
-        return JSON.parse(decodeURIComponent(escape(data)));
-    }
+    // function strdecode(data) {
+    //     return JSON.parse(decodeURIComponent(escape(data)));
+    // }
 
     logger.info('Webmention Debug: ' + req.body);
 
@@ -63,22 +54,11 @@ exports.webmentionPost = function webmentionPost(req, res) {
         encodedContent = base64.encode(payload);
         logger.info('payload encoded');
 
-        // WE NEED TO WORK OUT THE YEAR, MONTH AND DAY OF THE MENTION
-        // Use "wm-received":"2018-12-29T13:00:42Z",
         // use moment -> const currentTime  =  moment().format('YYYY-MM-DDTHH:mm:ss');
-        const filePath =moment(webmention['wm-received'][0]).format('YYYY/MM/DD');
+        const filePath = moment(webmention['wm-received'][0]).format('YYYY/MM/DD');
         // Get file name from wm-id
         const postDestination = `${github.postUrl}/contents/_data/${filePath}/${webmention['wm-id'][0]}`;
         const postFileName = `${webmention['wm-id'][0]}.json`;
-        const apiOptions = {
-            uri : postDestination,
-            headers : {
-                Authorization : 'token ' + github.key,
-                'Content-Type' : 'application/vnd.github.v3+json; charset=UTF-8',
-                'User-Agent' : github.name
-            },
-            json : true
-        };
 
         options = {
             method : 'PUT',
@@ -92,7 +72,6 @@ exports.webmentionPost = function webmentionPost(req, res) {
                 path : postFileName,
                 branch : github.branch,
                 message : messageContent,
-                sha : repos.sha,
                 committer : {
                     'name' : github.user,
                     'email' : github.email
