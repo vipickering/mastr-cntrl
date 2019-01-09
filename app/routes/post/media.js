@@ -19,6 +19,8 @@ exports.mediaPost = function mediaPost(req, res) {
     const responseLocation = `https://vincentp.me/images/blog/${publishedDate}/${photoName}`;
     const postDestination = `${github.postUrl}/contents/images/blog/${publishedDate}/${photoName}`;
     const token = req.headers.authorization;
+    const accessToken = req.body.access_token;
+     const formattedToken = token.slice(7); //Remove Bearer
     const indieauth = 'https://tokens.indieauth.com/token';
     const authHeaders = {
         'Accept' : 'application/json',
@@ -46,11 +48,13 @@ exports.mediaPost = function mediaPost(req, res) {
     };
 
     function authResponse(response) {
-        //This is the function that checks if the token matches.
-        logger.info(response);
-        logger.info(res);
-        logger.info(req);
-        return responseLocation;
+      if (accessToken === formattedToken) {
+            logger.info('tokens match');
+            return responseLocation;
+        } else {
+            logger.info('token invalid');
+            return res.status(403);
+        }
     }
 
     function sendtoGithub(error, response, body) {
@@ -71,6 +75,10 @@ exports.mediaPost = function mediaPost(req, res) {
 
     logger.info(`response location: ${responseLocation}`);
     logger.info(`postDestination destination: ${postDestination}`);
+    logger.info('json body ' + JSON.stringify(req.body));
+    logger.info(`Authorization Token: ${token}`);
+    logger.info(`Incoming Token: ${accessToken}`);
+    logger.info(`Formatted Token: ${formattedToken}`);
 
     // Verify Token. If OK proceed.
     fetch(indieauth, {
