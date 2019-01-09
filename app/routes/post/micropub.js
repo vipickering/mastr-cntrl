@@ -10,7 +10,7 @@ const formatNote = require(appRootDirectory + '/app/functions/formatters/note');
 const formatBookmark = require(appRootDirectory + '/app/functions/formatters/bookmark');
 const formatFavourite = require(appRootDirectory + '/app/functions/formatters/favourite');
 const formatReplies = require(appRootDirectory + '/app/functions/formatters/replies');
-let serviceIdentifier = '';
+
 
 exports.micropubPost = function micropubPost(req, res) {
     let postFileName;
@@ -21,6 +21,7 @@ exports.micropubPost = function micropubPost(req, res) {
     let publishedDate;
     let postDestination;
     let noteType;
+    let serviceIdentifier = '';
     let serviceType;
     const micropubContent = req.body;
     const accessToken = req.body.access_token;
@@ -30,11 +31,6 @@ exports.micropubPost = function micropubPost(req, res) {
         'Accept' : 'application/json',
         'Authorization' : token
     };
-
-    function authResponse(response) {
-        //This is the function that checks if the token matches.
-        return responseLocation;
-    }
 
     //Log packages sent, for debug
     logger.info(`Request Body: ${JSON.stringify(req.body)}`);
@@ -47,6 +43,12 @@ exports.micropubPost = function micropubPost(req, res) {
         publishedDate = req.body.properties.published[0];
     } catch (e) {
         publishedDate = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss+00:00');
+    }
+
+    if (token) {
+        logger.info('Indie Auth Token Received: ' + token);
+    } else {
+        logger.info('No Indie Auth Token Received');
     }
 
     //Format date time for naming file.
@@ -70,6 +72,11 @@ exports.micropubPost = function micropubPost(req, res) {
             });
             res.end('Thanks');
         }
+    }
+
+    function authResponse(response) {
+        //This is the function that checks if the token matches.
+        return responseLocation;
     }
 
     function authAction(json) {
@@ -166,12 +173,6 @@ exports.micropubPost = function micropubPost(req, res) {
         };
 
         request(payloadOptions, sendtoGithub);
-    }
-
-    if (token) {
-        logger.info('Indie Auth Token Received: ' + token);
-    } else {
-        logger.info('No Indie Auth Token Received');
     }
 
     // Verify Token. If OK proceed.
