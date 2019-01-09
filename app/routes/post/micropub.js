@@ -71,8 +71,9 @@ exports.micropubPost = function micropubPost(req, res) {
         try {
             serviceIdentifier = json.client_id;
             logger.info(`Service Is: ${serviceIdentifier}`);
-        } catch {
+        } catch(e) {
             serviceIdentifier = '';
+            logger.info(json);
             logger.info(`Unable to define service`);
         }
 
