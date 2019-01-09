@@ -29,6 +29,9 @@ exports.micropubPost = function micropubPost(req, res) {
 
     //Log packages sent, for debug
     logger.info('json body ' + JSON.stringify(req.body));
+    logger.info
+    logger.info(`Authorization Token: ${token}`);
+    logger.info(`Incoming Token: ${req.body.access_token}`);
 
     //Some P3K services send the published date-time. Others do not. Check if it exists, and if not do it ourselves.
     try {
