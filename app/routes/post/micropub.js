@@ -25,7 +25,7 @@ exports.micropubPost = function micropubPost(req, res) {
     const micropubContent = req.body;
     const token = req.headers.authorization;
     const accessToken = req.body.access_token;
-    const formattedAccessToken = accessToken.slice(1); //Remove Bearer
+    const formattedAccessToken = accessToken.slice(0); //Remove Bearer
     const indieauth = 'https://tokens.indieauth.com/token';
 
     //Log packages sent, for debug
