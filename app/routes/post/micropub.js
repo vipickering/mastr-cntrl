@@ -30,7 +30,6 @@ exports.micropubPost = function micropubPost(req, res) {
     //Log packages sent, for debug
     logger.info(`Request Body: ${JSON.stringify(req.body)}`);
     logger.info(`Request Header: ${JSON.stringify(req.headers)}`);
-    logger.info(res);
     logger.info(`Authorization Token: ${token}`);
     logger.info(`Incoming Token: ${req.body.access_token}`);
 
