@@ -63,7 +63,7 @@ exports.micropubPost = function micropubPost(req, res) {
     function authAction(json) {
         //This is the function that checks if the token matches.
         logger.info('access token: ' + accessToken);
-        logger.info('JSON: ' + JSON.stringify(json));
+        logger.info('JSON: '+ JSON.stringify(json));
         serviceIdentifier = json.client_id;
         logger.info('Service Is: ' + serviceIdentifier);
         logger.info('Payload JSON: ' + JSON.stringify(micropubContent));
@@ -151,7 +151,6 @@ exports.micropubPost = function micropubPost(req, res) {
 
     function authResponse(response) {
         //This is the function that checks if the token matches.
-        logger.info(response);
         return responseLocation;
     }
 
