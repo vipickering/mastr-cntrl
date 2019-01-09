@@ -24,6 +24,7 @@ exports.micropubPost = function micropubPost(req, res) {
     let serviceType;
     const micropubContent = req.body;
     const token = req.headers.authorization;
+    const accessToken = req.body.access_token;
     const indieauth = 'https://tokens.indieauth.com/token';
 
     //Log packages sent, for debug
@@ -147,6 +148,11 @@ exports.micropubPost = function micropubPost(req, res) {
     }
 
     function authResponse(response) {
+        if (token = accessToken) {
+            logger.info('tokens match');
+        } else {
+            logger.info('token invalid');
+        }
         return response.json();
     }
 
