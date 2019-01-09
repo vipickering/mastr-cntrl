@@ -23,13 +23,12 @@ exports.micropubPost = function micropubPost(req, res) {
     let noteType;
     let serviceType;
     const micropubContent = req.body;
+    const accessToken = req.body.access_token;
     const token = req.headers.authorization;
     const indieauth = 'https://tokens.indieauth.com/token';
 
     //Log packages sent, for debug
-    logger.info(`JSON Body: ${JSON.stringify(req.body)}`);
-    logger.info(`Authorization Token: ${token}`);
-    logger.info(`IncommingToken: ${req.body.access_token}`);
+    logger.info('json body ' + JSON.stringify(req.body));
 
     //Some P3K services send the published date-time. Others do not. Check if it exists, and if not do it ourselves.
     try {
@@ -63,8 +62,8 @@ exports.micropubPost = function micropubPost(req, res) {
 
     function authAction(json) {
         //This is the function that checks if the token matches.
-
-        logger.info(JSON.stringify(json));
+        logger.info('access token: ' + accessToken);
+        logger.info('JSON: ' + JSON.stringify(json));
         serviceIdentifier = json.client_id;
         logger.info('Service Is: ' + serviceIdentifier);
         logger.info('Payload JSON: ' + JSON.stringify(micropubContent));
