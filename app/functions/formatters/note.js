@@ -61,14 +61,6 @@ exports.note = function note(micropubContent) {
     }
 
     try {
-        photoURL = `photo1_url: "${micropubContent.photo}"\n` ;
-    } catch (e) {
-        logger.info('No photo micropubContent.photo');
-        photoURL = `photo1:_url ''`;
-        alt = `photo1_alt: ''`;
-    }
-
-    try {
         tagArray = micropubContent.category;
         for (let i = 0; i < tagArray.length; i++) {
             tags += '\n- ';
