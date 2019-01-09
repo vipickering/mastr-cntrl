@@ -154,10 +154,11 @@ exports.micropubPost = function micropubPost(req, res) {
     function authResponse(response) {
         if (accessToken === formattedToken) {
             logger.info('tokens match');
+            return response.json();
         } else {
             logger.info('token invalid');
+            return res.status(403);
         }
-        return response.json();
     }
 
     fetch(indieauth, {
