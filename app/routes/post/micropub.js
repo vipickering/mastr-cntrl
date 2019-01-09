@@ -11,8 +11,8 @@ const formatBookmark = require(appRootDirectory + '/app/functions/formatters/boo
 const formatFavourite = require(appRootDirectory + '/app/functions/formatters/favourite');
 const formatReplies = require(appRootDirectory + '/app/functions/formatters/replies');
 
-
 exports.micropubPost = function micropubPost(req, res) {
+    let serviceIdentifier = '';
     let postFileName;
     let responseLocation;
     let payload;
@@ -21,34 +21,19 @@ exports.micropubPost = function micropubPost(req, res) {
     let publishedDate;
     let postDestination;
     let noteType;
-    let serviceIdentifier = '';
     let serviceType;
     const micropubContent = req.body;
-    const accessToken = req.body.access_token;
     const token = req.headers.authorization;
     const indieauth = 'https://tokens.indieauth.com/token';
-    const authHeaders = {
-        'Accept' : 'application/json',
-        'Authorization' : token
-    };
 
     //Log packages sent, for debug
-    logger.info(`Request Body: ${JSON.stringify(req.body)}`);
-    logger.info(`Request Header: ${JSON.stringify(req.headers)}`);
-    logger.info(`Authorization Token: ${token}`);
-    logger.info(`Incoming Token: ${req.body.access_token}`);
+    logger.info('json body ' + JSON.stringify(req.body));
 
     //Some P3K services send the published date-time. Others do not. Check if it exists, and if not do it ourselves.
     try {
         publishedDate = req.body.properties.published[0];
     } catch (e) {
         publishedDate = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss+00:00');
-    }
-
-    if (token) {
-        logger.info('Indie Auth Token Received: ' + token);
-    } else {
-        logger.info('No Indie Auth Token Received');
     }
 
     //Format date time for naming file.
@@ -74,25 +59,11 @@ exports.micropubPost = function micropubPost(req, res) {
         }
     }
 
-    function authResponse(response) {
-        //This is the function that checks if the token matches.
-        return responseLocation;
-    }
-
     function authAction(json) {
-        //This is the function that  needs to check if the token matches.
-
-        logger.info(`JSON: ${JSON.stringify(json)}`);
-        logger.info(`Micropub Content: ${JSON.stringify(micropubContent)}`);
-
-        try {
-            serviceIdentifier = json.client_id;
-            logger.info(`Service Is: ${serviceIdentifier}`);
-        } catch (e) {
-            serviceIdentifier = '';
-            logger.info(json);
-            logger.info('Unable to define service');
-        }
+        logger.info(JSON.stringify(json));
+        serviceIdentifier = json.client_id;
+        logger.info('Service Is: ' + serviceIdentifier);
+        logger.info('Payload JSON: ' + JSON.stringify(micropubContent));
 
         switch (true) {
         case (serviceIdentifier === 'https://ownyourswarm.p3k.io') :
@@ -175,10 +146,16 @@ exports.micropubPost = function micropubPost(req, res) {
         request(payloadOptions, sendtoGithub);
     }
 
-    // Verify Token. If OK proceed.
-   fetch(indieauth, {
+    function authResponse(response) {
+        return response.json();
+    }
+
+    fetch(indieauth, {
         method : 'GET',
-        headers : authHeaders
+        headers : {
+            'Accept' : 'application/json',
+            'Authorization' : token
+        }
     })
         .then(authResponse)
         .then(authAction)
