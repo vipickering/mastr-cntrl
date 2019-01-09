@@ -27,7 +27,9 @@ exports.micropubPost = function micropubPost(req, res) {
     const indieauth = 'https://tokens.indieauth.com/token';
 
     //Log packages sent, for debug
-    logger.info('json body ' + JSON.stringify(req.body));
+    logger.info(`JSON Body: ${JSON.stringify(req.body)}`);
+    logger.info(`Authorization Token: ${token}`);
+    logger.info(`IncommingToken: ${req.body.access_token}`);
 
     //Some P3K services send the published date-time. Others do not. Check if it exists, and if not do it ourselves.
     try {
@@ -154,6 +156,7 @@ exports.micropubPost = function micropubPost(req, res) {
         return responseLocation;
     }
 
+    // Verify Token. If OK proceed.
     fetch(indieauth, {
         method : 'GET',
         headers : {
