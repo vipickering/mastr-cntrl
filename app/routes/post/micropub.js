@@ -28,7 +28,8 @@ exports.micropubPost = function micropubPost(req, res) {
     const indieauth = 'https://tokens.indieauth.com/token';
 
     //Log packages sent, for debug
-    logger.info(`JSON Body: ${JSON.stringify(req.body)}`);
+    logger.info(`Request Body: ${JSON.stringify(req.body)}`);
+    logger.info(`Request Header: ${JSON.stringify(req.headers)}`);
     logger.info(`Authorization Token: ${token}`);
     logger.info(`Incoming Token: ${req.body.access_token}`);
 
@@ -160,7 +161,7 @@ exports.micropubPost = function micropubPost(req, res) {
 
     function authResponse(response) {
         //This is the function that checks if the token matches.
-        logger.info(response);
+        logger.info(`Auth Response: ${response}`);
         return responseLocation;
     }
 
