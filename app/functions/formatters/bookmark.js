@@ -15,37 +15,48 @@ exports.bookmark = function bookmark(micropubContent) {
     let bookmarkLink = '';
 
     //Debug
-    logger.info('Note JSON: ' + JSON.stringify(micropubContent));
+    logger.info('Bookmark JSON: ' + JSON.stringify(micropubContent));
 
+    // Sometimes Quill is sending JSON in different structures, depending upon including images.
+    // Try each method to make sure we capture the data
     try {
         content = micropubContent.content;
     } catch (e) {
-        logger.info('No content');
-        content = '';
+        logger.info('No content micropubContent.content');
     }
 
     try {
-        title = micropubContent.name;
+        content = micropubContent.properties.content[0];
     } catch (e) {
-        logger.info('No name skipping');
-        title = `Bookmark for  ${pubDate}`;
+        logger.info('No content micropubContent.properties.content[0]');
     }
 
-    //Reply targets can accept multiple if hand coded. But we will limit it to a single item array, as this isn't standard functionality.
+    try {
+        title = micropubContent.content.substring(0, 100);
+    } catch (e) {
+        logger.info('No title micropubContent.content');
+    }
+
+    try {
+        title = micropubContent.properties.content[0].substring(0, 100);
+    } catch (e) {
+        logger.info('No title micropubContent.properties.content[0]');
+    }
+
     try {
         bookmarkLink = micropubContent['bookmark-of'];
     } catch (e) {
         logger.info('Bookmark is blank.');
     }
 
-    try {
+   try {
         tagArray = micropubContent.category;
         for (let i = 0; i < tagArray.length; i++) {
             tags += '\n- ';
             tags += tagArray[i];
         }
     } catch (e) {
-        logger.info('No tags skipping');
+        logger.info('No tags provided assigning miscellaneous');
         tagArray = 'miscellaneous';
     }
 

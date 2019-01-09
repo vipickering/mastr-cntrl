@@ -22,18 +22,30 @@ exports.replies = function replies(micropubContent) {
     //Debug
     logger.info('Reply JSON: ' + JSON.stringify(micropubContent));
 
+     // Sometimes Quill is sending JSON in different structures, depending upon including images.
+    // Try each method to make sure we capture the data
     try {
         content = micropubContent.content;
     } catch (e) {
-        logger.info('No content skipping');
-        content = '';
+        logger.info('No content micropubContent.content');
+    }
+
+    try {
+        content = micropubContent.properties.content[0];
+    } catch (e) {
+        logger.info('No content micropubContent.properties.content[0]');
     }
 
     try {
         title = micropubContent.content.substring(0, 100);
     } catch (e) {
-        logger.info('No title skipping');
-        title = 'Note for ' + pubDate;
+        logger.info('No title micropubContent.content');
+    }
+
+    try {
+        title = micropubContent.properties.content[0].substring(0, 100);
+    } catch (e) {
+        logger.info('No title micropubContent.properties.content[0]');
     }
 
     //Reply targets can accept multiple if hand coded. But we will limit it to a single item array, as this isn't standard functionality.
@@ -44,17 +56,17 @@ exports.replies = function replies(micropubContent) {
         replyTo = '';
     }
 
-    try {
-        photoArray = micropubContent.photo;
+   try {
+        photoArray = micropubContent.properties.photo;
 
          for (let j = 0; j < photoArray.length; j++) {
             photoURL += `photo${j+1}_url: "${photoArray[j].value}"\n`;
             alt += `photo${j+1}_alt: "${photoArray[j].alt}"\n`;
         }
     } catch (e) {
+        logger.info('No photo provided');
         photoURL = `photo1_url: ""`;
         alt = `photo1_alt: ""`;
-        logger.info('No photo skipping..');
     }
 
     try {
@@ -64,26 +76,30 @@ exports.replies = function replies(micropubContent) {
             tags += tagArray[i];
         }
     } catch (e) {
-        logger.info('No tags skipping');
+        logger.info('No tags provided assigning miscellaneous');
         tagArray = 'miscellaneous';
     }
 
-    try {
+try {
         location = micropubContent.location;
-        if (typeof location === 'undefined') {
-            logger.info('No location provided');
+         if (typeof location === 'undefined') {
+            logger.info('Location cannot be determind');
             location = '';
         }
     } catch (e) {
-        logger.info('No location skipping');
+        logger.info('No location provided');
         location = '';
     }
 
     try {
-        syndication = micropubContent['mp-syndicate-to'][0];
+        syndicationArray = micropubContent['mp-syndicate-to'];
+        for (let i = 0; i < syndicationArray.length; i++) {
+            syndication += '\n- ';
+            syndication += syndicationArray[i];
+        }
     } catch (e) {
-        logger.info('No Syndication skipping');
-        syndication = '';
+        logger.info('No Syndication provided');
+        syndicationArray = '';
     }
 
     const entry = `---

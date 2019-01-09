@@ -19,32 +19,33 @@ exports.note = function note(micropubContent) {
     let syndication = '';
     let syndicationArray = '';
 
-    //Debug
+    // Debug
     logger.info('Note JSON: ' + JSON.stringify(micropubContent));
 
-    //Sometimes Quill is sending JSON in different structures. Try each to make sure we snag the data
+    // Sometimes Quill is sending JSON in different structures, depending upon including images.
+    // Try each method to make sure we capture the data
     try {
         content = micropubContent.content;
     } catch (e) {
-        logger.info('No micropubContent.content');
+        logger.info('No content micropubContent.content');
     }
 
     try {
         content = micropubContent.properties.content[0];
     } catch (e) {
-        logger.info('No micropubContent.properties.content[0]');
+        logger.info('No content micropubContent.properties.content[0]');
     }
 
     try {
         title = micropubContent.content.substring(0, 100);
     } catch (e) {
-        logger.info('No micropubContent.content');
+        logger.info('No title micropubContent.content');
     }
 
     try {
         title = micropubContent.properties.content[0].substring(0, 100);
     } catch (e) {
-        logger.info('No micropubContent.properties.content[0]');
+        logger.info('No title micropubContent.properties.content[0]');
     }
 
     try {
@@ -55,7 +56,7 @@ exports.note = function note(micropubContent) {
             alt += `photo${j+1}_alt: "${photoArray[j].alt}"\n`;
         }
     } catch (e) {
-        logger.info('No photo micropubContent.properties.photo');
+        logger.info('No photo provided');
         photoURL = `photo1_url: ""`;
         alt = `photo1_alt: ""`;
     }
@@ -67,14 +68,14 @@ exports.note = function note(micropubContent) {
             tags += tagArray[i];
         }
     } catch (e) {
-        logger.info('No tags skipping');
+        logger.info('No tags provided assigning miscellaneous');
         tagArray = 'miscellaneous';
     }
 
     try {
         location = micropubContent.location;
          if (typeof location === 'undefined') {
-            logger.info('No location provided');
+            logger.info('Location cannot be determind');
             location = '';
         }
     } catch (e) {
@@ -89,8 +90,8 @@ exports.note = function note(micropubContent) {
             syndication += syndicationArray[i];
         }
     } catch (e) {
-        logger.info('No Syndication skipping');
-        syndicationArray = 'miscellaneous';
+        logger.info('No Syndication provided');
+        syndicationArray = '';
     }
 
 
