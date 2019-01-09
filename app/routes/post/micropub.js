@@ -10,9 +10,9 @@ const formatNote = require(appRootDirectory + '/app/functions/formatters/note');
 const formatBookmark = require(appRootDirectory + '/app/functions/formatters/bookmark');
 const formatFavourite = require(appRootDirectory + '/app/functions/formatters/favourite');
 const formatReplies = require(appRootDirectory + '/app/functions/formatters/replies');
+let serviceIdentifier = '';
 
 exports.micropubPost = function micropubPost(req, res) {
-    let serviceIdentifier = '';
     let postFileName;
     let responseLocation;
     let payload;
@@ -26,6 +26,15 @@ exports.micropubPost = function micropubPost(req, res) {
     const accessToken = req.body.access_token;
     const token = req.headers.authorization;
     const indieauth = 'https://tokens.indieauth.com/token';
+    const authHeaders = {
+        'Accept' : 'application/json',
+        'Authorization' : token
+    };
+
+    function authResponse(response) {
+        //This is the function that checks if the token matches.
+        return responseLocation;
+    }
 
     //Log packages sent, for debug
     logger.info(`Request Body: ${JSON.stringify(req.body)}`);
@@ -159,19 +168,16 @@ exports.micropubPost = function micropubPost(req, res) {
         request(payloadOptions, sendtoGithub);
     }
 
-    function authResponse(response) {
-        //This is the function that checks if the token matches.
-        logger.info(`Auth Response: ${JSON.stringify(response)}`);
-        return responseLocation;
+    if (token) {
+        logger.info('Indie Auth Token Received: ' + token);
+    } else {
+        logger.info('No Indie Auth Token Received');
     }
 
     // Verify Token. If OK proceed.
-    fetch(indieauth, {
+   fetch(indieauth, {
         method : 'GET',
-        headers : {
-            'Accept' : 'application/json',
-            'Authorization' : token
-        }
+        headers : authHeaders
     })
         .then(authResponse)
         .then(authAction)
