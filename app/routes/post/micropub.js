@@ -148,7 +148,7 @@ exports.micropubPost = function micropubPost(req, res) {
     }
 
     function authResponse(response) {
-        if (token = accessToken) {
+        if (token === accessToken) {
             logger.info('tokens match');
         } else {
             logger.info('token invalid');
