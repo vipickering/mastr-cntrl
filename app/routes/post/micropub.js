@@ -161,7 +161,7 @@ exports.micropubPost = function micropubPost(req, res) {
 
     function authResponse(response) {
         //This is the function that checks if the token matches.
-        logger.info(`Auth Response: ${response}`);
+        logger.info(`Auth Response: ${JSON.stringify(response)}`);
         return responseLocation;
     }
 
