@@ -18,9 +18,9 @@ exports.mediaPost = function mediaPost(req, res) {
     const messageContent = ':robot: Media submitted by Mastrl Cntrl';
     const responseLocation = `https://vincentp.me/images/blog/${publishedDate}/${photoName}`;
     const postDestination = `${github.postUrl}/contents/images/blog/${publishedDate}/${photoName}`;
-    const token = req.headers.authorization;
+    let token;
+    let formattedToken;
     const accessToken = req.body.access_token;
-     const formattedToken = token.slice(7); //Remove Bearer
     const indieauth = 'https://tokens.indieauth.com/token';
     const authHeaders = {
         'Accept' : 'application/json',
@@ -47,12 +47,29 @@ exports.mediaPost = function mediaPost(req, res) {
         json : true
     };
 
+    try {
+        token = req.headers.authorization;
+        let formattedToken = token.slice(7); //Remove Bearer
+        logger.info('Token supplied');
+        logger.info(`Authorization Token: ${token}`);
+        logger.info(`Incoming Token: ${accessToken}`);
+        logger.info(`Formatted Token: ${formattedToken}`);
+    } catch (e) {
+        logger.info('No Token supplied');
+        token = '';
+        return res.status(403);
+    }
+
+    logger.info('json body ' + JSON.stringify(req.body));
+
     function authResponse(response) {
-      if (accessToken === formattedToken) {
+        // If you just submit directly there is the Use Case that the token is blank or spoofed.
+        // Check token is  not blank or undefined as well as matching the indie auth service.
+        if ((accessToken === formattedToken) && (accessToken !== '' || accessToken !== undefined) &&  (formattedToken !== '' || formattedToken !== undefined)) {
             logger.info('tokens match');
             return responseLocation;
         } else {
-            logger.info('token invalid');
+            logger.info('token mismatch');
             return res.status(403);
         }
     }
@@ -75,10 +92,6 @@ exports.mediaPost = function mediaPost(req, res) {
 
     logger.info(`response location: ${responseLocation}`);
     logger.info(`postDestination destination: ${postDestination}`);
-    logger.info('json body ' + JSON.stringify(req.body));
-    logger.info(`Authorization Token: ${token}`);
-    logger.info(`Incoming Token: ${accessToken}`);
-    logger.info(`Formatted Token: ${formattedToken}`);
 
     // Verify Token. If OK proceed.
     fetch(indieauth, {
