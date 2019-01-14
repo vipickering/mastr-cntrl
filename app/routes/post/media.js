@@ -20,7 +20,6 @@ exports.mediaPost = function mediaPost(req, res) {
     const postDestination = `${github.postUrl}/contents/images/blog/${publishedDate}/${photoName}`;
     let token;
     let formattedToken;
-    const accessToken = req.body.access_token;
     const indieauth = 'https://tokens.indieauth.com/token';
     const authHeaders = {
         'Accept' : 'application/json',
@@ -52,7 +51,6 @@ exports.mediaPost = function mediaPost(req, res) {
         let formattedToken = token.slice(7); //Remove Bearer
         logger.info('Token supplied');
         logger.info(`Authorization Token: ${token}`);
-        logger.info(`Incoming Token: ${accessToken}`);
         logger.info(`Formatted Token: ${formattedToken}`);
     } catch (e) {
         logger.info('No Token supplied');
@@ -63,15 +61,7 @@ exports.mediaPost = function mediaPost(req, res) {
     logger.info('json body ' + JSON.stringify(req.body));
 
     function authResponse(response) {
-        // If you just submit directly there is the Use Case that the token is blank or spoofed.
-        // Check token is  not blank or undefined as well as matching the indie auth service.
-        if ((accessToken === formattedToken) && (accessToken !== '' || accessToken !== undefined) && (formattedToken !== '' || formattedToken !== undefined)) {
-            logger.info('tokens match');
             return responseLocation;
-        } else {
-            logger.info('token mismatch');
-            return res.status(403);
-        }
     }
 
     function sendtoGithub(error, response, body) {

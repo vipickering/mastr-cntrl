@@ -23,9 +23,9 @@ exports.micropubPost = function micropubPost(req, res) {
     let noteType;
     let serviceType;
     const micropubContent = req.body;
-    const token = req.headers.authorization;
+    let token;
+    let formattedToken;
     const accessToken = req.body.access_token;
-    const formattedToken = token.slice(7); //Remove Bearer
     const indieauth = 'https://tokens.indieauth.com/token';
 
     //Log packages sent, for debug
@@ -39,6 +39,18 @@ exports.micropubPost = function micropubPost(req, res) {
         publishedDate = req.body.properties.published[0];
     } catch (e) {
         publishedDate = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss+00:00');
+    }
+
+     try {
+        token = req.headers.authorization;
+        let formattedToken = token.slice(7); //Remove Bearer
+        logger.info('Token supplied');
+        logger.info(`Authorization Token: ${token}`);
+        logger.info(`Formatted Token: ${formattedToken}`);
+    } catch (e) {
+        logger.info('No Token supplied');
+        token = '';
+        return res.status(403);
     }
 
     //Format date time for naming file.
@@ -152,15 +164,7 @@ exports.micropubPost = function micropubPost(req, res) {
     }
 
     function authResponse(response) {
-        // If you just submit directly there is the Use Case that the token is blank or spoofed.
-        // Check token is  not blank or undefined as well as matching the indie auth service.
-        if ((accessToken === formattedToken) && (accessToken !== '' || accessToken !== undefined) && (formattedToken !== '' || formattedToken !== undefined)) {
-            logger.info('tokens match');
             return responseLocation;
-        } else {
-            logger.info('token mismatch');
-            return res.status(403);
-        }
     }
 
     fetch(indieauth, {
