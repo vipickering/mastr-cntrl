@@ -127,6 +127,8 @@ exports.webmentionSend = function webmentionSend(req, res) {
                             // reassign published time with current time
                             publishedTime = `"time": "${currentTime}"`; // We might need to strip out the slashes here is the encoding doesn't capture it.
                             logger.info('current publish time: ' + publishedTime);
+                            publishedTime = str.replace(/\\/g, ""); //Strip slashes
+                            logger.info('time with slashes stripped: ' + publishedTime);
 
                             // Prepare the code to send to Github API
                             payload = stringEncode.strentimecode(publishedTime);
