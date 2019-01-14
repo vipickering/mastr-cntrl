@@ -15,6 +15,7 @@ exports.webmentionPost = function webmentionPost(req, res) {
     let filePath;
     let postDestination;
     let postFileName;
+    let webmentionDate;
     let fileName;
 
     function handlePatchError(err) {
@@ -43,7 +44,7 @@ exports.webmentionPost = function webmentionPost(req, res) {
     //     return JSON.parse(decodeURIComponent(escape(data)));
     // }
 
-    logger.info('Webmention Debug: ' + req.body);
+    logger.info('Webmention Debug: ' + JSON.stringify(req.body));
 
     if (req.body.secret === webhookKey) {
         logger.info('Webmention recieved');
@@ -60,15 +61,36 @@ exports.webmentionPost = function webmentionPost(req, res) {
 
         // use moment -> const currentTime  =  moment().format('YYYY-MM-DDTHH:mm:ss');
         try {
-            filePath = moment(webmention['wm-received'][0]).format('YYYY/MM/DD');
+            webmentionDate = webmention['wm-received'][0];
+            logger.info(webmentionDate);
         } catch (e){
             logger.info('wm-received [0] failed');
         }
 
-        logger.info('webmention ID: ' + webmention['wm-id']);
-        fileName = webmention['wm-id'];
-        postDestination = `${github.postUrl}/contents/_data/webmention/${filePath}/${fileName}`;
+        try {
+            webmentionDate = webmention['wm-received'];
+            logger.info(webmentionDate);
+        } catch (e){
+            logger.info('wm-received failed');
+        }
+
+        try {
+            fileName = webmention['wm-id'][0];
+            logger.info(fileName);
+        } catch (e){
+            logger.info('wm-id [0] failed');
+        }
+
+        try {
+            fileName = webmention['wm-id'];
+            logger.info(fileName);
+        } catch (e){
+            logger.info('wm-id failed');
+        }
+
+        filePath = moment(webmentionDate).format('YYYY/MM/DD');
         postFileName = `${fileName}.json`;
+        postDestination = `${github.postUrl}/contents/_data/webmention/${filePath}/${postFileName}`;
 
         options = {
             method : 'PUT',
