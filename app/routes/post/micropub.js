@@ -23,32 +23,23 @@ exports.micropubPost = function micropubPost(req, res) {
     let noteType;
     let serviceType;
     const micropubContent = req.body;
-    let token;
-    let formattedToken;
+    const token = req.headers.authorization;
     const accessToken = req.body.access_token;
+    const formattedToken = token.slice(7); //Remove Bearer
     const indieauth = 'https://tokens.indieauth.com/token';
 
-     //Some P3K services send the published date-time. Others do not. Check if it exists, and if not do it ourselves.
+    //Log packages sent, for debug
+    logger.info('json body ' + JSON.stringify(req.body));
+    logger.info(`Authorization Token: ${token}`);
+    logger.info(`Incoming Token: ${accessToken}`);
+    logger.info(`Formatted Token: ${formattedToken}`);
+
+    //Some P3K services send the published date-time. Others do not. Check if it exists, and if not do it ourselves.
     try {
         publishedDate = req.body.properties.published[0];
     } catch (e) {
         publishedDate = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss+00:00');
     }
-
-     try {
-        token = req.headers.authorization;
-        let formattedToken = token.slice(7); //Remove Bearer
-        logger.info('Token supplied');
-        logger.info(`Authorization Token: ${token}`);
-        logger.info(`Formatted Token: ${formattedToken}`);
-    } catch (e) {
-        logger.info('No Token supplied');
-        token = '';
-        return res.status(403);
-    }
-
-       //Log packages sent, for debug
-    logger.info('json body ' + JSON.stringify(req.body));
 
     //Format date time for naming file.
     const postFileNameDate = publishedDate.slice(0, 10);
@@ -161,7 +152,7 @@ exports.micropubPost = function micropubPost(req, res) {
     }
 
     function authResponse(response) {
-            return responseLocation;
+            return response.json();
     }
 
     fetch(indieauth, {
