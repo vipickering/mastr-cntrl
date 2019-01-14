@@ -65,7 +65,7 @@ exports.mediaPost = function mediaPost(req, res) {
     function authResponse(response) {
         // If you just submit directly there is the Use Case that the token is blank or spoofed.
         // Check token is  not blank or undefined as well as matching the indie auth service.
-        if ((accessToken === formattedToken) && (accessToken !== '' || accessToken !== undefined) &&  (formattedToken !== '' || formattedToken !== undefined)) {
+        if ((accessToken === formattedToken) && (accessToken !== '' || accessToken !== undefined) && (formattedToken !== '' || formattedToken !== undefined)) {
             logger.info('tokens match');
             return responseLocation;
         } else {
