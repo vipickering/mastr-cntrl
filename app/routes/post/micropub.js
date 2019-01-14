@@ -28,13 +28,7 @@ exports.micropubPost = function micropubPost(req, res) {
     const accessToken = req.body.access_token;
     const indieauth = 'https://tokens.indieauth.com/token';
 
-    //Log packages sent, for debug
-    logger.info('json body ' + JSON.stringify(req.body));
-    logger.info(`Authorization Token: ${token}`);
-    logger.info(`Incoming Token: ${accessToken}`);
-    logger.info(`Formatted Token: ${formattedToken}`);
-
-    //Some P3K services send the published date-time. Others do not. Check if it exists, and if not do it ourselves.
+     //Some P3K services send the published date-time. Others do not. Check if it exists, and if not do it ourselves.
     try {
         publishedDate = req.body.properties.published[0];
     } catch (e) {
@@ -52,6 +46,9 @@ exports.micropubPost = function micropubPost(req, res) {
         token = '';
         return res.status(403);
     }
+
+       //Log packages sent, for debug
+    logger.info('json body ' + JSON.stringify(req.body));
 
     //Format date time for naming file.
     const postFileNameDate = publishedDate.slice(0, 10);
