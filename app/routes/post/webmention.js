@@ -15,6 +15,7 @@ exports.webmentionPost = function webmentionPost(req, res) {
     let filePath;
     let postDestination;
     let postFileName;
+    let fileName;
 
     function handlePatchError(err) {
         logger.info('Webmention update to Github API Failed');
@@ -64,15 +65,10 @@ exports.webmentionPost = function webmentionPost(req, res) {
             logger.info('wm-received [0] failed');
         }
 
-        try {
-            filePath = moment(webmention.time).format('YYYY/MM/DD');
-        } catch (e){
-            logger.info('wm-received failed');
-        }
-
-        logger.info('webmention ID: ' + webmention['wm-id'][0]);
-        postDestination = `${github.postUrl}/contents/_data/${filePath}/${webmention['wm-id'][0]}`;
-        postFileName = `${webmention['wm-id'][0]}.json`;
+        logger.info('webmention ID: ' + webmention['wm-id']);
+        fileName = webmention['wm-id'];
+        postDestination = `${github.postUrl}/contents/_data/webmention/${filePath}/${fileName}`;
+        postFileName = `${fileName}.json`;
 
         options = {
             method : 'PUT',
