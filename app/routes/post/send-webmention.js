@@ -9,7 +9,7 @@ const webmention = config.webmention;
 const currentTime  =  moment().format('YYYY-MM-DDTHH:mm:ss');
 const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
 
-exports.webmentionSend = function webmentionSend(req, res) {
+exports.sendWebmention = function sendWebmention(req, res) {
     const messageContent = ':robot: webmentions last sent date updated by Mastrl Cntrl';
     const webmentionsDateFileName = 'published.yml';
     const webmentionsDateFileDestination = github.postUrl + '/contents/_data/' + webmentionsDateFileName;

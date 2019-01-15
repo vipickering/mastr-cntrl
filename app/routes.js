@@ -8,7 +8,7 @@ const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 const micropubGetRoute = require(appRootDirectory + '/app/routes/get/micropub');
-const webmentionSendGetRoute = require(appRootDirectory + '/app/routes/post/webmention-send');
+const SendWebmentionGetRoute = require(appRootDirectory + '/app/routes/post/send-webmention');
 const micropubPostRoute = require(appRootDirectory + '/app/routes/post/micropub');
 const webmentionPostRoute = require(appRootDirectory + '/app/routes/post/webmention');
 const mediaPostRoute = require(appRootDirectory + '/app/routes/post/media');
@@ -53,7 +53,7 @@ router.post('/webmention', limitEndpoint, webmentionPostRoute.webmentionPost);
 
 // Called by a Netlify webhook on publish.
 // Checks for available webmentions to send. If it finds any in the feed, it POSTs them to Telegraph.
-router.post('/webmention-send', limitEndpoint, webmentionSendGetRoute.webmentionSend);
+router.post('/send-webmention', limitEndpoint, SendWebmentionGetRoute.sendWebmention);
 
 // Media Endpoint. For uploading media to the blog via Micropub
 // Secured by IndieAuth
