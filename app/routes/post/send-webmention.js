@@ -1,12 +1,10 @@
 const rp = require('request-promise');
 const base64 = require('base64it');
-const moment = require('moment');
 const logger = require(appRootDirectory + '/app/functions/bunyan');
 const config = require(appRootDirectory + '/app/config.js');
 const github = config.github;
 const website = config.website;
 const webmention = config.webmention;
-const currentTime  =  moment().format('YYYY-MM-DDTHH:mm:ss');
 const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
 
 exports.sendWebmention = function sendWebmention(req, res) {
@@ -29,7 +27,7 @@ exports.sendWebmention = function sendWebmention(req, res) {
         },
         json : true
     };
-
+    let webmentionSourceDateTime;
     let payload;
     let options;
     let publishedTime;
@@ -97,6 +95,18 @@ exports.sendWebmention = function sendWebmention(req, res) {
                 logger.info(webmentionData.webmentions.source);
                 logger.info(webmentionData.webmentions.target);
 
+                //Calculate Webmention time from return URL
+                let webmentionUrlTemp = webmentionData.webmentions.source;
+                let tempDateTime = webmentionUrlTemp.replace(/\D/g,'');
+                let tempYear = tempDateTime.slice(0,4);
+                let tempMonth = tempDateTime.slice(4,6);
+                let tempDay = tempDateTime.slice(6,8);
+                let tempTimeHr = tempDateTime.slice(8,10);
+                let tempTimeMin = tempDateTime.slice(-2);
+
+                webmentionSourceDateTime = `${tempYear}-${tempMonth}-${tempDay}-T${tempTimeHr}-${tempTimeMin}:00`;
+                logger.info(`Webmention published time: ${webmentionSourceDateTime}`);
+
                 const telegraphOptions = {
                     method : 'POST',
                     uri : 'https://telegraph.p3k.io/webmention',
@@ -125,9 +135,11 @@ exports.sendWebmention = function sendWebmention(req, res) {
                             logger.info('old publish time: ' + publishedTime);
 
                             // reassign published time with current time
-                            publishedTime = `time: "${currentTime}"`; // We might need to strip out the slashes here is the encoding doesn't capture it.
-                            logger.info('current publish time: ' + publishedTime);
-                            publishedTime = publishedTime.replace(/\\/g, ""); //Strip slashes
+                            publishedTime = `time: "${webmentionSourceDateTime}"`; // We might need to strip out the slashes here is the encoding doesn't capture it.
+                            logger.info('Webmention YAML publish time: ' + publishedTime);
+
+                            //Strip slashes?!! THIS ISNT WORKING
+                            publishedTime = publishedTime.replace(/\\/g, '');
                             logger.info('time with slashes stripped: ' + publishedTime);
 
                             // Prepare the code to send to Github API

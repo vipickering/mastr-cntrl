@@ -48,7 +48,6 @@ exports.micropubPost = function micropubPost(req, res) {
     const responseLocationTime = publishedDate.slice(11, -12) + '-' + publishedDate.slice(14, -9);
 
     function sendtoGithub(error, response, body) {
-        // The error checking here is poor. We are not handling if GIT throws an error.
         if (error) {
             res.status(400);
             res.send('Error Sending Payload');

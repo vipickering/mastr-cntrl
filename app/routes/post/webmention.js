@@ -59,7 +59,6 @@ exports.webmentionPost = function webmentionPost(req, res) {
         encodedContent = base64.encode(payload);
         logger.info('payload encoded');
 
-        // use moment -> const currentTime  =  moment().format('YYYY-MM-DDTHH:mm:ss');
         try {
             webmentionDate = webmention['wm-received'][0];
             logger.info(webmentionDate);
@@ -88,6 +87,8 @@ exports.webmentionPost = function webmentionPost(req, res) {
             logger.info('wm-id failed');
         }
 
+        //TODO We should ge this from the webmention if we can
+        // See send-webmention
         filePath = moment(webmentionDate).format('YYYY/MM/DD');
         postFileName = `${fileName}.json`;
         postDestination = `${github.postUrl}/contents/_data/webmention/${filePath}/${postFileName}`;
