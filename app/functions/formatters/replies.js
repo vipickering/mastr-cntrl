@@ -16,7 +16,6 @@ exports.replies = function replies(micropubContent) {
     let alt = '';
     let tags = '';
     let tagArray = '';
-    let title = '';
     let syndication = '';
 
     //Debug
@@ -36,19 +35,7 @@ exports.replies = function replies(micropubContent) {
         logger.info('No content micropubContent.properties.content[0]');
     }
 
-    try {
-        title = micropubContent.content.substring(0, 100);
-    } catch (e) {
-        logger.info('No title micropubContent.content');
-    }
-
-    try {
-        title = micropubContent.properties.content[0].substring(0, 100);
-    } catch (e) {
-        logger.info('No title micropubContent.properties.content[0]');
-    }
-
-    //Reply targets can accept multiple if hand coded. But we will limit it to a single item array, as this isn't standard functionality.
+   //Reply targets can accept multiple if hand coded. But we will limit it to a single item array, as this isn't standard functionality.
     try {
         replyTo = micropubContent['in-reply-to'];
     } catch (e) {
@@ -104,7 +91,7 @@ try {
 
     const entry = `---
 layout: "${layout}"
-title: "${title}"
+title: "-"
 date: "${pubDate}"
 target: "${replyTo}"
 meta: "${title}"

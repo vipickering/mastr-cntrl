@@ -11,7 +11,6 @@ exports.bookmark = function bookmark(micropubContent) {
     let content = '';
     let tags = '';
     let tagArray = '';
-    let title = '';
     let bookmarkLink = '';
 
     //Debug
@@ -29,18 +28,6 @@ exports.bookmark = function bookmark(micropubContent) {
         content = micropubContent.properties.content[0];
     } catch (e) {
         logger.info('No content micropubContent.properties.content[0]');
-    }
-
-    try {
-        title = micropubContent.content.substring(0, 100);
-    } catch (e) {
-        logger.info('No title micropubContent.content');
-    }
-
-    try {
-        title = micropubContent.properties.content[0].substring(0, 100);
-    } catch (e) {
-        logger.info('No title micropubContent.properties.content[0]');
     }
 
     try {
@@ -62,7 +49,7 @@ exports.bookmark = function bookmark(micropubContent) {
 
     const entry = `---
 layout: "${layout}"
-title: "${title}"
+title: "-"
 date: "${pubDate}"
 target: "${bookmarkLink}"
 meta: "${title}"
