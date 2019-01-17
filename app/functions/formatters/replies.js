@@ -94,7 +94,7 @@ layout: "${layout}"
 title: "-"
 date: "${pubDate}"
 target: "${replyTo}"
-meta: "${title}"
+meta: "reply posted on ${pubDate} to ${replyTo}"
 category: "${category}"
 ${photoURL}
 ${alt}

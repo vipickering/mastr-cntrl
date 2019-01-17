@@ -52,7 +52,7 @@ layout: "${layout}"
 title: "-"
 date: "${pubDate}"
 target: "${bookmarkLink}"
-meta: "${title}"
+meta: "bookmark posted on ${pubDate}"
 category: "${category}"
 tags:${tags}
 twitterCard: false

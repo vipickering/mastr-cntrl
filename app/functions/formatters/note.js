@@ -86,7 +86,7 @@ exports.note = function note(micropubContent) {
 layout: "${layout}"
 title: "-"
 date: "${pubDate}"
-meta: "${title}"
+meta: "note posted on ${pubDate}"
 category: "${category}"
 ${photoURL}
 ${alt}
