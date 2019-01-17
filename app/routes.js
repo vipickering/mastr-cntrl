@@ -12,7 +12,6 @@ const SendWebmentionGetRoute = require(appRootDirectory + '/app/routes/post/send
 const micropubPostRoute = require(appRootDirectory + '/app/routes/post/micropub');
 const webmentionPostRoute = require(appRootDirectory + '/app/routes/post/webmention');
 const mediaPostRoute = require(appRootDirectory + '/app/routes/post/media');
-
 let rtg;
 let redisClient;
 let redisClientOptions;

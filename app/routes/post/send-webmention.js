@@ -28,7 +28,6 @@ exports.sendWebmention = function sendWebmention(req, res) {
         json : true
     };
     let webmentionSourceDateTime;
-    let payload;
     let options;
     let publishedTime;
     let encodedContent;
@@ -138,16 +137,8 @@ exports.sendWebmention = function sendWebmention(req, res) {
                             publishedTime = `time: "${webmentionSourceDateTime}"`; // We might need to strip out the slashes here is the encoding doesn't capture it.
                             logger.info('Webmention YAML publish time: ' + publishedTime);
 
-                            //Strip slashes?!! THIS ISNT WORKING
-                            publishedTime = publishedTime.replace(/\\/g, '');
-                            logger.info('time with slashes stripped: ' + publishedTime);
-
-                            // Prepare the code to send to Github API
-                            payload = stringEncode.strentimecode(publishedTime);
-                            logger.info('published time encoded');
-
                             //Base 64 Encode for Github API
-                            encodedContent = base64.encode(payload);
+                            encodedContent = base64.encode(publishedTime);
                             logger.info('payload encoded');
 
                             //Configure options to PUT file back in Github API
