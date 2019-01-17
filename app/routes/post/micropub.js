@@ -82,40 +82,28 @@ exports.micropubPost = function micropubPost(req, res) {
             logger.info('Creating Instagram note');
             payload = formatInstagram.instagram(micropubContent);
             break;
-        case (serviceIdentifier === 'https://indigenous.abode.pub/ios/') :
-            serviceType = 'Note';
-            noteType = 'notes';
-            logger.info('Service Indigenous. Creating note');
-            payload = formatNote.note(micropubContent);
-            break;
-        case ((serviceIdentifier === 'https://quill.p3k.io/') && (micropubContent.hasOwnProperty('bookmark-of'))):
+        case (micropubContent.hasOwnProperty('bookmark-of')):
             serviceType = 'Links';
             noteType = 'links';
-            logger.info('Service Quill. Creating Bookmark');
+            logger.info('Service Creating Bookmark');
             payload = formatBookmark.bookmark(micropubContent);
             break;
-        case ((serviceIdentifier === 'https://quill.p3k.io/') && (micropubContent.hasOwnProperty('like-of'))):
+        case (micropubContent.hasOwnProperty('like-of')):
             serviceType = 'Favourites';
             noteType = 'favourites';
-            logger.info('Service Quill. Creating Favourite');
+            logger.info('Service Creating Favourite');
             payload = formatFavourite.favourite(micropubContent);
             break;
-        case ((serviceIdentifier === 'https://quill.p3k.io/') && (micropubContent.hasOwnProperty('in-reply-to'))):
+        case (micropubContent.hasOwnProperty('in-reply-to')):
             serviceType = 'Replies';
             noteType = 'replies';
-            logger.info('Service Quill. Creating Reply');
+            logger.info('Service Creating Reply');
             payload = formatReplies.replies(micropubContent);
-            break;
-        case (serviceIdentifier === 'https://quill.p3k.io/'):
-            serviceType = 'Note';
-            noteType = 'notes';
-            logger.info('Service Quill. Creating Note');
-            payload = formatNote.note(micropubContent);
             break;
         default:
             serviceType = 'Note';
             noteType = 'notes';
-            logger.info('Service not recognised. Creating default Note');
+            logger.info('Service Creating default Note');
             payload = formatNote.note(micropubContent);
         }
 
