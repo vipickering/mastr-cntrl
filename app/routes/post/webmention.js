@@ -44,7 +44,7 @@ exports.webmentionPost = function webmentionPost(req, res) {
     //     return JSON.parse(decodeURIComponent(escape(data)));
     // }
 
-    logger.info('Webmention Debug: ' + JSON.stringify(req.body));
+    // logger.info('Webmention Debug: ' + JSON.stringify(req.body));
 
     if (req.body.secret === webhookKey) {
         logger.info('Webmention recieved');

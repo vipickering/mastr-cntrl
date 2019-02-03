@@ -103,7 +103,7 @@ exports.sendWebmention = function sendWebmention(req, res) {
                 let tempTimeHr = tempDateTime.slice(8,10);
                 let tempTimeMin = tempDateTime.slice(-2);
 
-                webmentionSourceDateTime = `${tempYear}-${tempMonth}-${tempDay}-T${tempTimeHr}-${tempTimeMin}:00`;
+                webmentionSourceDateTime = `${tempYear}-${tempMonth}-${tempDay}T${tempTimeHr}-${tempTimeMin}:00`;
                 logger.info(`Webmention published time: ${webmentionSourceDateTime}`);
 
                 const telegraphOptions = {
@@ -134,7 +134,7 @@ exports.sendWebmention = function sendWebmention(req, res) {
                             logger.info('old publish time: ' + publishedTime);
 
                             // reassign published time with current time
-                            publishedTime = `time: "${webmentionSourceDateTime}"`; // We might need to strip out the slashes here is the encoding doesn't capture it.
+                            publishedTime = `time: "${webmentionSourceDateTime}"`;
                             logger.info('Webmention YAML publish time: ' + publishedTime);
 
                             //Base 64 Encode for Github API

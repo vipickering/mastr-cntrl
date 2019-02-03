@@ -4,10 +4,10 @@ const moment = require('moment');
 const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
 
 exports.note = function note(micropubContent) {
-    const layout = 'notes';
-    const category = 'Notes';
     const pubDate  = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss');
     const pubPrettyDate = moment(new Date()).format('YYYY-MM-DD HH:mm');
+    let layout = 'notes';
+    let category = 'Notes';
     let content = '';
     let location = '';
     let photoURL = '';
@@ -35,10 +35,13 @@ exports.note = function note(micropubContent) {
         logger.info('No content micropubContent.properties.content[0]');
     }
 
+    // See if we can get photos. If we can set the layout type here?
     try {
         photoArray = micropubContent.properties.photo;
+        let layout = 'photos';
+        let category = 'Photos';
 
-         for (let j = 0; j < photoArray.length; j++) {
+        for (let j = 0; j < photoArray.length; j++) {
             photoURL += `photo${j+1}_url: "${photoArray[j].value}"\n`;
             alt += `photo${j+1}_alt: "${photoArray[j].alt}"\n`;
         }

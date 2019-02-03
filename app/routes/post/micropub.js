@@ -5,7 +5,6 @@ const config = require(appRootDirectory + '/app/config.js');
 const github = config.github;
 const logger = require(appRootDirectory + '/app/functions/bunyan');
 const formatCheckin = require(appRootDirectory + '/app/functions/formatters/swarm');
-const formatInstagram = require(appRootDirectory + '/app/functions/formatters/instagram');
 const formatNote = require(appRootDirectory + '/app/functions/formatters/note');
 const formatBookmark = require(appRootDirectory + '/app/functions/formatters/bookmark');
 const formatFavourite = require(appRootDirectory + '/app/functions/formatters/favourite');
@@ -30,9 +29,9 @@ exports.micropubPost = function micropubPost(req, res) {
 
     //Log packages sent, for debug
     logger.info('json body ' + JSON.stringify(req.body));
-    logger.info(`Authorization Token: ${token}`);
-    logger.info(`Incoming Token: ${accessToken}`);
-    logger.info(`Formatted Token: ${formattedToken}`);
+    // logger.info(`Authorization Token: ${token}`);
+    // logger.info(`Incoming Token: ${accessToken}`);
+    // logger.info(`Formatted Token: ${formattedToken}`);
 
     //Some P3K services send the published date-time. Others do not. Check if it exists, and if not do it ourselves.
     try {
@@ -76,12 +75,6 @@ exports.micropubPost = function micropubPost(req, res) {
             logger.info('Creating Swarm checkin');
             payload = formatCheckin.checkIn(micropubContent);
             break;
-        case (serviceIdentifier === 'https://ownyourgram.com/') :
-            serviceType = 'Photo';
-            noteType = 'notes';
-            logger.info('Creating Instagram note');
-            payload = formatInstagram.instagram(micropubContent);
-            break;
         case (micropubContent.hasOwnProperty('bookmark-of')):
             serviceType = 'Links';
             noteType = 'links';
@@ -103,7 +96,7 @@ exports.micropubPost = function micropubPost(req, res) {
         default:
             serviceType = 'Note';
             noteType = 'notes';
-            logger.info('Service Creating default Note');
+            logger.info('Service Creating Note');
             payload = formatNote.note(micropubContent);
         }
 
