@@ -7,7 +7,6 @@ exports.bookmark = function bookmark(micropubContent) {
     const layout = 'links';
     const category = 'Links';
     const pubDate  = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss');
-
     let content = '';
     let tags = '';
     let tagArray = '';
@@ -31,6 +30,18 @@ exports.bookmark = function bookmark(micropubContent) {
     }
 
     try {
+        title = micropubContent.content.substring(0, 100);
+    } catch (e) {
+        logger.info('No title micropubContent.content');
+    }
+
+    try {
+        title = micropubContent.properties.content[0].substring(0, 100);
+    } catch (e) {
+        logger.info('No title micropubContent.properties.content[0]');
+    }
+
+    try {
         bookmarkLink = micropubContent['bookmark-of'];
     } catch (e) {
         logger.info('Bookmark is blank.');
@@ -49,7 +60,7 @@ exports.bookmark = function bookmark(micropubContent) {
 
     const entry = `---
 layout: "${layout}"
-title: "-"
+title: "${title}"
 date: "${pubDate}"
 target: "${bookmarkLink}"
 meta: "bookmark posted on ${pubDate}"
