@@ -89,7 +89,7 @@ exports.note = function note(micropubContent) {
 
     const entry = `---
 layout: "${layout}"
-title: "-"
+title: "Note for ${pubDate}"
 date: "${pubDate}"
 meta: "note posted on ${pubDate}"
 category: "${category}"
