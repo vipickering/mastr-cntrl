@@ -6,7 +6,6 @@ const github = config.github;
 const website = config.website;
 const webmention = config.webmention;
 const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
-const moment = require('moment');
 
 exports.sendWebmention = function sendWebmention(req, res) {
     const messageContent = ':robot: webmentions last sent date updated by Mastrl Cntrl';
@@ -56,7 +55,7 @@ exports.sendWebmention = function sendWebmention(req, res) {
     }
 
     function handlePatchError(err) {
-        logger.info('Webmention update to Github API Failed');
+        logger.info('published date update to Github API Failed');
         logger.error(err);
         res.status(400);
         res.send('Update failed');
@@ -103,10 +102,8 @@ exports.sendWebmention = function sendWebmention(req, res) {
                 let tempDay = tempDateTime.slice(6,8);
                 let tempTimeHr = tempDateTime.slice(8,10);
                 let tempTimeMin = tempDateTime.slice(-2);
-                // tempTimeMin + '1';
-                // Add 1 minute to the published time so we dont loop endlessly between servers. This wont work if 11:59
 
-                webmentionSourceDateTime = `${tempYear}-${tempMonth}-${tempDay}T${tempTimeHr}-${tempTimeMin}:01`;
+                webmentionSourceDateTime = `${tempYear}-${tempMonth}-${tempDay}T${tempTimeHr}:${tempTimeMin}:01`;
                 logger.info(`Webmention published time: ${webmentionSourceDateTime}`);
 
                 const telegraphOptions = {
