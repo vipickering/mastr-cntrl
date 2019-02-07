@@ -102,7 +102,7 @@ exports.sendWebmention = function sendWebmention(req, res) {
                 let tempDay = tempDateTime.slice(6,8);
                 let tempTimeHr = tempDateTime.slice(8,10);
                 let tempTimeMin = tempDateTime.slice(-2);
-                tempTimeMin += '01'; // Add 1 minute to the published time so we dont loop endlessly between servers.
+                tempTimeMin + '1'; // Add 1 minute to the published time so we dont loop endlessly between servers.
 
                 webmentionSourceDateTime = `${tempYear}-${tempMonth}-${tempDay}T${tempTimeHr}-${tempTimeMin}:00`;
                 logger.info(`Webmention published time: ${webmentionSourceDateTime}`);
