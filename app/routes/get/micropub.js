@@ -38,7 +38,7 @@ exports.micropubGet = function micropubGet(req, res) {
     }
 
     if (token) {
-        logger.info('Indie Auth Token Received: ' + token);
+        logger.info('Indie Auth Token Received:');
     } else {
         logger.info('No Indie Auth Token Received');
     }

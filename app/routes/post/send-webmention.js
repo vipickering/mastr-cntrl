@@ -2,11 +2,12 @@ const rp = require('request-promise');
 const base64 = require('base64it');
 const logger = require(appRootDirectory + '/app/functions/bunyan');
 const config = require(appRootDirectory + '/app/config.js');
+const moment = require('moment');
 const github = config.github;
 const website = config.website;
 const webmention = config.webmention;
 const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
-
+//moment().format();
 exports.sendWebmention = function sendWebmention(req, res) {
     const messageContent = ':robot: webmentions last sent date updated by Mastrl Cntrl';
     const webmentionsDateFileName = 'published.yml';
@@ -87,14 +88,12 @@ exports.sendWebmention = function sendWebmention(req, res) {
                 res.status(200);
                 res.send('Done');
             } else {
-                logger.info('Webmentions to send found');
                 // Submit webmention to Telegraph
+                logger.info('Found Webmentions to send');
+                logger.info(`Webmention Source: ${webmentionData.webmentions.source}`);
+                logger.info(`Webmention Target: ${webmentionData.webmentions.target}`);
 
-                logger.info(webmention.telegraph);
-                logger.info(webmentionData.webmentions.source);
-                logger.info(webmentionData.webmentions.target);
-
-                //Calculate Webmention time from return URL
+                // Calculate Webmention time from return URL
                 let webmentionUrlTemp = webmentionData.webmentions.source;
                 let tempDateTime = webmentionUrlTemp.replace(/\D/g,'');
                 let tempYear = tempDateTime.slice(0,4);
@@ -103,7 +102,8 @@ exports.sendWebmention = function sendWebmention(req, res) {
                 let tempTimeHr = tempDateTime.slice(8,10);
                 let tempTimeMin = tempDateTime.slice(-2);
 
-                webmentionSourceDateTime = `${tempYear}-${tempMonth}-${tempDay}T${tempTimeHr}:${tempTimeMin}:01`;
+                webmentionSourceDateTime = `${tempYear}-${tempMonth}-${tempDay}T${tempTimeHr}:${tempTimeMin}:00`;
+                moment(webmentionSourceDateTime).format();
                 logger.info(`Webmention published time: ${webmentionSourceDateTime}`);
 
                 const telegraphOptions = {
@@ -120,7 +120,7 @@ exports.sendWebmention = function sendWebmention(req, res) {
                 };
 
                 logger.info(telegraphOptions);
-                //POST to telegraph API
+                // POST to telegraph API
                 rp(telegraphOptions)
                     .then(updateWebmentionPubDate)
                     .catch(handlePatchError);
