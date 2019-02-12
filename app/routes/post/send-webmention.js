@@ -7,7 +7,7 @@ const github = config.github;
 const website = config.website;
 const webmention = config.webmention;
 const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
-//moment().format();
+
 exports.sendWebmention = function sendWebmention(req, res) {
     const messageContent = ':robot: webmentions last sent date updated by Mastrl Cntrl';
     const webmentionsDateFileName = 'published.yml';
@@ -102,13 +102,15 @@ exports.sendWebmention = function sendWebmention(req, res) {
                 let tempTimeHr = tempDateTime.slice(8,10);
                 let tempTimeMin = tempDateTime.slice(-2);
 
-                webmentionSourceDateTime = `${tempYear}-${tempMonth}-${tempDay}T${tempTimeHr}:${tempTimeMin}:00`;
-                moment(webmentionSourceDateTime).format();
-                logger.info(`Webmention published time: ${webmentionSourceDateTime}`);
+                let dateString =`${tempYear}-${tempMonth}-${tempDay}T${tempTimeHr}:${tempTimeMin}:00`;
+                let webmentionSourceDateTime = moment(dateString).add(1, 'minutes').format(); //Format in the correct format and add 1 minute
+
+                logger.info('time added ' + webmentionSourceDateTime);
 
                 const telegraphOptions = {
                     method : 'POST',
-                    uri : 'https://telegraph.p3k.io/webmention',
+                    // uri : 'https://telegraph.p3k.io/webmention',
+                    uri : 'http://example.com',
                     headers : {
                         'User-Agent' : github.name
                     },
@@ -133,7 +135,7 @@ exports.sendWebmention = function sendWebmention(req, res) {
                             publishedTime = base64.decode(repos.content);
                             logger.info('old publish time: ' + publishedTime);
 
-                            // reassign published time with current time
+                            // reassign published time with time +1 minute
                             publishedTime = `time: "${webmentionSourceDateTime}"`;
                             logger.info('Webmention YAML publish time: ' + publishedTime);
 
