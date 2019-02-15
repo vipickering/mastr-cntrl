@@ -3,19 +3,31 @@
     "syndicate-to" : [
         {
             "uid" : "https://twitter.com/vincentlistens/",
-            "name" : "Twitter"
+            "name" : "vincentlistens on Twitter",
+            "service": {
+                "name": "Twitter",
+                "url": "https://twitter.com",
+                "photo": "https://abs.twimg.com/icons/apple-touch-icon-192x192.png"
+            },
+            "user": {
+                "name": "vincentlistens",
+                "url": "https://twitter.com/vincentlistens/",
+                "photo": "https://pbs.twimg.com/profile_images/994887629236776960/ruEyxdDe_400x400.jpg"
+          }
         },
         {
-            "uid" : "https://medium.com/@vincentlistens",
-            "name" : "Medium"
-        },
-         {
             "uid" : "https://mastodon.social/@vincentlistens",
-            "name" : "Mastodon"
-        },
-        {
-            "uid" : "https://news.indieweb.org/en",
-            "name" : "Indienews"
+            "name" : "vincentlistens on Mastodon",
+            "service": {
+                "name": "Mastodon",
+                "url": "https://mastodon.social",
+                "photo": "https://mastodon.social/apple-touch-icon.png"
+            },
+            "user": {
+                "name": "vincentlistens",
+                "url": "https://mastodon.social/@vincentlistens",
+                "photo": "https://files.mastodon.social/accounts/avatars/000/411/770/original/15976ed16fa08d42.jpg"
+          }
         }
     ]
 }
