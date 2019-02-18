@@ -8,7 +8,8 @@ const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 const micropubGetRoute = require(appRootDirectory + '/app/routes/get/micropub');
-const SendWebmentionGetRoute = require(appRootDirectory + '/app/routes/post/send-webmention');
+const SendWebmentionPostRoute = require(appRootDirectory + '/app/routes/post/send-webmention');
+// const SyndicationPostRoute = require(appRootDirectory + '/app/routes/post/syndication');
 const micropubPostRoute = require(appRootDirectory + '/app/routes/post/micropub');
 const webmentionPostRoute = require(appRootDirectory + '/app/routes/post/webmention');
 const mediaPostRoute = require(appRootDirectory + '/app/routes/post/media');
@@ -33,7 +34,10 @@ const limitEndpoint = limitMiddleware.middleware((req, res, next) => {
     res.status(429).json({message : 'rate limit exceeded'});
 });
 
-// GET Routes
+/***
+GET Routes
+***/
+
 // Called before posting to the micropub route. It provides authentication, routing to syndication and media.
 router.get('/micropub', limitEndpoint, micropubGetRoute.micropubGet);
 
@@ -42,19 +46,28 @@ router.get('/', limitEndpoint, (req, res) => {
     res.json(serviceProfile);
 });
 
-//POST Routes
-// For recieving content in to the website via Micropub
-// Secured by IndieAuth
+/***
+POST Routes
+***/
+
+// For recieving content in to the website via Micropub. Secured by IndieAuth
 router.post('/micropub', limitEndpoint, micropubPostRoute.micropubPost);
 
 // Webmentions receiving in to the website. POSTs to the Github API
 router.post('/webmention', limitEndpoint, webmentionPostRoute.webmentionPost);
 
-// Called by a Netlify webhook on publish.
-// Checks for available webmentions to send. If it finds any in the feed, it POSTs them to Telegraph.
-router.post('/send-webmention', limitEndpoint, SendWebmentionGetRoute.sendWebmention);
-
-// Media Endpoint. For uploading media to the blog via Micropub
-// Secured by IndieAuth
+// Media Endpoint. For uploading media to the blog via Micropub. Secured by IndieAuth
 router.post('/media', limitEndpoint, upload.any(), mediaPostRoute.mediaPost);
+
+/**
+Called by a  webhook on publish.
+**/
+
+// Checks for available webmentions to send. If it finds any in the feed, it POSTs them to Telegraph.
+router.post('/send-webmention', limitEndpoint, SendWebmentionPostRoute.sendWebmention);
+
+// Checks for available webmentions to send. If it finds any in the feed, it POSTs them to Telegraph.
+// router.post('/syndication', limitEndpoint, SyndicationPostRoute.syndication);
+
+
 module.exports = router;
