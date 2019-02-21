@@ -16,7 +16,7 @@ exports.mediaPost = function mediaPost(req, res) {
     const photoName = `${filename}.jpg`; //Need to identify other mimetypes
     const payload = base64.encode(req.files[0].buffer);
     const messageContent = ':robot: Media submitted by Mastrl Cntrl';
-    const responseLocation = `https://vincentp.me/images/blog/${publishedDate}/${photoName}`;
+    const responseLocation = `images/blog/${publishedDate}/${photoName}`;
     const postDestination = `${github.postUrl}/contents/images/blog/${publishedDate}/${photoName}`;
     let token;
     let formattedToken;
