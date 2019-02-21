@@ -8,6 +8,7 @@ exports.bookmark = function bookmark(micropubContent) {
     const category = 'Links';
     const pubDate  = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss');
     let content = '';
+    let title = '';
     let tags = '';
     let tagArray = '';
     let bookmarkLink = '';
@@ -15,8 +16,6 @@ exports.bookmark = function bookmark(micropubContent) {
     //Debug
     logger.info('Bookmark JSON: ' + JSON.stringify(micropubContent));
 
-    // Sometimes Quill is sending JSON in different structures, depending upon including images.
-    // Try each method to make sure we capture the data
     try {
         content = micropubContent.content;
     } catch (e) {
@@ -24,21 +23,10 @@ exports.bookmark = function bookmark(micropubContent) {
     }
 
     try {
-        content = micropubContent.properties.content[0];
-    } catch (e) {
-        logger.info('No content micropubContent.properties.content[0]');
-    }
-
-    try {
-        title = micropubContent.content.substring(0, 100);
+        title = micropubContent.name;
     } catch (e) {
         logger.info('No title micropubContent.content');
-    }
-
-    try {
-        title = micropubContent.properties.content[0].substring(0, 100);
-    } catch (e) {
-        logger.info('No title micropubContent.properties.content[0]');
+        title = '';
     }
 
     try {
