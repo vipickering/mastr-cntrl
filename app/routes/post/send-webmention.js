@@ -109,8 +109,8 @@ exports.sendWebmention = function sendWebmention(req, res) {
 
                 const telegraphOptions = {
                     method : 'POST',
-                    // uri : 'https://telegraph.p3k.io/webmention',
-                    uri : 'http://example.com',
+                    uri : 'https://telegraph.p3k.io/webmention',
+                    // uri : 'http://example.com',
                     headers : {
                         'User-Agent' : github.name
                     },
