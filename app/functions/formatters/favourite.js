@@ -21,7 +21,7 @@ exports.favourite = function favourite(micropubContent) {
 
     const entry = `---
 layout: "${layout}"
-title: "-"
+title: "favourited ${like}"
 date: "${pubDate}"
 target: "${like}"
 meta: "Vincent favourited ${like}"
