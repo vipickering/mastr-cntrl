@@ -11,6 +11,9 @@ exports.bookmark = function bookmark(micropubContent) {
     let title = '';
     let tags = '';
     let tagArray = '';
+    let twitter = false;
+    let mastodon = false;
+    let syndicateArray = '';
     let bookmarkLink = '';
 
     //Debug
@@ -46,6 +49,20 @@ exports.bookmark = function bookmark(micropubContent) {
         tagArray = 'miscellaneous';
     }
 
+    try {
+        syndicateArray = micropubContent["mp-syndicate-to"];
+
+        for (let j = 0; j < syndicateArray.length; j++) {
+            if  (syndicateArray[j].value == 'https://twitter.com/vincentlistens/'){ twitter = true; }
+            if  (syndicateArray[j].value == 'https://mastodon.social/@vincentlistens'){ mastodon = true; }
+        }
+    } catch (e) {
+        logger.info('No Syndication targets');
+        syndication = '';
+        twitter = false;
+        mastodon = false;
+    }
+
     const entry = `---
 layout: "${layout}"
 title: "${title}"
@@ -54,6 +71,8 @@ target: "${bookmarkLink}"
 meta: "bookmark posted on ${pubDate}"
 category: "${category}"
 tags:${tags}
+twitter: ${twitter}
+mastodon: ${mastodon}
 twitterCard: false
 ---
 ${content}

@@ -91,7 +91,7 @@ try {
 
     const entry = `---
 layout: "${layout}"
-title: "-"
+title: "reply posted on ${pubDate} to ${replyTo}"
 date: "${pubDate}"
 target: "${replyTo}"
 meta: "reply posted on ${pubDate} to ${replyTo}"

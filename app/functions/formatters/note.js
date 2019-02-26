@@ -14,8 +14,6 @@ exports.note = function note(micropubContent) {
     let alt = '';
     let tags = '';
     let tagArray = '';
-    let syndication = '';
-    let syndicationArray = '';
 
     // Debug
     logger.info('Note JSON: ' + JSON.stringify(micropubContent));
@@ -74,18 +72,6 @@ exports.note = function note(micropubContent) {
         location = '';
     }
 
-     try {
-        syndicationArray = micropubContent['mp-syndicate-to'];
-        for (let i = 0; i < syndicationArray.length; i++) {
-            syndication += '\n- ';
-            syndication += syndicationArray[i];
-        }
-    } catch (e) {
-        logger.info('No Syndication provided');
-        syndicationArray = '';
-    }
-
-
     const entry = `---
 layout: "${layout}"
 title: "Note for ${pubDate}"
@@ -95,7 +81,6 @@ category: "${category}"
 ${photoURL}
 ${alt}
 tags:${tags}
-syndication: ${syndication}
 location: "${location}"
 twitterCard: false
 ---
