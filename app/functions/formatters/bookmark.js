@@ -53,9 +53,9 @@ exports.bookmark = function bookmark(micropubContent) {
         syndicateArray = micropubContent["mp-syndicate-to"];
 
         for (let j = 0; j < syndicateArray.length; j++) {
-            logger.info(syndicateArray[j].value);
-            if (syndicateArray[j].value == 'https://twitter.com/vincentlistens/'){ twitter = true; }
-            if (syndicateArray[j].value == 'https://mastodon.social/@vincentlistens'){ mastodon = true; }
+            logger.info(syndicateArray[j]);
+            if (syndicateArray[j] == 'https://twitter.com/vincentlistens/'){ twitter = true; }
+            if (syndicateArray[j] == 'https://mastodon.social/@vincentlistens'){ mastodon = true; }
         }
     } catch (e) {
         logger.info('No Syndication targets');
