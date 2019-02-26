@@ -16,7 +16,9 @@ exports.replies = function replies(micropubContent) {
     let alt = '';
     let tags = '';
     let tagArray = '';
-    let syndication = '';
+    let twitter = false;
+    let mastodon = false;
+    let syndicateArray = '';
 
     //Debug
     logger.info('Reply JSON: ' + JSON.stringify(micropubContent));
@@ -78,15 +80,19 @@ try {
         location = '';
     }
 
-    try {
-        syndicationArray = micropubContent['mp-syndicate-to'];
-        for (let i = 0; i < syndicationArray.length; i++) {
-            syndication += '\n- ';
-            syndication += syndicationArray[i];
+try {
+        syndicateArray = micropubContent["mp-syndicate-to"];
+
+        for (let j = 0; j < syndicateArray.length; j++) {
+            logger.info(syndicateArray[j]);
+            if (syndicateArray[j] == 'https://twitter.com/vincentlistens/'){ twitter = true; }
+            if (syndicateArray[j] == 'https://mastodon.social/@vincentlistens'){ mastodon = true; }
         }
     } catch (e) {
-        logger.info('No Syndication provided');
-        syndicationArray = '';
+        logger.info('No Syndication targets');
+        syndication = '';
+        twitter = false;
+        mastodon = false;
     }
 
     const entry = `---
@@ -101,6 +107,8 @@ ${alt}
 tags:${tags}
 syndication: "${syndication}"
 location: "${location}"
+twitter: ${twitter}
+mastodon: ${mastodon}
 twitterCard: false
 ---
 ${content}

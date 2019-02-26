@@ -14,6 +14,9 @@ exports.note = function note(micropubContent) {
     let alt = '';
     let tags = '';
     let tagArray = '';
+    let twitter = false;
+    let mastodon = false;
+    let syndicateArray = '';
 
     // Debug
     logger.info('Note JSON: ' + JSON.stringify(micropubContent));
@@ -72,6 +75,21 @@ exports.note = function note(micropubContent) {
         location = '';
     }
 
+    try {
+        syndicateArray = micropubContent["mp-syndicate-to"];
+
+        for (let j = 0; j < syndicateArray.length; j++) {
+            logger.info(syndicateArray[j]);
+            if (syndicateArray[j] == 'https://twitter.com/vincentlistens/'){ twitter = true; }
+            if (syndicateArray[j] == 'https://mastodon.social/@vincentlistens'){ mastodon = true; }
+        }
+    } catch (e) {
+        logger.info('No Syndication targets');
+        syndication = '';
+        twitter = false;
+        mastodon = false;
+    }
+
     const entry = `---
 layout: "${layout}"
 title: "Note for ${pubDate}"
@@ -82,6 +100,8 @@ ${photoURL}
 ${alt}
 tags:${tags}
 location: "${location}"
+twitter: ${twitter}
+mastodon: ${mastodon}
 twitterCard: false
 ---
 ${content}

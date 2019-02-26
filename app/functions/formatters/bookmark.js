@@ -11,10 +11,10 @@ exports.bookmark = function bookmark(micropubContent) {
     let title = '';
     let tags = '';
     let tagArray = '';
+    let bookmarkLink = '';
     let twitter = false;
     let mastodon = false;
     let syndicateArray = '';
-    let bookmarkLink = '';
 
     //Debug
     logger.info('Bookmark JSON: ' + JSON.stringify(micropubContent));
