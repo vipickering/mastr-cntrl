@@ -1,4 +1,3 @@
-const base64 = require('base64it');
 const logger = require(appRootDirectory + '/app/functions/bunyan');
 const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
 
@@ -110,6 +109,5 @@ ${content}
 `;
     logger.info('Swarm formatter finished: ' + entry);
     stringEncode.strencode(entry);
-    const micropubContentFormatted = base64.encode(entry);
-    return micropubContentFormatted;
+    return entry;
 };

@@ -22,6 +22,7 @@ exports.micropubPost = function micropubPost(req, res) {
     let postDestination;
     let noteType;
     let serviceType;
+    let payloadEncoded;
     const micropubContent = req.body;
     const token = req.headers.authorization;
     const accessToken = req.body.access_token;
@@ -63,6 +64,7 @@ exports.micropubPost = function micropubPost(req, res) {
         }
     }
 
+    // Micropub Action (only fires if authentication passes)
     function authAction(json) {
         logger.info(JSON.stringify(json));
         serviceIdentifier = json.client_id;
@@ -101,7 +103,10 @@ exports.micropubPost = function micropubPost(req, res) {
             payload = formatNote.note(micropubContent);
         }
 
-        const payloadEncoded = base64.encode(payload);
+        // Syndicate targets here, before we base64 encode?
+        payloadEncoded = base64.encode(payload);
+
+        // Begin Github Submission
         messageContent = `:robot: ${serviceType}  submitted by Mastrl Cntrl`;
         postFileName = `${postFileNameDate}-${postFileNameTime}.md`;
         responseLocation = `https://vincentp.me/${noteType}/${responseDate}/${responseLocationTime}/`;
@@ -131,8 +136,11 @@ exports.micropubPost = function micropubPost(req, res) {
         };
 
         request(payloadOptions, sendtoGithub);
+         // End Github Submission
     }
 
+
+    // Check indieauthentication
     function authResponse(response) {
             return response.json();
     }

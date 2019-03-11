@@ -107,7 +107,5 @@ ${content}
 `;
     logger.info('Note formatter finished: ' + entry);
     stringEncode.strencode(entry);
-    // const micropubContentFormatted = base64.encode(entry);
-    // return micropubContentFormatted;
     return entry;
 };

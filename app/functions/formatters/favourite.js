@@ -1,4 +1,3 @@
-const base64 = require('base64it');
 const logger = require(appRootDirectory + '/app/functions/bunyan');
 const moment = require('moment');
 const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
@@ -52,6 +51,5 @@ twitterCard: false
 `;
     logger.info('Favourite formatter finished: ' + entry);
     stringEncode.strencode(entry);
-    const micropubContentFormatted = base64.encode(entry);
-    return micropubContentFormatted;
+    return entry;
 };
