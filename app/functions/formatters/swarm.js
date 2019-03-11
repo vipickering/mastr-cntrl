@@ -23,7 +23,7 @@ exports.checkIn = function checkIn(micropubContent) {
     let region = '';
 
     //Debug
-    logger.info('Swarm Complete Content: ' + JSON.stringify(micropubContent));
+    logger.info('Swarm JSON: ' + JSON.stringify(micropubContent));
 
     try {
         content = micropubContent.properties.content[0];

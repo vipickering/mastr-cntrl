@@ -21,19 +21,18 @@ exports.micropubPost = function micropubPost(req, res) {
     let publishedDate;
     let postDestination;
     let noteType;
-    let serviceType;
     let payloadEncoded;
+    let postFileNameDate;
+    let postFileNameTime;
+    let responseDate;
+    let responseLocationTime;
     const micropubContent = req.body;
     const token = req.headers.authorization;
     const accessToken = req.body.access_token;
     const formattedToken = token.slice(7); //Remove Bearer
     const indieauth = 'https://tokens.indieauth.com/token';
 
-    //Log packages sent, for debug
-    logger.info('json body ' + JSON.stringify(req.body));
-    // logger.info(`Authorization Token: ${token}`);
-    // logger.info(`Incoming Token: ${accessToken}`);
-    // logger.info(`Formatted Token: ${formattedToken}`);
+    // logger.info('json body ' + JSON.stringify(req.body));     //Log packages sent, for debug
 
     //Some P3K services send the published date-time. Others do not. Check if it exists, and if not do it ourselves.
     try {
@@ -43,10 +42,10 @@ exports.micropubPost = function micropubPost(req, res) {
     }
 
     //Format date time for naming file.
-    const postFileNameDate = publishedDate.slice(0, 10);
-    const postFileNameTime = publishedDate.replace(/:/g, '-').slice(11, -9);
-    const responseDate = postFileNameDate.replace(/-/g, '/');
-    const responseLocationTime = publishedDate.slice(11, -12) + '-' + publishedDate.slice(14, -9);
+    postFileNameDate = publishedDate.slice(0, 10);
+    postFileNameTime = publishedDate.replace(/:/g, '-').slice(11, -9);
+    responseDate = postFileNameDate.replace(/-/g, '/');
+    responseLocationTime = publishedDate.slice(11, -12) + '-' + publishedDate.slice(14, -9);
 
     function sendtoGithub(error, response, body) {
         if (error) {
@@ -66,40 +65,29 @@ exports.micropubPost = function micropubPost(req, res) {
 
     // Micropub Action (only fires if authentication passes)
     function authAction(json) {
-        logger.info(JSON.stringify(json));
         serviceIdentifier = json.client_id;
         logger.info('Service Is: ' + serviceIdentifier);
         logger.info('Payload JSON: ' + JSON.stringify(micropubContent));
 
         switch (true) {
         case (serviceIdentifier === 'https://ownyourswarm.p3k.io') :
-            serviceType = 'Checkin';
             noteType = 'checkins';
-            logger.info('Creating Swarm checkin');
             payload = formatCheckin.checkIn(micropubContent);
             break;
         case (micropubContent.hasOwnProperty('bookmark-of')):
-            serviceType = 'Links';
             noteType = 'links';
-            logger.info('Service Creating Bookmark');
             payload = formatBookmark.bookmark(micropubContent);
             break;
         case (micropubContent.hasOwnProperty('like-of')):
-            serviceType = 'Favourites';
             noteType = 'favourites';
-            logger.info('Service Creating Favourite');
             payload = formatFavourite.favourite(micropubContent);
             break;
         case (micropubContent.hasOwnProperty('in-reply-to')):
-            serviceType = 'Replies';
             noteType = 'replies';
-            logger.info('Service Creating Reply');
             payload = formatReplies.replies(micropubContent);
             break;
         default:
-            serviceType = 'Note';
             noteType = 'notes';
-            logger.info('Service Creating Note');
             payload = formatNote.note(micropubContent);
         }
 
@@ -107,11 +95,12 @@ exports.micropubPost = function micropubPost(req, res) {
         payloadEncoded = base64.encode(payload);
 
         // Begin Github Submission
-        messageContent = `:robot: ${serviceType}  submitted by Mastrl Cntrl`;
+        messageContent = `:robot: submitted by Mastrl Cntrl`;
         postFileName = `${postFileNameDate}-${postFileNameTime}.md`;
         responseLocation = `https://vincentp.me/${noteType}/${responseDate}/${responseLocationTime}/`;
-        logger.info(`Response: ${responseLocation}`);
         postDestination = `${github.postUrl}/contents/_posts/${postFileName}`;
+
+        logger.info(`Response: ${responseLocation}`);
         logger.info(`Destination: ${postDestination}`);
 
         payloadOptions = {
@@ -138,7 +127,6 @@ exports.micropubPost = function micropubPost(req, res) {
         request(payloadOptions, sendtoGithub);
          // End Github Submission
     }
-
 
     // Check indieauthentication
     function authResponse(response) {
