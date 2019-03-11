@@ -100,6 +100,7 @@ exports.micropubPost = function micropubPost(req, res) {
             payload = formatNote.note(micropubContent);
         }
 
+        base64.encode(payload);
         messageContent = `:robot: ${serviceType}  submitted by Mastrl Cntrl`;
         postFileName = `${postFileNameDate}-${postFileNameTime}.md`;
         responseLocation = `https://vincentp.me/${noteType}/${responseDate}/${responseLocationTime}/`;
