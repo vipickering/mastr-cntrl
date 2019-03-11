@@ -101,7 +101,7 @@ exports.micropubPost = function micropubPost(req, res) {
             payload = formatNote.note(micropubContent);
         }
 
-        base64.encode(payload);
+        const payloadEncoded = base64.encode(payload);
         messageContent = `:robot: ${serviceType}  submitted by Mastrl Cntrl`;
         postFileName = `${postFileNameDate}-${postFileNameTime}.md`;
         responseLocation = `https://vincentp.me/${noteType}/${responseDate}/${responseLocationTime}/`;
@@ -125,7 +125,7 @@ exports.micropubPost = function micropubPost(req, res) {
                     'name' : github.user,
                     'email' : github.email
                 },
-                content : payload
+                content : payloadEncoded
             },
             json : true
         };
