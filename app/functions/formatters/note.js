@@ -1,6 +1,8 @@
 const logger = require(appRootDirectory + '/app/functions/bunyan');
 const moment = require('moment');
 const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
+const mastodonSocial = require(appRootDirectory + '/app/functions/syndication/mastodon');
+const twitterSocial = require(appRootDirectory + '/app/functions/syndication/twitter');
 
 exports.note = function note(micropubContent) {
     const pubDate  = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss');
@@ -79,8 +81,14 @@ exports.note = function note(micropubContent) {
 
         for (let j = 0; j < syndicateArray.length; j++) {
             logger.info(syndicateArray[j]);
-            if (syndicateArray[j] == 'https://twitter.com/vincentlistens/'){ twitter = true; }
-            if (syndicateArray[j] == 'https://mastodon.social/@vincentlistens'){ mastodon = true; }
+            if (syndicateArray[j] == 'https://twitter.com/vincentlistens/'){
+                twitter = true;
+                // twitterSocial.twitter(micropubContent); //Syndicate to Twitter
+            }
+            if (syndicateArray[j] == 'https://mastodon.social/@vincentlistens'){
+                mastodon = true;
+                mastodonSocial.mastodon(micropubContent); //Syndicate to Mastodon
+            }
         }
     } catch (e) {
         logger.info('No Syndication targets');
