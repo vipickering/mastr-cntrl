@@ -8,7 +8,7 @@ const logger = require(appRootDirectory + '/app/functions/bunyan');
 // const webmention = config.webmention;
 // const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
 
-exports.twitter = function twitter = function mastodon(micropubContent) {
+exports.twitter = function twitter(micropubContent) {
 
 logger.info('test');
 

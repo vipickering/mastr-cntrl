@@ -1,6 +1,6 @@
 const rp = require('request-promise');
 const readline = require('readline');
-const Mastodon = require('mastodon');
+const Mastodon = require('megalodon');
 const logger = require(appRootDirectory + '/app/functions/bunyan');
 const config = require(appRootDirectory + '/app/config.js');
 const mastodon = config.mastodon;
