@@ -98,7 +98,7 @@ exports.micropubPost = function micropubPost(req, res) {
         fileName = `${postFileNameDate}-${postFileNameTime}.md`;
         responseLocation = `https://vincentp.me/${micropubType}/${responseDate}/${responseLocationTime}/`;
 
-        githubApi.publish(fileLocation, fileName, responseLocation, payload);
+        githubApi.publish(req, res, fileLocation, fileName, responseLocation, payload);
 
         // payloadEncoded = base64.encode(payload);
 
