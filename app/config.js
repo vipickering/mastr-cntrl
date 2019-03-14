@@ -26,9 +26,4 @@ config.website = {
     'url' : process.env.WEBSITE_URL
 };
 
-config.mastodon = {
-    'accessToken' : process.env.MASTODON_TOKEN,
-    'url': process.env.MASTODON_URL
-};
-
 module.exports = config;
