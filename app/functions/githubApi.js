@@ -47,6 +47,6 @@ exports.publish = function publish(fileLocation, fileName, responseLocation, pay
     }
 
     logger.info(`Response: ${responseLocation}`);
-    logger.info(`Destination: ${postDestination}`);
+    logger.info(`Destination: ${fileDestination}`);
     request(payloadOptions, sendtoGithub);
 };
