@@ -1,26 +1,29 @@
 const fetch = require('node-fetch');
-const request = require('request');
+// const request = require('request');
 const moment = require('moment');
-const base64 = require('base64it');
-const config = require(appRootDirectory + '/app/config.js');
-const github = config.github;
+// const base64 = require('base64it');
+// const config = require(appRootDirectory + '/app/config.js');
+// const github = config.github;
 const logger = require(appRootDirectory + '/app/functions/bunyan');
 const formatCheckin = require(appRootDirectory + '/app/functions/formatters/swarm');
 const formatNote = require(appRootDirectory + '/app/functions/formatters/note');
 const formatBookmark = require(appRootDirectory + '/app/functions/formatters/bookmark');
 const formatFavourite = require(appRootDirectory + '/app/functions/formatters/favourite');
 const formatReplies = require(appRootDirectory + '/app/functions/formatters/replies');
+const githubApi = require(appRootDirectory + '/app/functions/githubApi');
 
 exports.micropubPost = function micropubPost(req, res) {
     let serviceIdentifier = '';
-    let postFileName;
+    // let postFileName;
+    let fileLocation;
+    let fileName;
     let responseLocation;
     let payload;
     let messageContent;
     let payloadOptions;
     let publishedDate;
-    let postDestination;
-    let noteType;
+    // let postDestination;
+    let micropubType;
     let payloadEncoded;
     let postFileNameDate;
     let postFileNameTime;
@@ -71,61 +74,62 @@ exports.micropubPost = function micropubPost(req, res) {
 
         switch (true) {
         case (serviceIdentifier === 'https://ownyourswarm.p3k.io') :
-            noteType = 'checkins';
+            micropubType = 'checkins';
             payload = formatCheckin.checkIn(micropubContent);
             break;
         case (micropubContent.hasOwnProperty('bookmark-of')):
-            noteType = 'links';
+            micropubType = 'links';
             payload = formatBookmark.bookmark(micropubContent);
             break;
         case (micropubContent.hasOwnProperty('like-of')):
-            noteType = 'favourites';
+            micropubType = 'favourites';
             payload = formatFavourite.favourite(micropubContent);
             break;
         case (micropubContent.hasOwnProperty('in-reply-to')):
-            noteType = 'replies';
+            micropubType = 'replies';
             payload = formatReplies.replies(micropubContent);
             break;
         default:
-            noteType = 'notes';
+            micropubType = 'notes';
             payload = formatNote.note(micropubContent);
         }
 
-        // Syndicate targets here, before we base64 encode?
-        payloadEncoded = base64.encode(payload);
+        fileLocation = `_posts`;
+        fileName = `${postFileNameDate}-${postFileNameTime}.md`;
+        responseLocation = `https://vincentp.me/${micropubType}/${responseDate}/${responseLocationTime}/`;
+
+        githubApi.publish(fileLocation, fileName, responseLocation, payload);
+
+        // payloadEncoded = base64.encode(payload);
 
         // Begin Github Submission
-        messageContent = `:robot: submitted by Mastrl Cntrl`;
-        postFileName = `${postFileNameDate}-${postFileNameTime}.md`;
-        responseLocation = `https://vincentp.me/${noteType}/${responseDate}/${responseLocationTime}/`;
-        postDestination = `${github.postUrl}/contents/_posts/${postFileName}`;
+        // messageContent = `:robot: submitted by Mastrl Cntrl`;
+         // logger.info(`Response: ${responseLocation}`);
+        // logger.info(`Destination: ${postDestination}`);
 
-        logger.info(`Response: ${responseLocation}`);
-        logger.info(`Destination: ${postDestination}`);
+    //     payloadOptions = {
+    //         method : 'PUT',
+    //         url : postDestination,
+    //         headers : {
+    //             Authorization : `token ${github.key}`,
+    //             'Content-Type' : 'application/vnd.github.v3+json; charset=UTF-8',
+    //             'User-Agent' : github.name
+    //         },
+    //         body : {
+    //             path : postFileName,
+    //             branch : github.branch,
+    //             message : messageContent,
+    //             committer : {
+    //                 'name' : github.user,
+    //                 'email' : github.email
+    //             },
+    //             content : payloadEncoded
+    //         },
+    //         json : true
+    //     };
 
-        payloadOptions = {
-            method : 'PUT',
-            url : postDestination,
-            headers : {
-                Authorization : `token ${github.key}`,
-                'Content-Type' : 'application/vnd.github.v3+json; charset=UTF-8',
-                'User-Agent' : github.name
-            },
-            body : {
-                path : postFileName,
-                branch : github.branch,
-                message : messageContent,
-                committer : {
-                    'name' : github.user,
-                    'email' : github.email
-                },
-                content : payloadEncoded
-            },
-            json : true
-        };
-
-        request(payloadOptions, sendtoGithub);
-         // End Github Submission
+    //     request(payloadOptions, sendtoGithub);
+    //      // End Github Submission
     }
 
     // Check indieauthentication
