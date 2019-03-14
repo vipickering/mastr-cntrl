@@ -32,17 +32,17 @@ exports.publish = function publish(fileLocation, fileName, responseLocation, pay
 
     function sendtoGithub(error, response, body) {
         if (error) {
-            res.status(400);
-            res.send('Error Sending Payload');
+            response.status(400);
+            response.send('Error Sending Payload');
             logger.error(`Git creation failed: ${error}`);
-            res.end('Error Sending Payload');
+            response.end('Error Sending Payload');
             throw new Error(`Failed to send: ${error}`);
         } else {
             logger.info('Git creation successful!  Server responded with:', body);
-            res.writeHead(201, {
+            response.writeHead(201, {
                 'location' : responseLocation
             });
-            res.end('Thanks');
+            response.end('Thanks');
         }
     }
 
