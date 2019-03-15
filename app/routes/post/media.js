@@ -14,7 +14,7 @@ exports.mediaPost = function mediaPost(req, res) {
     const filenameID = shortid.generate();
     const fileName = `${filenameID}.jpg`;  //Need to identify other mimetypes
     const payload = req.files[0].buffer;
-    const responseLocation = `https://vincentp.me/images/blog/${publishedDate}/${fileName}`;
+    const responseLocation = `images/blog/${publishedDate}/${fileName}`;
     const fileLocation = `images/blog/${publishedDate}`;
     const postDestination = `${github.postUrl}/contents/images/blog/${publishedDate}/${fileName}`;
     let token;
