@@ -1,4 +1,3 @@
-// const request = require('request');
 const rp = require('request-promise');
 const base64 = require('base64it');
 const logger = require(appRootDirectory + '/app/functions/bunyan');
@@ -46,25 +45,9 @@ exports.publish = function publish(req, res, fileLocation, fileName, responseLoc
         res.end('Error Sending Payload');
     }
 
-    // function sendtoGithub(error, response, body) {
-    //     if (error) {
-    //         res.status(400);
-    //         res.send('Error Sending Payload');
-    //         logger.error(`Git creation failed: ${error}`);
-    //         res.end('Error Sending Payload');
-    //         throw new Error(`Failed to send: ${error}`);
-    //     } else {
-    //         logger.info('Git creation successful!  Server responded with:', body);
-    //         res.writeHead(201, {
-    //             'location' : responseLocation
-    //         });
-    //         res.end('Thanks');
-    //     }
-    // }
-
     logger.info(`Response: ${responseLocation}`);
     logger.info(`Destination: ${fileDestination}`);
-    // request(payloadOptions, sendtoGithub);
+
     rp(options)
         .then(successful)
         .catch(handlePatchError);
