@@ -32,7 +32,6 @@ exports.publish = function publish(req, res, fileLocation, fileName, responseLoc
 
     function successful() {
         logger.info('Git creation successful!');
-        // res.status(202);
         res.writeHead(201, {'location' : responseLocation});
         res.end('Thanks');
     }
