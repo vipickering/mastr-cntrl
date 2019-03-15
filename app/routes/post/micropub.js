@@ -1,9 +1,5 @@
 const fetch = require('node-fetch');
-// const request = require('request');
 const moment = require('moment');
-// const base64 = require('base64it');
-// const config = require(appRootDirectory + '/app/config.js');
-// const github = config.github;
 const logger = require(appRootDirectory + '/app/functions/bunyan');
 const formatCheckin = require(appRootDirectory + '/app/functions/formatters/swarm');
 const formatNote = require(appRootDirectory + '/app/functions/formatters/note');
@@ -14,21 +10,19 @@ const githubApi = require(appRootDirectory + '/app/functions/githubApi');
 
 exports.micropubPost = function micropubPost(req, res) {
     let serviceIdentifier = '';
-    // let postFileName;
-    let fileLocation;
     let fileName;
     let responseLocation;
     let payload;
     let messageContent;
     let payloadOptions;
     let publishedDate;
-    // let postDestination;
     let micropubType;
     let payloadEncoded;
     let postFileNameDate;
     let postFileNameTime;
     let responseDate;
     let responseLocationTime;
+    const fileLocation = `_posts`;
     const micropubContent = req.body;
     const token = req.headers.authorization;
     const accessToken = req.body.access_token;
@@ -67,7 +61,7 @@ exports.micropubPost = function micropubPost(req, res) {
     }
 
     // Micropub Action (only fires if authentication passes)
-    function authAction(json) {
+    function micropubAction(json) {
         serviceIdentifier = json.client_id;
         logger.info('Service Is: ' + serviceIdentifier);
         logger.info('Payload JSON: ' + JSON.stringify(micropubContent));
@@ -94,46 +88,14 @@ exports.micropubPost = function micropubPost(req, res) {
             payload = formatNote.note(micropubContent);
         }
 
-        fileLocation = `_posts`;
         fileName = `${postFileNameDate}-${postFileNameTime}.md`;
         responseLocation = `https://vincentp.me/${micropubType}/${responseDate}/${responseLocationTime}/`;
 
         githubApi.publish(req, res, fileLocation, fileName, responseLocation, payload);
-
-        // payloadEncoded = base64.encode(payload);
-
-        // Begin Github Submission
-        // messageContent = `:robot: submitted by Mastrl Cntrl`;
-         // logger.info(`Response: ${responseLocation}`);
-        // logger.info(`Destination: ${postDestination}`);
-
-    //     payloadOptions = {
-    //         method : 'PUT',
-    //         url : postDestination,
-    //         headers : {
-    //             Authorization : `token ${github.key}`,
-    //             'Content-Type' : 'application/vnd.github.v3+json; charset=UTF-8',
-    //             'User-Agent' : github.name
-    //         },
-    //         body : {
-    //             path : postFileName,
-    //             branch : github.branch,
-    //             message : messageContent,
-    //             committer : {
-    //                 'name' : github.user,
-    //                 'email' : github.email
-    //             },
-    //             content : payloadEncoded
-    //         },
-    //         json : true
-    //     };
-
-    //     request(payloadOptions, sendtoGithub);
-    //      // End Github Submission
     }
 
-    // Check indieauthentication
-    function authResponse(response) {
+    // Check indie authentication
+    function indieAuthentication(response) {
             return response.json();
     }
 
@@ -144,7 +106,7 @@ exports.micropubPost = function micropubPost(req, res) {
             'Authorization' : token
         }
     })
-        .then(authResponse)
-        .then(authAction)
+        .then(indieAuthentication)
+        .then(micropubAction)
         .catch((err) => logger.error(err));
 };
