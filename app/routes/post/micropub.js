@@ -29,7 +29,7 @@ exports.micropubPost = function micropubPost(req, res) {
     const formattedToken = token.slice(7); //Remove Bearer
     const indieauth = 'https://tokens.indieauth.com/token';
 
-    // logger.info('json body ' + JSON.stringify(req.body));     //Log packages sent, for debug
+    logger.info('json body ' + JSON.stringify(req.body));     //Log packages sent, for debug
 
     //Some P3K services send the published date-time. Others do not. Check if it exists, and if not do it ourselves.
     try {
@@ -63,8 +63,13 @@ exports.micropubPost = function micropubPost(req, res) {
     // Micropub Action (only fires if authentication passes)
     function micropubAction(json) {
         serviceIdentifier = json.client_id;
-        logger.info('Service Is: ' + serviceIdentifier);
+        logger.info('Service is: ' + serviceIdentifier);
         logger.info('Payload JSON: ' + JSON.stringify(micropubContent));
+
+        // Monitor if we can get the micropub action
+        // Once we have this, then we can send to an update function unstead.
+        let micropubAction = micropubContent.action;
+        logger.info('Micropub action is: ' + micropubAction);
 
         switch (true) {
         case (serviceIdentifier === 'https://ownyourswarm.p3k.io') :

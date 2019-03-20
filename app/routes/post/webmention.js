@@ -67,10 +67,10 @@ exports.webmentionPost = function webmentionPost(req, res) {
         }
 
         try {
-            webmentionDate = webmention['wm-received'];
+            webmentionDate = webmention['published'];
             logger.info(webmentionDate);
         } catch (e){
-            logger.info('wm-received failed');
+            logger.info('published date failed');
         }
 
         try {
@@ -87,11 +87,12 @@ exports.webmentionPost = function webmentionPost(req, res) {
             logger.info('wm-id failed');
         }
 
-        //TODO We should ge this from the webmention if we can
-        // See send-webmention
         filePath = moment(webmentionDate).format('YYYY/MM/DD');
         postFileName = `${fileName}.json`;
         postDestination = `${github.postUrl}/contents/_data/webmention/${filePath}/${postFileName}`;
+
+        // let webmentionAction = webmention['wm-id'];
+
 
         options = {
             method : 'PUT',
