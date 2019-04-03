@@ -59,8 +59,16 @@ exports.webmentionPost = function webmentionPost(req, res) {
         encodedContent = base64.encode(payload);
         logger.info('payload encoded');
 
+        //Should we nest these related try catches?
         try {
             webmentionDate = webmention['wm-received'][0];
+            logger.info(webmentionDate);
+        } catch (e){
+            logger.info('wm-received [0] failed');
+        }
+
+        try {
+            webmentionDate = webmention['wm-received'];
             logger.info(webmentionDate);
         } catch (e){
             logger.info('wm-received [0] failed');
