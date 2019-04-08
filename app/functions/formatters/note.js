@@ -4,8 +4,7 @@ const tz = require('moment-timezone');
 const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
 
 exports.note = function note(micropubContent) {
-    let pubDate  = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss');
-    let pubDateNZ = pubDate.tz('Pacific/Auckland').format();
+    let pubDate  = moment(new Date()).tz('Pacific/Auckland').format('YYYY-MM-DDTHH:mm:ss');
     let layout = '';
     let category = '';
     let content = '';
@@ -97,9 +96,9 @@ exports.note = function note(micropubContent) {
 
     const entry = `---
 layout: "${layout}"
-title: "Note for ${pubDateNZ}"
-date: "${pubDateNZ}"
-meta: "note posted on ${pubDateNZ}"
+title: "Note for ${pubDate}"
+date: "${pubDate}"
+meta: "note posted on ${pubDate}"
 category: "${category}"
 ${photoURL}
 ${alt}

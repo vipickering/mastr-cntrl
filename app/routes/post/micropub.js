@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 const moment = require('moment');
-const momentTimezone = require('moment-timezone');
+const tz = require('moment-timezone');
 const logger = require(appRootDirectory + '/app/functions/bunyan');
 const formatCheckin = require(appRootDirectory + '/app/functions/formatters/swarm');
 const formatNote = require(appRootDirectory + '/app/functions/formatters/note');
@@ -37,8 +37,7 @@ exports.micropubPost = function micropubPost(req, res) {
     try {
         publishedDate = req.body.properties.published[0];
     } catch (e) {
-        tempDate = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss');
-        publishedDate = tempDate.tz('Pacific/Auckland').format();
+        publishedDate = moment(new Date()).tz('Pacific/Auckland').format('YYYY-MM-DDTHH:mm:ss');
     }
 
     //Format date time for naming file.
