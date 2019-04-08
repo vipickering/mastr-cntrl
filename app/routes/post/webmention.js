@@ -96,7 +96,8 @@ exports.webmentionPost = function webmentionPost(req, res) {
             logger.info('wm-id failed');
         }
 
-        filePath = moment(webmentionDate).tz('Pacific/Auckland').format('YYYY/MM/DD');
+        filePath = moment(webmentionDate).format('YYYY/MM/DD');
+        logger.info("file path: " + filePath);
         postFileName = `${fileName}.json`;
         postDestination = `${github.postUrl}/contents/_data/webmention/${filePath}/${postFileName}`;
 
