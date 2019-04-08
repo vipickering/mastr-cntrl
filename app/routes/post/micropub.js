@@ -1,5 +1,6 @@
 const fetch = require('node-fetch');
 const moment = require('moment');
+const moment = require('moment-timezone');
 const logger = require(appRootDirectory + '/app/functions/bunyan');
 const formatCheckin = require(appRootDirectory + '/app/functions/formatters/swarm');
 const formatNote = require(appRootDirectory + '/app/functions/formatters/note');

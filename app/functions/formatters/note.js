@@ -1,5 +1,6 @@
 const logger = require(appRootDirectory + '/app/functions/bunyan');
 const moment = require('moment');
+const moment = require('moment-timezone');
 const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
 
 exports.note = function note(micropubContent) {
