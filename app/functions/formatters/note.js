@@ -3,7 +3,8 @@ const moment = require('moment');
 const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
 
 exports.note = function note(micropubContent) {
-    const pubDate  = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss');
+    let pubDate  = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss');
+    let pubDateNZ = pubDate.tz('Pacific/Auckland').format();
     let layout = '';
     let category = '';
     let content = '';
@@ -95,9 +96,9 @@ exports.note = function note(micropubContent) {
 
     const entry = `---
 layout: "${layout}"
-title: "Note for ${pubDate}"
-date: "${pubDate}"
-meta: "note posted on ${pubDate}"
+title: "Note for ${pubDateNZ}"
+date: "${pubDateNZ}"
+meta: "note posted on ${pubDateNZ}"
 category: "${category}"
 ${photoURL}
 ${alt}
