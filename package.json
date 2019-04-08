@@ -8,8 +8,8 @@
   "license": "MIT",
   "scripts": {
 
-    "start": "NODE_ENV=prod TZ='Pacific/Auckland' node ./bin/server.js | bunyan -o short",
-    "dev": "NODE_ENV=dev env TZ='Pacific/Auckland' node ./bin/server.js | bunyan -o short",
+    "start": "NODE_ENV=prod node ./bin/server.js | bunyan -o short",
+    "dev": "NODE_ENV=dev node ./bin/server.js | bunyan -o short",
     "redis:dev": "redis-server",
     "lint:functions": "eslint app/functions/*.js",
     "lint:formatters": "eslint app/functions/formatters/*.js",
