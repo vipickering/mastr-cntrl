@@ -1,6 +1,7 @@
 const fetch = require('node-fetch');
 const multer = require('multer');
 const moment = require('moment');
+const tz = require('moment-timezone');
 const shortid = require('shortid');
 const storage = multer.memoryStorage();
 const upload = multer({storage : storage});
@@ -10,7 +11,7 @@ const logger = require(appRootDirectory + '/app/functions/bunyan');
 const githubApi = require(appRootDirectory + '/app/functions/githubApi');
 
 exports.mediaPost = function mediaPost(req, res) {
-    const publishedDate = moment(new Date()).format('YYYY-MM-DD');
+    const publishedDate = moment(new Date()).tz('Pacific/Auckland').format('YYYY-MM-DD');
     const filenameID = shortid.generate();
     const fileName = `${filenameID}.jpg`;  //Need to identify other mimetypes
     const payload = req.files[0].buffer;

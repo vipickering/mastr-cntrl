@@ -1,6 +1,7 @@
 const rp = require('request-promise');
 const base64 = require('base64it');
 const moment = require('moment');
+const tz = require('moment-timezone');
 const logger = require(appRootDirectory + '/app/functions/bunyan');
 const config = require(appRootDirectory + '/app/config.js');
 const github = config.github;
@@ -95,7 +96,7 @@ exports.webmentionPost = function webmentionPost(req, res) {
             logger.info('wm-id failed');
         }
 
-        filePath = moment(webmentionDate).format('YYYY/MM/DD');
+        filePath = moment(webmentionDate).tz('Pacific/Auckland').format('YYYY/MM/DD');
         postFileName = `${fileName}.json`;
         postDestination = `${github.postUrl}/contents/_data/webmention/${filePath}/${postFileName}`;
 
