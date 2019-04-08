@@ -17,7 +17,6 @@ exports.micropubPost = function micropubPost(req, res) {
     let messageContent;
     let payloadOptions;
     let publishedDate;
-    let tempDate;
     let micropubType;
     let payloadEncoded;
     let postFileNameDate;
@@ -37,7 +36,8 @@ exports.micropubPost = function micropubPost(req, res) {
     try {
         publishedDate = req.body.properties.published[0];
     } catch (e) {
-        publishedDate = moment(new Date()).tz('Pacific/Auckland').format('YYYY-MM-DDTHH:mm:ss');
+        publishedDate = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss+00:00');
+        // publishedDate = moment(new Date()).tz('Pacific/Auckland').format('YYYY-MM-DDTHH:mm:ss');
     }
 
     //Format date time for naming file.

@@ -1,11 +1,12 @@
 const logger = require(appRootDirectory + '/app/functions/bunyan');
 const moment = require('moment');
+const tz = require('moment-timezone');
 const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
 
 exports.replies = function replies(micropubContent) {
     const layout = 'replies';
     const category = 'Replies';
-    const pubDate  = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss');
+    let pubDate  = moment(new Date()).tz('Pacific/Auckland').format('YYYY-MM-DDTHH:mm:ss');
 
     let content = '';
     let replyTo = '';
