@@ -66,7 +66,8 @@ exports.replies = function replies(micropubContent) {
         }
     } catch (e) {
         logger.info('No tags provided assigning miscellaneous');
-        tags = 'miscellaneous';
+        tags += '\n- ';
+        tags += 'miscellaneous';
     }
 
 try {
