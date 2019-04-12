@@ -46,7 +46,7 @@ exports.bookmark = function bookmark(micropubContent) {
         }
     } catch (e) {
         logger.info('No tags provided assigning miscellaneous');
-        tagArray = 'miscellaneous';
+        tags = 'miscellaneous';
     }
 
     try {

@@ -66,13 +66,13 @@ exports.replies = function replies(micropubContent) {
         }
     } catch (e) {
         logger.info('No tags provided assigning miscellaneous');
-        tagArray = 'miscellaneous';
+        tags = 'miscellaneous';
     }
 
 try {
         location = micropubContent.location;
          if (typeof location === 'undefined') {
-            logger.info('Location cannot be determind');
+            logger.info('Location cannot be found');
             location = '';
         }
     } catch (e) {

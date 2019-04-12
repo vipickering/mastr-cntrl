@@ -103,7 +103,7 @@ exports.webmentionPost = function webmentionPost(req, res) {
 
         // let webmentionAction = webmention['wm-id'];
 
-
+        //GET uri, if it doesn't exist, insert file. Otherwise update and add SHA.
         options = {
             method : 'PUT',
             uri : postDestination,

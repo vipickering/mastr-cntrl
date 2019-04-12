@@ -54,20 +54,20 @@ exports.note = function note(micropubContent) {
     }
 
     try {
-        tagArray = micropubContent.category;
+        tagArray = micropubContent.category[0];
         for (let i = 0; i < tagArray.length; i++) {
             tags += '\n- ';
             tags += tagArray[i];
         }
     } catch (e) {
         logger.info('No tags provided assigning miscellaneous');
-        tagArray = 'miscellaneous';
+        tags = 'miscellaneous';
     }
 
     try {
         location = micropubContent.location;
          if (typeof location === 'undefined') {
-            logger.info('Location cannot be determind');
+            logger.info('Location cannot be found');
             location = '';
         }
     } catch (e) {
