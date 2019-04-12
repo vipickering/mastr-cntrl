@@ -54,7 +54,7 @@ exports.note = function note(micropubContent) {
     }
 
     try {
-        tagArray = micropubContent.category[0];
+        tagArray = micropubContent.category;
         for (let i = 0; i < tagArray.length; i++) {
             tags += '\n- ';
             tags += tagArray[i];
