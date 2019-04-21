@@ -41,6 +41,7 @@ exports.mediaPost = function mediaPost(req, res) {
     logger.info('json body ' + JSON.stringify(req.body));
 
     function authResponse(response) {
+        logger.info('Returning location: ' + responseLocation);
             return responseLocation;
     }
 
