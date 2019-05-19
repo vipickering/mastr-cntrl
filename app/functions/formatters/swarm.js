@@ -1,5 +1,5 @@
 const logger = require(appRootDirectory + '/app/functions/bunyan');
-const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
+// const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
 
 exports.checkIn = function checkIn(micropubContent) {
     const layout = 'checkin';
@@ -108,6 +108,6 @@ twitterCard: false
 ${content}
 `;
     logger.info('Swarm formatter finished: ' + entry);
-    stringEncode.strencode(entry);
+    // stringEncode.strencode(entry);
     return entry;
 };

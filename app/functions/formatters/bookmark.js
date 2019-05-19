@@ -1,7 +1,7 @@
 const logger = require(appRootDirectory + '/app/functions/bunyan');
 const moment = require('moment');
 const tz = require('moment-timezone');
-const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
+// const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
 
 exports.bookmark = function bookmark(micropubContent) {
     const layout = 'links';
@@ -80,6 +80,6 @@ twitterCard: false
 ${content}
 `;
     logger.info('Bookmark formatter finished: ' + entry);
-    stringEncode.strencode(entry);
+    // stringEncode.strencode(entry);
     return entry;
 };

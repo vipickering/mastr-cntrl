@@ -1,7 +1,7 @@
 const logger = require(appRootDirectory + '/app/functions/bunyan');
 const moment = require('moment');
 const tz = require('moment-timezone');
-const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
+// const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
 
 exports.favourite = function favourite(micropubContent) {
     const layout = 'favourite';
@@ -51,6 +51,6 @@ twitterCard: false
 [${like}](${like})
 `;
     logger.info('Favourite formatter finished: ' + entry);
-    stringEncode.strencode(entry);
+    // stringEncode.strencode(entry);
     return entry;
 };

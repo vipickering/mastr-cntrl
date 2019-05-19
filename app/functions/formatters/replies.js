@@ -1,7 +1,7 @@
 const logger = require(appRootDirectory + '/app/functions/bunyan');
 const moment = require('moment');
 const tz = require('moment-timezone');
-const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
+// const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
 
 exports.replies = function replies(micropubContent) {
     const layout = 'replies';
@@ -115,6 +115,6 @@ twitterCard: false
 ${content}
 `;
     logger.info('Reply formatter finished: ' + entry);
-    stringEncode.strencode(entry);
+    // stringEncode.strencode(entry);
     return entry;
 };
