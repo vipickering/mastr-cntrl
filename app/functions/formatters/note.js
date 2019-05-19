@@ -112,6 +112,6 @@ twitterCard: false
 ${content}
 `;
     logger.info('Note formatter finished: ' + entry);
-    stringEncode.strencode(entry);
+    // stringEncode.strencode(entry);
     return entry;
 };
