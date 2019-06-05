@@ -33,7 +33,7 @@ exports.checkIn = function checkIn(micropubContent) {
     }
 
     try {
-        photoArray = micropubContent.properties.photo;
+        photoArray = micropubContent.properties.photo[0];
 
          for (let j = 0; j < photoArray.length; j++) {
             photoURL += `photo${j+1}_url: "${photoArray[j].value}"\n`;
