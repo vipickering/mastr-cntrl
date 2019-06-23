@@ -77,14 +77,14 @@ exports.webmentionPost = function webmentionPost(req, res) {
 
         try {
             fileName = webmention['wm-id'][0];
-            logger.info('Webmention File Name: ' + fileName);
+            logger.info('Webmention File Name wm-id[0]: ' + fileName);
         } catch (e){
             logger.info('wm-id [0] failed');
         }
 
         try {
             fileName = webmention['wm-id'];
-            logger.info('Webmention File Name: ' + fileName);
+            logger.info('Webmention File Name wm-id: ' + fileName);
         } catch (e){
             logger.info('wm-id failed');
         }
