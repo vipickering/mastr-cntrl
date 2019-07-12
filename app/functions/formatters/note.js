@@ -1,10 +1,10 @@
-const base64 = require('base64it');
 const logger = require(appRootDirectory + '/app/functions/bunyan');
 const moment = require('moment');
+const tz = require('moment-timezone');
 const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
 
 exports.note = function note(micropubContent) {
-    const pubDate  = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss');
+    let pubDate  = moment(new Date()).tz('Pacific/Auckland').format('YYYY-MM-DDTHH:mm:ss');
     let layout = '';
     let category = '';
     let content = '';
@@ -14,8 +14,9 @@ exports.note = function note(micropubContent) {
     let alt = '';
     let tags = '';
     let tagArray = '';
-    let syndication = '';
-    let syndicationArray = '';
+    let twitter = false;
+    let mastodon = false;
+    let syndicateArray = '';
 
     // Debug
     logger.info('Note JSON: ' + JSON.stringify(micropubContent));
@@ -60,13 +61,14 @@ exports.note = function note(micropubContent) {
         }
     } catch (e) {
         logger.info('No tags provided assigning miscellaneous');
-        tagArray = 'miscellaneous';
+        tags += '\n- ';
+        tags += 'miscellaneous';
     }
 
     try {
         location = micropubContent.location;
          if (typeof location === 'undefined') {
-            logger.info('Location cannot be determind');
+            logger.info('Location cannot be found');
             location = '';
         }
     } catch (e) {
@@ -74,17 +76,24 @@ exports.note = function note(micropubContent) {
         location = '';
     }
 
-     try {
-        syndicationArray = micropubContent['mp-syndicate-to'];
-        for (let i = 0; i < syndicationArray.length; i++) {
-            syndication += '\n- ';
-            syndication += syndicationArray[i];
+    try {
+        syndicateArray = micropubContent["mp-syndicate-to"];
+
+        for (let j = 0; j < syndicateArray.length; j++) {
+            logger.info(syndicateArray[j]);
+            if (syndicateArray[j] == 'https://twitter.com/vincentlistens/'){
+                twitter = true;
+            }
+            if (syndicateArray[j] == 'https://mastodon.social/@vincentlistens'){
+                mastodon = true;
+            }
         }
     } catch (e) {
-        logger.info('No Syndication provided');
-        syndicationArray = '';
+        logger.info('No Syndication targets');
+        syndication = '';
+        twitter = false;
+        mastodon = false;
     }
-
 
     const entry = `---
 layout: "${layout}"
@@ -95,14 +104,14 @@ category: "${category}"
 ${photoURL}
 ${alt}
 tags:${tags}
-syndication: ${syndication}
 location: "${location}"
+twitter: ${twitter}
+mastodon: ${mastodon}
 twitterCard: false
 ---
 ${content}
 `;
     logger.info('Note formatter finished: ' + entry);
-    stringEncode.strencode(entry);
-    const micropubContentFormatted = base64.encode(entry);
-    return micropubContentFormatted;
+    // stringEncode.strencode(entry);
+    return entry;
 };

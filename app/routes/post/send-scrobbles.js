@@ -8,8 +8,13 @@ const website = config.website;
 const webmention = config.webmention;
 const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
 
-exports.syndication = function syndication(req, res) {
+exports.sendScrobbles = function sendScrobbles(req, res) {
+    const url = 'http://ws.audioscrobbler.com/2.0/?method=user.getweeklyalbumchart&user=monkeymajiks&api_key=' + LASTFM_TOKEN;
 
-logger.info('test');
+
+// When the endpoint is triggered, go fetch the weekly scrobble list and chuck it in to a LastFM formatter, then pass to Github API function to post
 
 };
+
+
+

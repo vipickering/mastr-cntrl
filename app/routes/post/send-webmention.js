@@ -103,14 +103,14 @@ exports.sendWebmention = function sendWebmention(req, res) {
                 let tempTimeMin = tempDateTime.slice(-2);
 
                 let dateString =`${tempYear}-${tempMonth}-${tempDay}T${tempTimeHr}:${tempTimeMin}:00`;
-                let webmentionSourceDateTime = moment(dateString).add(1, 'minutes').format(); //Format in the correct format and add 1 minute
+                let webmentionSourceDateTime = moment(dateString).add(1, 'minutes').format(); //modify to the correct format and add 1 minute
 
                 logger.info('time added ' + webmentionSourceDateTime);
 
                 const telegraphOptions = {
                     method : 'POST',
-                    // uri : 'https://telegraph.p3k.io/webmention',
-                    uri : 'http://example.com',
+                    uri : 'https://telegraph.p3k.io/webmention',
+                    // uri : 'http://example.com',
                     headers : {
                         'User-Agent' : github.name
                     },

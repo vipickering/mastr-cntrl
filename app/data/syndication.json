@@ -29,5 +29,39 @@
                 "photo": "https://files.mastodon.social/accounts/avatars/000/411/770/original/15976ed16fa08d42.jpg"
           }
         }
-    ]
+    ],
+    "post-types": [
+    {
+      "type": "note",
+      "name": "Note"
+    },
+    {
+      "type": "article",
+      "name": "Blog Post"
+    },
+    {
+      "type": "photo",
+      "name": "Photo"
+    },
+    {
+      "type": "reply",
+      "name": "Reply"
+    },
+    {
+      "type": "like",
+      "name": "Like"
+    },
+    {
+      "type": "repost",
+      "name": "Repost"
+    },
+    {
+      "type": "rsvp",
+      "name": "RSVP"
+    },
+    {
+      "type": "bookmark",
+      "name": "Bookmark"
+    }
+  ]
 }

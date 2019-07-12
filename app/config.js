@@ -26,4 +26,8 @@ config.website = {
     'url' : process.env.WEBSITE_URL
 };
 
+config.lastfm = {
+    'token' : process.env.LASTFM_TOKEN
+};
+
 module.exports = config;

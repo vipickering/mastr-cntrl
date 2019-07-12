@@ -22,16 +22,16 @@ POST'ed content also triggers a webhook informing Mastr Cntrl to syndicate/post/
 ### To Do
 
 - Webmention updates, delete, undelete
-- Syndication. This will modify the existing check for webmentions to extend it also to look for syndication targets
 
 
 ### Currently Supported
 
 - Micropub Notes/Replies/RSVP/Like/Bookmarking/Repost created on [Quill](https://quill.p3k.io) and other 3rd party providers that support IndieAuth are supported.
-- PESOS 3rd party content posted on [Instagram](https://www.instagram.com) and [Swarm](https://www.swarmapp.com) are currently backfed to the blog via [https://ownyourgram.com](https://ownyourgram.com) and [https://ownyourswarm.p3k.io](https://ownyourswarm.p3k.io) respectively.
+- PESOS 3rd party content posted on [Swarm](https://www.swarmapp.com) are currently backfed to the blog via [https://ownyourswarm.p3k.io](https://ownyourswarm.p3k.io) respectively.
 - Syndication Endpoint - Mastr Cntrl will supply a list of 3rd party social accounts to be syndicated. But will not currently action them (see above).
 - Collecting [Webmention](https://indieweb.org/webmention) via (webmention.io) then saved to individual JSON files.
 - Media endpoint. Images sent via Micropub are uploading and encoding to the Github API.
+- Syndication. Syndication target is marked is true in front matter. On website build this generates a feed which is used to syndicate to target.
 
 ## License
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fvipickering%2Fmastr-cntrl.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fvipickering%2Fmastr-cntrl?ref=badge_large)

@@ -1,22 +1,24 @@
-const base64 = require('base64it');
 const logger = require(appRootDirectory + '/app/functions/bunyan');
 const moment = require('moment');
-const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
+const tz = require('moment-timezone');
+// const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
 
 exports.bookmark = function bookmark(micropubContent) {
     const layout = 'links';
     const category = 'Links';
-    const pubDate  = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss');
+    let pubDate  = moment(new Date()).tz('Pacific/Auckland').format('YYYY-MM-DDTHH:mm:ss');
     let content = '';
+    let title = '';
     let tags = '';
     let tagArray = '';
     let bookmarkLink = '';
+    let twitter = false;
+    let mastodon = false;
+    let syndicateArray = '';
 
     //Debug
     logger.info('Bookmark JSON: ' + JSON.stringify(micropubContent));
 
-    // Sometimes Quill is sending JSON in different structures, depending upon including images.
-    // Try each method to make sure we capture the data
     try {
         content = micropubContent.content;
     } catch (e) {
@@ -24,21 +26,10 @@ exports.bookmark = function bookmark(micropubContent) {
     }
 
     try {
-        content = micropubContent.properties.content[0];
-    } catch (e) {
-        logger.info('No content micropubContent.properties.content[0]');
-    }
-
-    try {
-        title = micropubContent.content.substring(0, 100);
+        title = micropubContent.name;
     } catch (e) {
         logger.info('No title micropubContent.content');
-    }
-
-    try {
-        title = micropubContent.properties.content[0].substring(0, 100);
-    } catch (e) {
-        logger.info('No title micropubContent.properties.content[0]');
+        title = '';
     }
 
     try {
@@ -55,7 +46,23 @@ exports.bookmark = function bookmark(micropubContent) {
         }
     } catch (e) {
         logger.info('No tags provided assigning miscellaneous');
-        tagArray = 'miscellaneous';
+        tags += '\n- ';
+        tags += 'miscellaneous';
+    }
+
+    try {
+        syndicateArray = micropubContent["mp-syndicate-to"];
+
+        for (let j = 0; j < syndicateArray.length; j++) {
+            logger.info(syndicateArray[j]);
+            if (syndicateArray[j] == 'https://twitter.com/vincentlistens/'){ twitter = true; }
+            if (syndicateArray[j] == 'https://mastodon.social/@vincentlistens'){ mastodon = true; }
+        }
+    } catch (e) {
+        logger.info('No Syndication targets');
+        syndication = '';
+        twitter = false;
+        mastodon = false;
     }
 
     const entry = `---
@@ -66,12 +73,13 @@ target: "${bookmarkLink}"
 meta: "bookmark posted on ${pubDate}"
 category: "${category}"
 tags:${tags}
+twitter: ${twitter}
+mastodon: ${mastodon}
 twitterCard: false
 ---
 ${content}
 `;
     logger.info('Bookmark formatter finished: ' + entry);
-    stringEncode.strencode(entry);
-    const micropubContentFormatted = base64.encode(entry);
-    return micropubContentFormatted;
+    // stringEncode.strencode(entry);
+    return entry;
 };

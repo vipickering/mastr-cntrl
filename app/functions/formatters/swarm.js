@@ -1,6 +1,5 @@
-const base64 = require('base64it');
 const logger = require(appRootDirectory + '/app/functions/bunyan');
-const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
+// const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
 
 exports.checkIn = function checkIn(micropubContent) {
     const layout = 'checkin';
@@ -8,7 +7,7 @@ exports.checkIn = function checkIn(micropubContent) {
     const rawPubDate = micropubContent.properties.published[0];
     const rawDate = rawPubDate.slice(0, 10);
     const rawTime = rawPubDate.replace(/-/g, ':').slice(11, -9);
-    const pubDate = rawDate + ' ' + rawTime + ' +/-GMT';
+    const pubDate = rawDate + ' ' + rawTime;
     const syndication = micropubContent.properties.syndication[0];
     const checkinName = micropubContent.properties.checkin[0].properties.name[0];
     let content = '';
@@ -24,7 +23,7 @@ exports.checkIn = function checkIn(micropubContent) {
     let region = '';
 
     //Debug
-    logger.info('Swarm Complete Content: ' + JSON.stringify(micropubContent));
+    logger.info('Swarm JSON: ' + JSON.stringify(micropubContent));
 
     try {
         content = micropubContent.properties.content[0];
@@ -34,7 +33,7 @@ exports.checkIn = function checkIn(micropubContent) {
     }
 
     try {
-        photoArray = micropubContent.properties.photo;
+        photoArray = micropubContent.properties.photo[0];
 
          for (let j = 0; j < photoArray.length; j++) {
             photoURL += `photo${j+1}_url: "${photoArray[j].value}"\n`;
@@ -109,7 +108,6 @@ twitterCard: false
 ${content}
 `;
     logger.info('Swarm formatter finished: ' + entry);
-    stringEncode.strencode(entry);
-    const micropubContentFormatted = base64.encode(entry);
-    return micropubContentFormatted;
+    // stringEncode.strencode(entry);
+    return entry;
 };

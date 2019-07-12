@@ -1,6 +1,7 @@
 const rp = require('request-promise');
 const base64 = require('base64it');
 const moment = require('moment');
+const tz = require('moment-timezone');
 const logger = require(appRootDirectory + '/app/functions/bunyan');
 const config = require(appRootDirectory + '/app/config.js');
 const github = config.github;
@@ -10,7 +11,8 @@ exports.webmentionPost = function webmentionPost(req, res) {
     const messageContent = ':robot: Webmentions updated by Mastrl Cntrl';
 
     let payload;
-    let options;
+    let createFileOptions;
+    let updateFileOptions;
     let encodedContent;
     let filePath;
     let postDestination;
@@ -32,19 +34,11 @@ exports.webmentionPost = function webmentionPost(req, res) {
     }
 
     // CAUTION apostrophes etc still do not work in webmentions
-    // TODO Investiagate if shared encoding function fixed this.
-    //https://gist.github.com/dougalcampbell/2024272
     function strencode(data) {
         return unescape(encodeURIComponent(JSON.stringify(data)));
     }
 
-    // CAUTION apostrophes etc still do not work in webmentions
-    //https://gist.github.com/dougalcampbell/2024272
-    // function strdecode(data) {
-    //     return JSON.parse(decodeURIComponent(escape(data)));
-    // }
-
-    // logger.info('Webmention Debug: ' + JSON.stringify(req.body));
+    logger.info('Webmention Debug: ' + JSON.stringify(req.body));
 
     if (req.body.secret === webhookKey) {
         logger.info('Webmention recieved');
@@ -59,41 +53,48 @@ exports.webmentionPost = function webmentionPost(req, res) {
         encodedContent = base64.encode(payload);
         logger.info('payload encoded');
 
-        try {
-            webmentionDate = webmention['wm-received'][0];
-            logger.info(webmentionDate);
-        } catch (e){
-            logger.info('wm-received [0] failed');
-        }
+        //Should we nest these related try catches?
+        // try {
+        //     webmentionDate = webmention['wm-received'][0];
+        //     logger.info('webmentionDate wm-received [0] ' + webmentionDate);
+        // } catch (e){
+        //     logger.info('wm-received [0] failed');
+        // }
 
         try {
             webmentionDate = webmention['wm-received'];
-            logger.info(webmentionDate);
+            logger.info('webmentionDate wm-received ' + webmentionDate);
         } catch (e){
             logger.info('wm-received failed');
         }
 
         try {
+            webmentionDate = webmention['published'];
+            logger.info('webmentionDate published date ' + webmentionDate);
+        } catch (e){
+            logger.info('published date failed');
+        }
+
+        try {
             fileName = webmention['wm-id'][0];
-            logger.info(fileName);
+            logger.info('Webmention File Name wm-id[0]: ' + fileName);
         } catch (e){
             logger.info('wm-id [0] failed');
         }
 
         try {
             fileName = webmention['wm-id'];
-            logger.info(fileName);
+            logger.info('Webmention File Name wm-id: ' + fileName);
         } catch (e){
             logger.info('wm-id failed');
         }
 
-        //TODO We should ge this from the webmention if we can
-        // See send-webmention
         filePath = moment(webmentionDate).format('YYYY/MM/DD');
+        logger.info("file path: " + filePath);
         postFileName = `${fileName}.json`;
         postDestination = `${github.postUrl}/contents/_data/webmention/${filePath}/${postFileName}`;
 
-        options = {
+        createFileOptions = {
             method : 'PUT',
             uri : postDestination,
             headers : {
@@ -114,7 +115,7 @@ exports.webmentionPost = function webmentionPost(req, res) {
             json : true
         };
         // Push file in to Github API.
-        rp(options)
+        rp(createFileOptions)
             .then(functionFinish)
             .catch(handlePatchError);
     } else {
