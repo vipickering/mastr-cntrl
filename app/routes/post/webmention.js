@@ -68,12 +68,12 @@ exports.webmentionPost = function webmentionPost(req, res) {
             logger.info('wm-received failed');
         }
 
-        try {
-            webmentionDate = webmention['published'];
-            logger.info('webmentionDate published date ' + webmentionDate);
-        } catch (e){
-            logger.info('published date failed');
-        }
+        // try {
+        //     webmentionDate = webmention['published'];
+        //     logger.info('webmentionDate published date ' + webmentionDate);
+        // } catch (e){
+        //     logger.info('published date failed');
+        // }
 
         try {
             fileName = webmention['wm-id'][0];
