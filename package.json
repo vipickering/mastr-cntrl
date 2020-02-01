@@ -27,7 +27,7 @@
     "url": "https://github.com/vipickering/micropub-API/issues"
   },
   "devDependencies": {
-    "eslint": "^6.5.1",
+    "eslint": "^6.8.0",
     "shortid": "^2.2.15"
   },
   "dependencies": {
@@ -36,16 +36,16 @@
     "bunyan": "^1.8.12",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "helmet": "^3.21.1",
+    "helmet": "^3.21.2",
     "hiredis": "^0.5.0",
     "moment": "^2.24.0",
-    "moment-timezone": "^0.5.26",
+    "moment-timezone": "^0.5.27",
     "multer": "^1.4.2",
     "node-fetch": "^2.6.0",
     "ratelimit.js": "^1.8.0",
     "redis": "^2.8.0",
     "request": "^2.88.0",
-    "request-promise": "^4.2.4",
+    "request-promise": "^4.2.5",
     "serve-favicon": "^2.5.0"
   }
 }
