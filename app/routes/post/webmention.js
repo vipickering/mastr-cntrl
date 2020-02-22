@@ -67,7 +67,7 @@ exports.webmentionPost = function webmentionPost(req, res) {
             webmentionFolder = 'mentions';
             fileName = 'mention';
         }else if (webmention['wm-property'] == 'in-reply-to'){
-            webmentionFolder = 'repllies';
+            webmentionFolder = 'replies';
             fileName = 'reply';
         }else if (webmention['wm-property'] == 'rsvp'){
             webmentionFolder = 'rsvps';
