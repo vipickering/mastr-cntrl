@@ -14,7 +14,7 @@ exports.note = function note(micropubContent) {
     let alt = '';
     let tags = '';
     let tagArray = '';
-    let twitter = false;=
+    let twitter = false;
     let syndicateArray = '';
 
     // Debug
