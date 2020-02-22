@@ -9,7 +9,6 @@ exports.favourite = function favourite(micropubContent) {
     let pubDate  = moment(new Date()).tz('Pacific/Auckland').format('YYYY-MM-DDTHH:mm:ss');
     let like = '';
     let twitter = false;
-    let mastodon = false;
     let syndicateArray = '';
 
     //Debug
@@ -28,13 +27,11 @@ exports.favourite = function favourite(micropubContent) {
         for (let j = 0; j < syndicateArray.length; j++) {
             logger.info(syndicateArray[j]);
             if (syndicateArray[j] == 'https://twitter.com/vincentlistens/'){ twitter = true; }
-            if (syndicateArray[j] == 'https://mastodon.social/@vincentlistens'){ mastodon = true; }
         }
     } catch (e) {
         logger.info('No Syndication targets');
         syndication = '';
         twitter = false;
-        mastodon = false;
     }
 
     const entry = `---
@@ -45,7 +42,6 @@ target: "${like}"
 meta: "Vincent favourited ${like}"
 category: "${category}"
 twitter: ${twitter}
-mastodon: ${mastodon}
 twitterCard: false
 ---
 [${like}](${like})
