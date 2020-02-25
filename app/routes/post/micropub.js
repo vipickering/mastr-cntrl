@@ -14,23 +14,14 @@ exports.micropubPost = function micropubPost(req, res) {
     let fileName;
     let responseLocation;
     let payload;
-    let messageContent;
-    let payloadOptions;
     let publishedDate;
     let micropubType;
-    let payloadEncoded;
-    let postFileNameDate;
-    let postFileNameTime;
-    let responseDate;
-    let responseLocationTime;
-    const fileLocation = `_posts`;
+    let fileLocation;
     const micropubContent = req.body;
     const token = req.headers.authorization;
-    const accessToken = req.body.access_token;
-    const formattedToken = token.slice(7); //Remove Bearer
     const indieauth = 'https://tokens.indieauth.com/token';
 
-    logger.info('json body ' + JSON.stringify(req.body));     //Log packages sent, for debug
+    logger.info('json body ' + JSON.stringify(req.body)); //Log packages sent, for debug
 
     //Some P3K services send the published date-time. Others do not. Check if it exists, and if not do it ourselves.
     try {
@@ -41,26 +32,10 @@ exports.micropubPost = function micropubPost(req, res) {
     }
 
     //Format date time for naming file.
-    postFileNameDate = publishedDate.slice(0, 10);
-    postFileNameTime = publishedDate.replace(/:/g, '-').slice(11, -9);
-    responseDate = postFileNameDate.replace(/-/g, '/');
-    responseLocationTime = publishedDate.slice(11, -12) + '-' + publishedDate.slice(14, -9);
-
-    function sendtoGithub(error, response, body) {
-        if (error) {
-            res.status(400);
-            res.send('Error Sending Payload');
-            logger.error(`Git creation failed: ${error}`);
-            res.end('Error Sending Payload');
-            throw new Error(`Failed to send: ${error}`);
-        } else {
-            logger.info('Git creation successful!  Server responded with:', body);
-            res.writeHead(201, {
-                'location' : responseLocation
-            });
-            res.end('Thanks');
-        }
-    }
+    const postFileNameDate = publishedDate.slice(0, 10);
+    const postFileNameTime = publishedDate.replace(/:/g, '-').slice(11, -9);
+    const responseDate = postFileNameDate.replace(/-/g, '/');
+    const responseLocationTime = publishedDate.slice(11, -12) + '-' + publishedDate.slice(14, -9);
 
     // Micropub Action (only fires if authentication passes)
     function micropubAction(json) {
@@ -69,30 +44,40 @@ exports.micropubPost = function micropubPost(req, res) {
         logger.info('Payload JSON: ' + JSON.stringify(micropubContent));
 
         // Monitor if we can get the micropub action
-        // Once we have this, then we can send to an update function unstead.
-        let micropubAction = micropubContent.action;
-        logger.info('Micropub action is: ' + micropubAction);
+        // Once we have this, then we can send to an update function instead.
+        const micropubActionValue = micropubContent.action;
+        logger.info('Micropub action is: ' + micropubActionValue);
 
         switch (true) {
         case (serviceIdentifier === 'https://ownyourswarm.p3k.io') :
             micropubType = 'checkins';
             payload = formatCheckin.checkIn(micropubContent);
+            fileLocation = 'src/_content/checkins';
             break;
         case (micropubContent.hasOwnProperty('bookmark-of')):
             micropubType = 'links';
             payload = formatBookmark.bookmark(micropubContent);
+            fileLocation = 'src/_content/links';
             break;
         case (micropubContent.hasOwnProperty('like-of')):
             micropubType = 'favourites';
             payload = formatFavourite.favourite(micropubContent);
+            fileLocation = 'src/_content/favourites';
             break;
         case (micropubContent.hasOwnProperty('in-reply-to')):
             micropubType = 'replies';
             payload = formatReplies.replies(micropubContent);
+            fileLocation = 'src/_content/replies';
+            break;
+        case (micropubContent.hasOwnProperty('photo')): //does this work ok?
+            micropubType = 'notes';
+            payload = formatNote.note(micropubContent); //photos are formatted the same way for now.
+            fileLocation = 'src/_content/photos';
             break;
         default:
             micropubType = 'notes';
             payload = formatNote.note(micropubContent);
+            fileLocation = 'src/_content/notes';
         }
 
         fileName = `${postFileNameDate}-${postFileNameTime}.md`;
@@ -103,7 +88,7 @@ exports.micropubPost = function micropubPost(req, res) {
 
     // Check indie authentication
     function indieAuthentication(response) {
-            return response.json();
+        return response.json();
     }
 
     fetch(indieauth, {

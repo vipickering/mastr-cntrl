@@ -1,7 +1,7 @@
 const rp = require('request-promise');
 const base64 = require('base64it');
-const moment = require('moment');
-const tz = require('moment-timezone');
+// const moment = require('moment');
+// const tz = require('moment-timezone');
 const logger = require(appRootDirectory + '/app/functions/bunyan');
 const config = require(appRootDirectory + '/app/config.js');
 const github = config.github;
@@ -12,12 +12,12 @@ exports.webmentionPost = function webmentionPost(req, res) {
 
     let payload;
     let createFileOptions;
-    let updateFileOptions;
+    // let updateFileOptions;
     let encodedContent;
     let filePath;
     let postDestination;
     let postFileName;
-    let webmentionDate;
+    // let webmentionDate;
     let fileName;
     let webmentionFolder;
     let webmentionId;
@@ -57,19 +57,19 @@ exports.webmentionPost = function webmentionPost(req, res) {
 
         //quick and dirty code to work out WM.
         // update to case statement if it works ok.
-        if (webmention['wm-property'] == 'bookmark-of '){
+        if (webmention['wm-property'] === 'bookmark-of ') {
             webmentionFolder = 'bookmarks';
             fileName = 'bookmark';
-        }else if (webmention['wm-property'] == 'like-of'){
+        } else if (webmention['wm-property'] === 'like-of') {
             webmentionFolder = 'likes';
             fileName = 'like';
-        }else if (webmention['wm-property'] == 'mention-of'){
+        } else if (webmention['wm-property'] === 'mention-of') {
             webmentionFolder = 'mentions';
             fileName = 'mention';
-        }else if (webmention['wm-property'] == 'in-reply-to'){
+        } else if (webmention['wm-property'] === 'in-reply-to') {
             webmentionFolder = 'replies';
             fileName = 'reply';
-        }else if (webmention['wm-property'] == 'rsvp'){
+        } else if (webmention['wm-property'] === 'rsvp') {
             webmentionFolder = 'rsvps';
             fileName = 'rsvp';
         } else {
@@ -80,19 +80,19 @@ exports.webmentionPost = function webmentionPost(req, res) {
         try {
             webmentionId = webmention['wm-id'][0];
             logger.info('Webmention File Name wm-id[0]: ' + webmentionId);
-        } catch (e){
+        } catch (e) {
             logger.info('wm-id [0] failed');
         }
 
         try {
             webmentionId = webmention['wm-id'];
             logger.info('Webmention File Name wm-id: ' + webmentionId);
-        } catch (e){
+        } catch (e) {
             logger.info('wm-id failed');
         }
 
         filePath = webmentionFolder;
-        logger.info("file path: " + filePath);
+        logger.info('file path: ' + filePath);
         postFileName = `${fileName}_${webmentionId}.json`;
         postDestination = `${github.postUrl}/contents/_data/${filePath}/${postFileName}`;
 

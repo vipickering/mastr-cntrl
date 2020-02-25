@@ -1,3 +1,5 @@
+/* eslint-disable quotes */
+/* eslint-disable complexity */
 const logger = require(appRootDirectory + '/app/functions/bunyan');
 // const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
 
@@ -29,13 +31,13 @@ exports.checkIn = function checkIn(micropubContent) {
         content = micropubContent.properties.content[0];
     } catch (e) {
         logger.info('No content');
-         content = '';
+        content = '';
     }
 
     try {
         photoArray = micropubContent.properties.photo[0];
 
-         for (let j = 0; j < photoArray.length; j++) {
+        for (let j = 0; j < photoArray.length; j++) {
             photoURL += `photo${j+1}_url: "${photoArray[j].value}"\n`;
             alt += `photo${j+1}_alt: "${photoArray[j].alt}"\n`;
         }

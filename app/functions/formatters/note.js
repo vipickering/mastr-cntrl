@@ -1,10 +1,12 @@
+/* eslint-disable quotes */
+/* eslint-disable complexity */
 const logger = require(appRootDirectory + '/app/functions/bunyan');
 const moment = require('moment');
 const tz = require('moment-timezone');
-const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
+// const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
 
 exports.note = function note(micropubContent) {
-    let pubDate  = moment(new Date()).tz('Pacific/Auckland').format('YYYY-MM-DDTHH:mm:ss');
+    const pubDate  = moment(new Date()).tz('Pacific/Auckland').format('YYYY-MM-DDTHH:mm:ss');
     let layout = '';
     let category = '';
     let content = '';
@@ -66,7 +68,7 @@ exports.note = function note(micropubContent) {
 
     try {
         location = micropubContent.location;
-         if (typeof location === 'undefined') {
+        if (typeof location === 'undefined') {
             logger.info('Location cannot be found');
             location = '';
         }
@@ -80,13 +82,12 @@ exports.note = function note(micropubContent) {
 
         for (let j = 0; j < syndicateArray.length; j++) {
             logger.info(syndicateArray[j]);
-            if (syndicateArray[j] == 'https://twitter.com/vincentlistens/'){
+            if (syndicateArray[j] === 'https://twitter.com/vincentlistens/') {
                 twitter = true;
             }
         }
     } catch (e) {
         logger.info('No Syndication targets');
-        syndication = '';
         twitter = false;
     }
 

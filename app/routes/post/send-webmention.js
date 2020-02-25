@@ -9,6 +9,10 @@ const webmention = config.webmention;
 // const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
 
 exports.sendWebmention = function sendWebmention(req, res) {
+    let webmentionSourceDateTime;
+    let options;
+    let publishedTime;
+    let encodedContent;
     const messageContent = ':robot: webmentions last sent date updated by Mastrl Cntrl';
     const webmentionsDateFileName = 'pubdate.json';
     const webmentionsDateFileDestination = github.postUrl + '/contents/src/_data/' + webmentionsDateFileName;
@@ -28,10 +32,6 @@ exports.sendWebmention = function sendWebmention(req, res) {
         },
         json : true
     };
-    // let webmentionSourceDateTime;
-    let options;
-    let publishedTime;
-    let encodedContent;
 
     function isEmptyObject(obj) {
         return !Object.keys(obj).length;
@@ -149,7 +149,7 @@ exports.sendWebmention = function sendWebmention(req, res) {
                 const tempTimeMin = tempDateTime.slice(-2);
 
                 const dateString = `${tempYear}-${tempMonth}-${tempDay}T${tempTimeHr}:${tempTimeMin}:00`;
-                const webmentionSourceDateTime = moment(dateString).add(1, 'minutes').format(); //modify to the correct format and add 1 minute
+                webmentionSourceDateTime = moment(dateString).add(1, 'minutes').format(); //modify to the correct format and add 1 minute
 
                 logger.info('time added ' + webmentionSourceDateTime);
 

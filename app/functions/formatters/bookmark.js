@@ -6,7 +6,7 @@ const tz = require('moment-timezone');
 exports.bookmark = function bookmark(micropubContent) {
     const layout = 'links';
     const category = 'Links';
-    let pubDate  = moment(new Date()).tz('Pacific/Auckland').format('YYYY-MM-DDTHH:mm:ss');
+    const pubDate  = moment(new Date()).tz('Pacific/Auckland').format('YYYY-MM-DDTHH:mm:ss');
     let content = '';
     let title = '';
     let tags = '';
@@ -37,7 +37,7 @@ exports.bookmark = function bookmark(micropubContent) {
         logger.info('Bookmark is blank.');
     }
 
-   try {
+    try {
         tagArray = micropubContent.category;
         for (let i = 0; i < tagArray.length; i++) {
             tags += '\n- ';
@@ -58,7 +58,6 @@ exports.bookmark = function bookmark(micropubContent) {
         }
     } catch (e) {
         logger.info('No Syndication targets');
-        syndication = '';
         twitter = false;
     }
 

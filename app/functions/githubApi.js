@@ -3,7 +3,7 @@ const base64 = require('base64it');
 const logger = require(appRootDirectory + '/app/functions/bunyan');
 const config = require(appRootDirectory + '/app/config.js');
 const github = config.github;
-const website = config.website;
+// const website = config.website;
 
 exports.publish = function publish(req, res, fileLocation, fileName, responseLocation, payload) {
     const payloadEncoded = base64.encode(payload);
