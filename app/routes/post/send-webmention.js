@@ -26,7 +26,7 @@ exports.sendWebmention = function sendWebmention(req, res) {
         json : true
     };
     const webmentionsOptions = {
-        uri : website.url + '/feeds/indieweb/webmentions.json',
+        uri : website.url + 'src/feeds/indieweb/webmentions.json',
         headers : {
             'User-Agent' : 'Request-Promise'
         },
