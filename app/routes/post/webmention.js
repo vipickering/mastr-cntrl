@@ -94,7 +94,7 @@ exports.webmentionPost = function webmentionPost(req, res) {
         filePath = webmentionFolder;
         logger.info('file path: ' + filePath);
         postFileName = `${fileName}_${webmentionId}.json`;
-        postDestination = `${github.postUrl}/contents/_data/${filePath}/${postFileName}`;
+        postDestination = `${github.postUrl}/contents/src/_data/${filePath}/${postFileName}`;
 
         createFileOptions = {
             method : 'PUT',
