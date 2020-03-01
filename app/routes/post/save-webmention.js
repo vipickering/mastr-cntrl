@@ -1,7 +1,5 @@
 const rp = require('request-promise');
 const base64 = require('base64it');
-// const moment = require('moment');
-// const tz = require('moment-timezone');
 const logger = require(appRootDirectory + '/app/functions/bunyan');
 const config = require(appRootDirectory + '/app/config.js');
 const github = config.github;
@@ -12,12 +10,10 @@ exports.webmentionPost = function webmentionPost(req, res) {
 
     let payload;
     let createFileOptions;
-    // let updateFileOptions;
     let encodedContent;
     let filePath;
     let postDestination;
     let postFileName;
-    // let webmentionDate;
     let fileName;
     let webmentionFolder;
     let webmentionId;
@@ -72,6 +68,9 @@ exports.webmentionPost = function webmentionPost(req, res) {
         } else if (webmention['wm-property'] === 'rsvp') {
             webmentionFolder = 'rsvps';
             fileName = 'rsvp';
+        } else if (webmention['wm-property'] === 'repost') {
+            webmentionFolder = 'reposts';
+            fileName = 'repost';
         } else {
             webmentionFolder = 'unknown';
             fileName = 'unknown';
