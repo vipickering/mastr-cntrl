@@ -43,8 +43,8 @@ exports.note = function note(micropubContent) {
         category = 'Photos';
 
         for (let j = 0; j < photoArray.length; j++) {
-            photoURL += `photo${j+1}_url: "${photoArray[j].value}"\n`;
-            alt += `photo${j+1}_alt: "${photoArray[j].alt}"\n`;
+            photoURL += `photo${j + 1}_url: "${photoArray[j].value}"\n`;
+            alt += `photo${j + 1}_alt: "${photoArray[j].alt}"\n`;
         }
     } catch (e) {
         logger.info('No photo provided');
