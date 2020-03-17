@@ -6,14 +6,13 @@ const tz = require('moment-timezone');
 exports.bookmark = function bookmark(micropubContent) {
     const layout = 'links';
     const category = 'Links';
-    let pubDate  = moment(new Date()).tz('Pacific/Auckland').format('YYYY-MM-DDTHH:mm:ss');
+    const pubDate  = moment(new Date()).tz('Pacific/Auckland').format('YYYY-MM-DDTHH:mm:ss');
     let content = '';
     let title = '';
     let tags = '';
     let tagArray = '';
     let bookmarkLink = '';
     let twitter = false;
-    let mastodon = false;
     let syndicateArray = '';
 
     //Debug
@@ -38,7 +37,7 @@ exports.bookmark = function bookmark(micropubContent) {
         logger.info('Bookmark is blank.');
     }
 
-   try {
+    try {
         tagArray = micropubContent.category;
         for (let i = 0; i < tagArray.length; i++) {
             tags += '\n- ';
@@ -56,13 +55,10 @@ exports.bookmark = function bookmark(micropubContent) {
         for (let j = 0; j < syndicateArray.length; j++) {
             logger.info(syndicateArray[j]);
             if (syndicateArray[j] == 'https://twitter.com/vincentlistens/'){ twitter = true; }
-            if (syndicateArray[j] == 'https://mastodon.social/@vincentlistens'){ mastodon = true; }
         }
     } catch (e) {
         logger.info('No Syndication targets');
-        syndication = '';
         twitter = false;
-        mastodon = false;
     }
 
     const entry = `---
@@ -74,7 +70,6 @@ meta: "bookmark posted on ${pubDate}"
 category: "${category}"
 tags:${tags}
 twitter: ${twitter}
-mastodon: ${mastodon}
 twitterCard: false
 ---
 ${content}

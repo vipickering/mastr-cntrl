@@ -13,7 +13,7 @@ const githubApi = require(appRootDirectory + '/app/functions/githubApi');
 exports.mediaPost = function mediaPost(req, res) {
     const publishedDate = moment(new Date()).tz('Pacific/Auckland').format('YYYY-MM-DD');
     const filenameID = shortid.generate();
-    const fileName = `${filenameID}.jpg`;  //Need to identify other mimetypes
+    const fileName = `${filenameID}.jpg`; //Need to identify other mimetypes
     const payload = req.files[0].buffer;
     const responseLocation = `images/blog/${publishedDate}/${fileName}`;
     const fileLocation = `images/blog/${publishedDate}`;
@@ -29,7 +29,7 @@ exports.mediaPost = function mediaPost(req, res) {
 
     try {
         token = req.headers.authorization;
-        let formattedToken = token.slice(7); //Remove Bearer
+        formattedToken = token.slice(7); //Remove Bearer
         logger.info('Token supplied');
         logger.info(`Authorization Token: ${token}`);
         logger.info(`Formatted Token: ${formattedToken}`);
@@ -43,7 +43,7 @@ exports.mediaPost = function mediaPost(req, res) {
 
     function authResponse(response) {
         logger.info('Returning location: ' + responseLocation);
-            return responseLocation;
+        return responseLocation;
     }
 
     // Verify Token. If OK proceed.

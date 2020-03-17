@@ -1,10 +1,12 @@
+/* eslint-disable quotes */
+/* eslint-disable complexity */
 const logger = require(appRootDirectory + '/app/functions/bunyan');
 const moment = require('moment');
 const tz = require('moment-timezone');
-const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
+// const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
 
 exports.note = function note(micropubContent) {
-    let pubDate  = moment(new Date()).tz('Pacific/Auckland').format('YYYY-MM-DDTHH:mm:ss');
+    const pubDate  = moment(new Date()).tz('Pacific/Auckland').format('YYYY-MM-DDTHH:mm:ss');
     let layout = '';
     let category = '';
     let content = '';
@@ -15,7 +17,6 @@ exports.note = function note(micropubContent) {
     let tags = '';
     let tagArray = '';
     let twitter = false;
-    let mastodon = false;
     let syndicateArray = '';
 
     // Debug
@@ -42,8 +43,8 @@ exports.note = function note(micropubContent) {
         category = 'Photos';
 
         for (let j = 0; j < photoArray.length; j++) {
-            photoURL += `photo${j+1}_url: "${photoArray[j].value}"\n`;
-            alt += `photo${j+1}_alt: "${photoArray[j].alt}"\n`;
+            photoURL += `photo${j + 1}_url: "${photoArray[j].value}"\n`;
+            alt += `photo${j + 1}_alt: "${photoArray[j].alt}"\n`;
         }
     } catch (e) {
         logger.info('No photo provided');
@@ -67,7 +68,7 @@ exports.note = function note(micropubContent) {
 
     try {
         location = micropubContent.location;
-         if (typeof location === 'undefined') {
+        if (typeof location === 'undefined') {
             logger.info('Location cannot be found');
             location = '';
         }
@@ -81,18 +82,13 @@ exports.note = function note(micropubContent) {
 
         for (let j = 0; j < syndicateArray.length; j++) {
             logger.info(syndicateArray[j]);
-            if (syndicateArray[j] == 'https://twitter.com/vincentlistens/'){
+            if (syndicateArray[j] === 'https://twitter.com/vincentlistens/') {
                 twitter = true;
-            }
-            if (syndicateArray[j] == 'https://mastodon.social/@vincentlistens'){
-                mastodon = true;
             }
         }
     } catch (e) {
         logger.info('No Syndication targets');
-        syndication = '';
         twitter = false;
-        mastodon = false;
     }
 
     const entry = `---
@@ -106,7 +102,6 @@ ${alt}
 tags:${tags}
 location: "${location}"
 twitter: ${twitter}
-mastodon: ${mastodon}
 twitterCard: false
 ---
 ${content}

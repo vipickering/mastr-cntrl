@@ -1,7 +1,5 @@
 const rp = require('request-promise');
 const base64 = require('base64it');
-const moment = require('moment');
-const tz = require('moment-timezone');
 const logger = require(appRootDirectory + '/app/functions/bunyan');
 const config = require(appRootDirectory + '/app/config.js');
 const github = config.github;
@@ -12,13 +10,13 @@ exports.webmentionPost = function webmentionPost(req, res) {
 
     let payload;
     let createFileOptions;
-    let updateFileOptions;
     let encodedContent;
     let filePath;
     let postDestination;
     let postFileName;
-    let webmentionDate;
     let fileName;
+    let webmentionFolder;
+    let webmentionId;
 
     function handlePatchError(err) {
         logger.info('Webmention update to Github API Failed');
@@ -53,46 +51,49 @@ exports.webmentionPost = function webmentionPost(req, res) {
         encodedContent = base64.encode(payload);
         logger.info('payload encoded');
 
-        //Should we nest these related try catches?
-        // try {
-        //     webmentionDate = webmention['wm-received'][0];
-        //     logger.info('webmentionDate wm-received [0] ' + webmentionDate);
-        // } catch (e){
-        //     logger.info('wm-received [0] failed');
-        // }
-
-        try {
-            webmentionDate = webmention['wm-received'];
-            logger.info('webmentionDate wm-received ' + webmentionDate);
-        } catch (e){
-            logger.info('wm-received failed');
+        //quick and dirty code to work out WM.
+        // update to case statement if it works ok.
+        if (webmention['wm-property'] === 'bookmark-of ') {
+            webmentionFolder = 'bookmarks';
+            fileName = 'bookmark';
+        } else if (webmention['wm-property'] === 'like-of') {
+            webmentionFolder = 'likes';
+            fileName = 'like';
+        } else if (webmention['wm-property'] === 'mention-of') {
+            webmentionFolder = 'mentions';
+            fileName = 'mention';
+        } else if (webmention['wm-property'] === 'in-reply-to') {
+            webmentionFolder = 'replies';
+            fileName = 'reply';
+        } else if (webmention['wm-property'] === 'rsvp') {
+            webmentionFolder = 'rsvps';
+            fileName = 'rsvp';
+        } else if (webmention['wm-property'] === 'repost') {
+            webmentionFolder = 'reposts';
+            fileName = 'repost';
+        } else {
+            webmentionFolder = 'unknown';
+            fileName = 'unknown';
         }
 
         try {
-            webmentionDate = webmention['published'];
-            logger.info('webmentionDate published date ' + webmentionDate);
-        } catch (e){
-            logger.info('published date failed');
-        }
-
-        try {
-            fileName = webmention['wm-id'][0];
-            logger.info('Webmention File Name wm-id[0]: ' + fileName);
-        } catch (e){
+            webmentionId = webmention['wm-id'][0];
+            logger.info('Webmention File Name wm-id[0]: ' + webmentionId);
+        } catch (e) {
             logger.info('wm-id [0] failed');
         }
 
         try {
-            fileName = webmention['wm-id'];
-            logger.info('Webmention File Name wm-id: ' + fileName);
-        } catch (e){
+            webmentionId = webmention['wm-id'];
+            logger.info('Webmention File Name wm-id: ' + webmentionId);
+        } catch (e) {
             logger.info('wm-id failed');
         }
 
-        filePath = moment(webmentionDate).format('YYYY/MM/DD');
-        logger.info("file path: " + filePath);
-        postFileName = `${fileName}.json`;
-        postDestination = `${github.postUrl}/contents/_data/webmention/${filePath}/${postFileName}`;
+        filePath = webmentionFolder;
+        logger.info('file path: ' + filePath);
+        postFileName = `${fileName}_${webmentionId}.json`;
+        postDestination = `${github.postUrl}/contents/src/_data/${filePath}/${postFileName}`;
 
         createFileOptions = {
             method : 'PUT',

@@ -1,3 +1,5 @@
+/* eslint-disable quotes */
+/* eslint-disable complexity */
 const logger = require(appRootDirectory + '/app/functions/bunyan');
 const moment = require('moment');
 const tz = require('moment-timezone');
@@ -6,8 +8,7 @@ const tz = require('moment-timezone');
 exports.replies = function replies(micropubContent) {
     const layout = 'replies';
     const category = 'Replies';
-    let pubDate  = moment(new Date()).tz('Pacific/Auckland').format('YYYY-MM-DDTHH:mm:ss');
-
+    const pubDate  = moment(new Date()).tz('Pacific/Auckland').format('YYYY-MM-DDTHH:mm:ss');
     let content = '';
     let replyTo = '';
     let location = '';
@@ -17,13 +18,12 @@ exports.replies = function replies(micropubContent) {
     let tags = '';
     let tagArray = '';
     let twitter = false;
-    let mastodon = false;
     let syndicateArray = '';
 
     //Debug
     logger.info('Reply JSON: ' + JSON.stringify(micropubContent));
 
-     // Sometimes Quill is sending JSON in different structures, depending upon including images.
+    // Sometimes Quill is sending JSON in different structures, depending upon including images.
     // Try each method to make sure we capture the data
     try {
         content = micropubContent.content;
@@ -37,7 +37,7 @@ exports.replies = function replies(micropubContent) {
         logger.info('No content micropubContent.properties.content[0]');
     }
 
-   //Reply targets can accept multiple if hand coded. But we will limit it to a single item array, as this isn't standard functionality.
+    //Reply targets can accept multiple if hand coded. But we will limit it to a single item array, as this isn't standard functionality.
     try {
         replyTo = micropubContent['in-reply-to'];
     } catch (e) {
@@ -45,10 +45,10 @@ exports.replies = function replies(micropubContent) {
         replyTo = '';
     }
 
-   try {
+    try {
         photoArray = micropubContent.properties.photo;
 
-         for (let j = 0; j < photoArray.length; j++) {
+        for (let j = 0; j < photoArray.length; j++) {
             photoURL += `photo${j+1}_url: "${photoArray[j].value}"\n`;
             alt += `photo${j+1}_alt: "${photoArray[j].alt}"\n`;
         }
@@ -70,9 +70,9 @@ exports.replies = function replies(micropubContent) {
         tags += 'miscellaneous';
     }
 
-try {
+    try {
         location = micropubContent.location;
-         if (typeof location === 'undefined') {
+        if (typeof location === 'undefined') {
             logger.info('Location cannot be found');
             location = '';
         }
@@ -81,19 +81,16 @@ try {
         location = '';
     }
 
-try {
+    try {
         syndicateArray = micropubContent["mp-syndicate-to"];
 
         for (let j = 0; j < syndicateArray.length; j++) {
             logger.info(syndicateArray[j]);
             if (syndicateArray[j] == 'https://twitter.com/vincentlistens/'){ twitter = true; }
-            if (syndicateArray[j] == 'https://mastodon.social/@vincentlistens'){ mastodon = true; }
         }
     } catch (e) {
         logger.info('No Syndication targets');
-        syndication = '';
         twitter = false;
-        mastodon = false;
     }
 
     const entry = `---
@@ -106,10 +103,8 @@ category: "${category}"
 ${photoURL}
 ${alt}
 tags:${tags}
-syndication: "${syndication}"
 location: "${location}"
 twitter: ${twitter}
-mastodon: ${mastodon}
 twitterCard: false
 ---
 ${content}

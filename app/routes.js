@@ -6,16 +6,16 @@ const ExpressMiddleware = require('ratelimit.js').ExpressMiddleware;
 const redis = require('redis');
 const multer = require('multer');
 const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
+const upload = multer({storage : storage});
 const micropubGetRoute = require(appRootDirectory + '/app/routes/get/micropub');
 const SendWebmentionPostRoute = require(appRootDirectory + '/app/routes/post/send-webmention');
 // const SyndicationPostRoute = require(appRootDirectory + '/app/routes/post/syndication');
 const micropubPostRoute = require(appRootDirectory + '/app/routes/post/micropub');
-const webmentionPostRoute = require(appRootDirectory + '/app/routes/post/webmention');
+const webmentionPostRoute = require(appRootDirectory + '/app/routes/post/save-webmention');
 const mediaPostRoute = require(appRootDirectory + '/app/routes/post/media');
 let rtg;
 let redisClient;
-let redisClientOptions;
+// let redisClientOptions;
 
 // Make Redis work on Heroku or local; using Redis-To-Go
 if (process.env.REDISTOGO_URL) {
@@ -27,10 +27,10 @@ if (process.env.REDISTOGO_URL) {
 }
 
 // Rate limit endpoints to prevent DDOS
-const clientOptions = {ignoreRedisErrors : true};
+const redisClientOptions = {ignoreRedisErrors : true};
 const rateLimiter = new RateLimit(redisClient, [{interval : 1, limit : 10}]);
 const limitMiddleware = new ExpressMiddleware(rateLimiter, redisClientOptions);
-const limitEndpoint = limitMiddleware.middleware((req, res, next) => {
+const limitEndpoint = limitMiddleware.middleware((req, res) => {
     res.status(429).json({message : 'rate limit exceeded'});
 });
 

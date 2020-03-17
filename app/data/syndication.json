@@ -14,20 +14,6 @@
                 "url": "https://twitter.com/vincentlistens/",
                 "photo": "https://pbs.twimg.com/profile_images/994887629236776960/ruEyxdDe_400x400.jpg"
           }
-        },
-        {
-            "uid" : "https://mastodon.social/@vincentlistens",
-            "name" : "vincentlistens on Mastodon",
-            "service": {
-                "name": "Mastodon",
-                "url": "https://mastodon.social",
-                "photo": "https://mastodon.social/apple-touch-icon.png"
-            },
-            "user": {
-                "name": "vincentlistens",
-                "url": "https://mastodon.social/@vincentlistens",
-                "photo": "https://files.mastodon.social/accounts/avatars/000/411/770/original/15976ed16fa08d42.jpg"
-          }
         }
     ],
     "post-types": [
