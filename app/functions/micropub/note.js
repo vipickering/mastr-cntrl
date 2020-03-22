@@ -19,6 +19,9 @@ exports.note = function note(micropubContent) {
     let syndication = false;
     let syndicateArray = '';
 
+    // Debug
+    logger.info('Note JSON created: ' + JSON.stringify(micropubContent));
+
     // See if we can get photos. If we can set the layout type here?
     try {
         photoArray = micropubContent.properties.photo;

@@ -15,6 +15,9 @@ exports.bookmark = function bookmark(micropubContent) {
     let twitter = false;
     let syndicateArray = '';
 
+    // Debug
+    logger.info('Bookmark(links) JSON created: ' + JSON.stringify(micropubContent));
+
     try {
         title = micropubContent.name;
     } catch (e) {

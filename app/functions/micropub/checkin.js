@@ -25,10 +25,10 @@ exports.checkIn = function checkIn(micropubContent) {
     let region = '';
 
     //Debug
-    logger.info('Swarm JSON: ' + JSON.stringify(micropubContent));
+    logger.info('Checkin JSON created: ' + JSON.stringify(micropubContent));
 
     try {
-        content = micropubContent.properties.content[0];
+        content = micropubContent.properties.content[0]; // Swarm content comes from a different location
     } catch (e) {
         logger.info('No content');
         content = '';

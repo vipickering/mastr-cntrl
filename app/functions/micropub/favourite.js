@@ -12,7 +12,7 @@ exports.favourite = function favourite(micropubContent) {
     let syndicateArray = '';
 
     //Debug
-    logger.info('Favourite JSON: ' + JSON.stringify(micropubContent));
+    logger.info('Favourited JSON created: ' + JSON.stringify(micropubContent));
 
     try {
         like = micropubContent['like-of'];

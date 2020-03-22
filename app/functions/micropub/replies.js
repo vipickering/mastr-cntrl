@@ -20,6 +20,9 @@ exports.replies = function replies(micropubContent) {
     let twitter = false;
     let syndicateArray = '';
 
+    // Debug
+    logger.info('Reply JSON created: ' + JSON.stringify(micropubContent));
+
     //Reply target
     try {
         replyTo = micropubContent['in-reply-to'];
