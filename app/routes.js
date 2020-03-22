@@ -9,7 +9,6 @@ const storage = multer.memoryStorage();
 const upload = multer({storage : storage});
 const micropubGetRoute = require(appRootDirectory + '/app/routes/get/micropub');
 const SendWebmentionPostRoute = require(appRootDirectory + '/app/routes/post/send-webmention');
-// const SyndicationPostRoute = require(appRootDirectory + '/app/routes/post/syndication');
 const micropubPostRoute = require(appRootDirectory + '/app/routes/post/micropub');
 const webmentionPostRoute = require(appRootDirectory + '/app/routes/post/save-webmention');
 const mediaPostRoute = require(appRootDirectory + '/app/routes/post/media');
@@ -68,6 +67,5 @@ router.post('/send-webmention', limitEndpoint, SendWebmentionPostRoute.sendWebme
 
 // Checks for available webmentions to send. If it finds any in the feed, it POSTs them to Telegraph.
 // router.post('/syndication', limitEndpoint, SyndicationPostRoute.syndication);
-
 
 module.exports = router;

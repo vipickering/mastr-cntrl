@@ -2,11 +2,11 @@ const fetch = require('node-fetch');
 const moment = require('moment');
 const tz = require('moment-timezone');
 const logger = require(appRootDirectory + '/app/functions/bunyan');
-const formatCheckin = require(appRootDirectory + '/app/functions/formatters/swarm');
-const formatNote = require(appRootDirectory + '/app/functions/formatters/note');
-const formatBookmark = require(appRootDirectory + '/app/functions/formatters/bookmark');
-const formatFavourite = require(appRootDirectory + '/app/functions/formatters/favourite');
-const formatReplies = require(appRootDirectory + '/app/functions/formatters/replies');
+const formatCheckin = require(appRootDirectory + '/app/functions/micropub/swarm');
+const formatNote = require(appRootDirectory + '/app/functions/micropub/note');
+const formatBookmark = require(appRootDirectory + '/app/functions/micropub/bookmark');
+const formatFavourite = require(appRootDirectory + '/app/functions/micropub/favourite');
+const formatReplies = require(appRootDirectory + '/app/functions/micropub/replies');
 const githubApi = require(appRootDirectory + '/app/functions/githubApi');
 
 exports.micropubPost = function micropubPost(req, res) {
@@ -27,7 +27,6 @@ exports.micropubPost = function micropubPost(req, res) {
     try {
         publishedDate = req.body.properties.published[0];
     } catch (e) {
-        // publishedDate = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss+00:00');
         publishedDate = moment(new Date()).tz('Pacific/Auckland').format('YYYY-MM-DDTHH:mm:ss+00:00');
     }
 
