@@ -1,6 +1,6 @@
 const logger = require(appRootDirectory + '/app/functions/bunyan');
 
-exports.DetermineContent = function findContent(micropubContent) {
+exports.findContent = function findContent(micropubContent) {
     let content = '';
 
     // Debug
