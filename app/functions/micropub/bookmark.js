@@ -1,28 +1,19 @@
 const logger = require(appRootDirectory + '/app/functions/bunyan');
 const moment = require('moment');
 const tz = require('moment-timezone');
-// const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
+const determineContent = require(appRootDirectory + '/app/functions/micropub-content/content');
 
 exports.bookmark = function bookmark(micropubContent) {
     const layout = 'links';
     const category = 'Links';
     const pubDate  = moment(new Date()).tz('Pacific/Auckland').format('YYYY-MM-DDTHH:mm:ss');
-    let content = '';
+    const content = determineContent.findContent(micropubContent); // Handle Body Conent
     let title = '';
     let tags = '';
     let tagArray = '';
     let bookmarkLink = '';
     let twitter = false;
     let syndicateArray = '';
-
-    //Debug
-    logger.info('Bookmark JSON: ' + JSON.stringify(micropubContent));
-
-    try {
-        content = micropubContent.content;
-    } catch (e) {
-        logger.info('No content micropubContent.content');
-    }
 
     try {
         title = micropubContent.name;

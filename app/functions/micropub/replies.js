@@ -3,13 +3,13 @@
 const logger = require(appRootDirectory + '/app/functions/bunyan');
 const moment = require('moment');
 const tz = require('moment-timezone');
-// const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
+const determineContent = require(appRootDirectory + '/app/functions/micropub-content/content');
 
 exports.replies = function replies(micropubContent) {
     const layout = 'replies';
     const category = 'Replies';
     const pubDate  = moment(new Date()).tz('Pacific/Auckland').format('YYYY-MM-DDTHH:mm:ss');
-    let content = '';
+    const content = determineContent.findContent(micropubContent); // Handle Body Conent
     let replyTo = '';
     let location = '';
     let photoURL = '';
@@ -20,24 +20,7 @@ exports.replies = function replies(micropubContent) {
     let twitter = false;
     let syndicateArray = '';
 
-    //Debug
-    logger.info('Reply JSON: ' + JSON.stringify(micropubContent));
-
-    // Sometimes Quill is sending JSON in different structures, depending upon including images.
-    // Try each method to make sure we capture the data
-    try {
-        content = micropubContent.content;
-    } catch (e) {
-        logger.info('No content micropubContent.content');
-    }
-
-    try {
-        content = micropubContent.properties.content[0];
-    } catch (e) {
-        logger.info('No content micropubContent.properties.content[0]');
-    }
-
-    //Reply targets can accept multiple if hand coded. But we will limit it to a single item array, as this isn't standard functionality.
+    //Reply target
     try {
         replyTo = micropubContent['in-reply-to'];
     } catch (e) {

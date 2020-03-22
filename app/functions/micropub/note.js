@@ -19,23 +19,6 @@ exports.note = function note(micropubContent) {
     let syndication = false;
     let syndicateArray = '';
 
-    // Debug
-    // logger.info('Note JSON: ' + JSON.stringify(micropubContent));
-
-    // Sometimes Quill is sending JSON in different structures, depending upon including images.
-    // Try each method to make sure we capture the data
-    // try {
-    //     content = micropubContent.content;
-    // } catch (e) {
-    //     logger.info('No content micropubContent.content');
-    // }
-
-    // try {
-    //     content = micropubContent.properties.content[0];
-    // } catch (e) {
-    //     logger.info('No content micropubContent.properties.content[0]');
-    // }
-
     // See if we can get photos. If we can set the layout type here?
     try {
         photoArray = micropubContent.properties.photo;
