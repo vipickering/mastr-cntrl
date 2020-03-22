@@ -42,11 +42,6 @@ exports.micropubPost = function micropubPost(req, res) {
         logger.info('Service is: ' + serviceIdentifier);
         logger.info('Payload JSON: ' + JSON.stringify(micropubContent));
 
-        // Monitor if we can get the micropub action
-        // Once we have this, then we can send to an update function instead.
-        const micropubActionValue = micropubContent.action;
-        logger.info('Micropub action is: ' + micropubActionValue);
-
         switch (true) {
         case (serviceIdentifier === 'https://ownyourswarm.p3k.io') :
             micropubType = 'checkins';

@@ -3,15 +3,13 @@
 const logger = require(appRootDirectory + '/app/functions/bunyan');
 const moment = require('moment');
 const tz = require('moment-timezone');
-const DetermineContent = require(appRootDirectory + '/app/functions/micropub-content/content');
-
+const determineContent = require(appRootDirectory + '/app/functions/micropub-content/content');
 
 exports.note = function note(micropubContent) {
     const pubDate  = moment(new Date()).tz('Pacific/Auckland').format('YYYY-MM-DDTHH:mm:ss');
     let layout = '';
     let category = '';
-    const content = DetermineContent;
-    let location = '';
+    const content = determineContent.findContent(micropubContent); // Handle Body Conent
     let photoURL = '';
     let photoArray = '';
     let alt = '';
@@ -69,17 +67,6 @@ exports.note = function note(micropubContent) {
     }
 
     try {
-        location = micropubContent.location;
-        if (typeof location === 'undefined') {
-            logger.info('Location cannot be found');
-            location = '';
-        }
-    } catch (e) {
-        logger.info('No location provided');
-        location = '';
-    }
-
-    try {
         syndicateArray = micropubContent["mp-syndicate-to"];
 
         for (let j = 0; j < syndicateArray.length; j++) {
@@ -102,7 +89,6 @@ category: "${category}"
 ${photoURL}
 ${alt}
 tags:${tags}
-location: "${location}"
 twitterCard: false
 ---
 ${content}
