@@ -1,70 +1,45 @@
-/* eslint-disable quotes */
-/* eslint-disable complexity */
 const logger = require(appRootDirectory + '/app/logging/bunyan');
-const moment = require('moment');
-const tz = require('moment-timezone');
-const determineContent = require(appRootDirectory + '/app/micropub/shared/format-content');
+const functionPath = '/app/micropub/process-content/';
+const handleContent = require(appRootDirectory + functionPath + 'content');
+const handleDateTime = require(appRootDirectory + functionPath + 'datetime');
+const handlePhotos = require(appRootDirectory + functionPath + 'photos');
+const handleAltText = require(appRootDirectory + functionPath + 'alt-text');
+const handleLayout = require(appRootDirectory + functionPath + 'note-layout');
+const handleCategory = require(appRootDirectory + functionPath + 'note-category');
+const handleTags = require(appRootDirectory + functionPath + 'tags');
+// const handleSyndication = require(appRootDirectory + functionPath + 'syndication');
+const handleTargets = require(appRootDirectory + functionPath + 'syndication-targets');
 
 exports.note = function note(micropubContent) {
-    const pubDate  = moment(new Date()).tz('Pacific/Auckland').format('YYYY-MM-DDTHH:mm:ss');
-    let layout = '';
-    let category = '';
-    const content = determineContent.findContent(micropubContent);
-    let photoURL = '';
-    let photoArray = '';
-    let alt = '';
-    let tags = '';
-    let tagArray = '';
-    // let twitter = false;
-    let syndication = false;
-    let syndicateArray = '';
+    const pubDate = handleDateTime.formatDateTime();
+    const content = handleContent.formatContent(micropubContent);
+    const alt = handleAltText.formatAltText(micropubContent);
+    const tags = handleTags.formatTags(micropubContent);
+    const photoURL = handlePhotos.formatPhotos(micropubContent);
+    const layout = handleLayout.formatLayout(photoURL);
+    const category = handleCategory.formatCategory(photoURL);
+
+    // const syndication = handleSyndication.formatSyndication(micropubContent);
+    const targetArray = handleTargets.formatTargets(micropubContent);
+
+
 
     // Debug
     logger.info('Note JSON created: ' + JSON.stringify(micropubContent));
 
-    // See if we can get photos. If we can set the layout type here?
-    try {
-        photoArray = micropubContent.properties.photo;
-        layout = 'photos';
-        category = 'Photos';
+    // try {
+    //     targetArray = micropubContent["mp-syndicate-to"];
 
-        for (let j = 0; j < photoArray.length; j++) {
-            photoURL += `photo${j + 1}_url: "${photoArray[j].value}"\n`;
-            alt += `photo${j + 1}_alt: "${photoArray[j].alt}"\n`;
-        }
-    } catch (e) {
-        logger.info('No photo provided');
-        photoURL = `photo1_url: ""`;
-        alt = `photo1_alt: ""`;
-        layout = 'notes';
-        category = 'Notes';
-    }
-
-    try {
-        tagArray = micropubContent.category;
-        for (let i = 0; i < tagArray.length; i++) {
-            tags += '\n- ';
-            tags += tagArray[i];
-        }
-    } catch (e) {
-        logger.info('No tags provided assigning miscellaneous');
-        tags += '\n- ';
-        tags += 'miscellaneous';
-    }
-
-    try {
-        syndicateArray = micropubContent["mp-syndicate-to"];
-
-        for (let j = 0; j < syndicateArray.length; j++) {
-            logger.info(syndicateArray[j]);
-            if (syndicateArray[j] === 'https://twitter.com/vincentlistens/') {
-                // twitter = true;
-            }
-        }
-    } catch (e) {
-        logger.info('No Syndication targets');
-        // twitter = false;
-    }
+    //     for (let j = 0; j < targetArray.length; j++) {
+    //         logger.info(targetArray[j]);
+    //         if (targetArray[j] === 'https://twitter.com/vincentlistens/') {
+    //             // twitter = true;
+    //         }
+    //     }
+    // } catch (e) {
+    //     logger.info('No Syndication targets');
+    //     // twitter = false;
+    // }
 
     const entry = `---
 layout: "${layout}"

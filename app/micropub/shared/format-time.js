@@ -1,3 +1,0 @@
-/*
-Set Publish time in correct Kiwi time and format.
-*/

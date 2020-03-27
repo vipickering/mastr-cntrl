@@ -2,7 +2,7 @@
     "media-endpoint": "https://mastr-cntrl.herokuapp.com/media",
     "syndicate-to" : [
         {
-            "uid" : "https://twitter.com/vincentlistens/",
+            "uid" : "Twitter",
             "name" : "vincentlistens on Twitter",
             "service": {
                 "name": "Twitter",
@@ -14,6 +14,15 @@
                 "url": "https://twitter.com/vincentlistens/",
                 "photo": "https://pbs.twimg.com/profile_images/994887629236776960/ruEyxdDe_400x400.jpg"
           }
+        },
+         {
+            "uid" : "IndieNews",
+            "name" : "IndieNews",
+            "service": {
+                "name": "IndieNews",
+                "url": "https://news.indieweb.org/en",
+                "photo": "https://indieweb.org/favicon.ico"
+            }
         }
     ],
     "post-types": [

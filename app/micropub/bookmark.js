@@ -1,13 +1,15 @@
 const logger = require(appRootDirectory + '/app/logging/bunyan');
+const functionPath = '/app/micropub/process-content/';
+
 const moment = require('moment');
 const tz = require('moment-timezone');
-const determineContent = require(appRootDirectory + '/app/micropub/shared/format-content');
+const handleContent = require(appRootDirectory + functionPath + 'content');
 
 exports.bookmark = function bookmark(micropubContent) {
     const layout = 'links';
     const category = 'Links';
     const pubDate  = moment(new Date()).tz('Pacific/Auckland').format('YYYY-MM-DDTHH:mm:ss');
-    const content = determineContent.findContent(micropubContent); // Handle Body Conent
+    const content = handleContent.formatContent(micropubContent);
     let title = '';
     let tags = '';
     let tagArray = '';
