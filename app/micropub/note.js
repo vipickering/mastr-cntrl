@@ -7,10 +7,11 @@ const handleAltText = require(appRootDirectory + functionPath + 'alt-text');
 const handleLayout = require(appRootDirectory + functionPath + 'note-layout');
 const handleCategory = require(appRootDirectory + functionPath + 'note-category');
 const handleTags = require(appRootDirectory + functionPath + 'tags');
-// const handleSyndication = require(appRootDirectory + functionPath + 'syndication');
 const handleTargets = require(appRootDirectory + functionPath + 'syndication-targets');
 
 exports.note = function note(micropubContent) {
+    logger.info('Note JSON received: ' + JSON.stringify(micropubContent)); // Debug
+
     const pubDate = handleDateTime.formatDateTime();
     const content = handleContent.formatContent(micropubContent);
     const alt = handleAltText.formatAltText(micropubContent);
@@ -18,29 +19,7 @@ exports.note = function note(micropubContent) {
     const photoURL = handlePhotos.formatPhotos(micropubContent);
     const layout = handleLayout.formatLayout(photoURL);
     const category = handleCategory.formatCategory(photoURL);
-
-    // const syndication = handleSyndication.formatSyndication(micropubContent);
     const targetArray = handleTargets.formatTargets(micropubContent);
-
-
-
-    // Debug
-    logger.info('Note JSON created: ' + JSON.stringify(micropubContent));
-
-    // try {
-    //     targetArray = micropubContent["mp-syndicate-to"];
-
-    //     for (let j = 0; j < targetArray.length; j++) {
-    //         logger.info(targetArray[j]);
-    //         if (targetArray[j] === 'https://twitter.com/vincentlistens/') {
-    //             // twitter = true;
-    //         }
-    //     }
-    // } catch (e) {
-    //     logger.info('No Syndication targets');
-    //     // twitter = false;
-    // }
-
     const entry = `---
 layout: "${layout}"
 title: "Note for ${pubDate}"
@@ -50,7 +29,7 @@ category: "${category}"
 ${photoURL}
 ${alt}
 tags:${tags}
-twitterCard: false
+targets: ${targetArray}
 ---
 ${content}
 `;
