@@ -15,9 +15,8 @@ exports.mediaPost = function mediaPost(req, res) {
     const filenameID = shortid.generate();
     const fileName = `${filenameID}.jpg`; //Need to identify other mimetypes
     const payload = req.files[0].buffer;
-    const responseLocation = `images/blog/${publishedDate}/${fileName}`;
-    const fileLocation = `images/blog/${publishedDate}`;
-    // const postDestination = `${github.postUrl}/contents/images/blog/${publishedDate}/${fileName}`;
+    const responseLocation = `src/images/blog/${publishedDate}/${fileName}`;
+    const fileLocation = `src/images/blog/${publishedDate}`;
 
     let token;
     let formattedToken;
@@ -41,7 +40,7 @@ exports.mediaPost = function mediaPost(req, res) {
 
     logger.info('json body ' + JSON.stringify(req.body));
 
-    function authResponse(response) {
+    function authResponse() {
         logger.info('Returning location: ' + responseLocation);
         return responseLocation;
     }
