@@ -8,7 +8,7 @@ const multer = require('multer');
 
 appRootDirectory = path.join(__dirname, '/..');
 const config = require(appRootDirectory + '/app/config.js');
-const logger = require(appRootDirectory + '/app/functions/bunyan');
+const logger = require(appRootDirectory + '/app/logging/bunyan');
 const routes = require(appRootDirectory + '/app/routes.js');
 
 const github = config.github;

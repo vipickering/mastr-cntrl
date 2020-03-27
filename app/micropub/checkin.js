@@ -1,6 +1,6 @@
 /* eslint-disable quotes */
 /* eslint-disable complexity */
-const logger = require(appRootDirectory + '/app/functions/bunyan');
+const logger = require(appRootDirectory + '/app/logging/bunyan');
 // const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
 
 exports.checkIn = function checkIn(micropubContent) {
@@ -110,6 +110,5 @@ twitterCard: false
 ${content}
 `;
     logger.info('Swarm formatter finished: ' + entry);
-    // stringEncode.strencode(entry);
     return entry;
 };

@@ -1,6 +1,6 @@
 const rp = require('request-promise');
 const base64 = require('base64it');
-const logger = require(appRootDirectory + '/app/functions/bunyan');
+const logger = require(appRootDirectory + '/app/logging/bunyan');
 const config = require(appRootDirectory + '/app/config.js');
 const github = config.github;
 const webhookKey = config.webmention.webhook;
@@ -31,20 +31,15 @@ exports.webmentionPost = function webmentionPost(req, res) {
         res.send('Accepted');
     }
 
-    // CAUTION apostrophes etc still do not work in webmentions
-    function strencode(data) {
-        return unescape(encodeURIComponent(JSON.stringify(data)));
-    }
-
     logger.info('Webmention Debug: ' + JSON.stringify(req.body));
 
     if (req.body.secret === webhookKey) {
         logger.info('Webmention recieved');
         const webmention = req.body.post;
-        logger.info('Creating Webmention: ' + strencode(webmention));
+        logger.info(`Creating Webmention:  ${webmention}`);
 
         // Prepare the code to send to Github API
-        payload = strencode(webmention);
+        payload = webmention;
         logger.info('payload combined');
 
         //Base 64 Encode for Github API

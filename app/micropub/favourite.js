@@ -1,4 +1,4 @@
-const logger = require(appRootDirectory + '/app/functions/bunyan');
+const logger = require(appRootDirectory + '/app/logging/bunyan');
 const moment = require('moment');
 const tz = require('moment-timezone');
 // const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
@@ -48,6 +48,5 @@ twitterCard: false
 [${like}](${like})
 `;
     logger.info('Favourite formatter finished: ' + entry);
-    // stringEncode.strencode(entry);
     return entry;
 };

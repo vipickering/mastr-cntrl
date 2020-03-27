@@ -1,7 +1,7 @@
-const logger = require(appRootDirectory + '/app/functions/bunyan');
+const logger = require(appRootDirectory + '/app/logging/bunyan');
 const moment = require('moment');
 const tz = require('moment-timezone');
-const determineContent = require(appRootDirectory + '/app/functions/micropub-content/content');
+const determineContent = require(appRootDirectory + '/app/micropub/shared/format-content');
 
 exports.bookmark = function bookmark(micropubContent) {
     const layout = 'links';
@@ -69,6 +69,5 @@ twitterCard: false
 ${content}
 `;
     logger.info('Bookmark formatter finished: ' + entry);
-    // stringEncode.strencode(entry);
     return entry;
 };

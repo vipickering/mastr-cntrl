@@ -1,13 +1,13 @@
 const fetch = require('node-fetch');
 const moment = require('moment');
 const tz = require('moment-timezone');
-const logger = require(appRootDirectory + '/app/functions/bunyan');
-const formatCheckin = require(appRootDirectory + '/app/functions/micropub/checkin');
-const formatNote = require(appRootDirectory + '/app/functions/micropub/note');
-const formatBookmark = require(appRootDirectory + '/app/functions/micropub/bookmark');
-const formatFavourite = require(appRootDirectory + '/app/functions/micropub/favourite');
-const formatReplies = require(appRootDirectory + '/app/functions/micropub/replies');
-const githubApi = require(appRootDirectory + '/app/functions/githubApi');
+const logger = require(appRootDirectory + '/app/logging/bunyan');
+const formatCheckin = require(appRootDirectory + '/app/micropub/checkin');
+const formatNote = require(appRootDirectory + '/app/micropub/note');
+const formatBookmark = require(appRootDirectory + '/app/micropub/bookmark');
+const formatFavourite = require(appRootDirectory + '/app/micropub/favourite');
+const formatReplies = require(appRootDirectory + '/app/micropub/replies');
+const githubApi = require(appRootDirectory + '/app/github/post-to-api');
 
 exports.micropubPost = function micropubPost(req, res) {
     let serviceIdentifier = '';

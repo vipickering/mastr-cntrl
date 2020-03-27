@@ -1,9 +1,9 @@
 /* eslint-disable quotes */
 /* eslint-disable complexity */
-const logger = require(appRootDirectory + '/app/functions/bunyan');
+const logger = require(appRootDirectory + '/app/logging/bunyan');
 const moment = require('moment');
 const tz = require('moment-timezone');
-const determineContent = require(appRootDirectory + '/app/functions/micropub-content/content');
+const determineContent = require(appRootDirectory + '/app/micropub/shared/format-content');
 
 exports.replies = function replies(micropubContent) {
     const layout = 'replies';
@@ -96,6 +96,5 @@ twitterCard: false
 ${content}
 `;
     logger.info('Reply formatter finished: ' + entry);
-    // stringEncode.strencode(entry);
     return entry;
 };

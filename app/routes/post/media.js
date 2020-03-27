@@ -7,8 +7,8 @@ const storage = multer.memoryStorage();
 const upload = multer({storage : storage});
 const config = require(appRootDirectory + '/app/config.js');
 const github = config.github;
-const logger = require(appRootDirectory + '/app/functions/bunyan');
-const githubApi = require(appRootDirectory + '/app/functions/githubApi');
+const logger = require(appRootDirectory + '/app/logging/bunyan');
+const githubApi = require(appRootDirectory + '/app/github/post-to-api');
 
 exports.mediaPost = function mediaPost(req, res) {
     const publishedDate = moment(new Date()).tz('Pacific/Auckland').format('YYYY-MM-DD');
@@ -17,7 +17,7 @@ exports.mediaPost = function mediaPost(req, res) {
     const payload = req.files[0].buffer;
     const responseLocation = `images/blog/${publishedDate}/${fileName}`;
     const fileLocation = `images/blog/${publishedDate}`;
-    const postDestination = `${github.postUrl}/contents/images/blog/${publishedDate}/${fileName}`;
+    // const postDestination = `${github.postUrl}/contents/images/blog/${publishedDate}/${fileName}`;
 
     let token;
     let formattedToken;

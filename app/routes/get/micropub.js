@@ -1,5 +1,5 @@
 const fetch = require('node-fetch');
-const logger = require(appRootDirectory + '/app/functions/bunyan');
+const logger = require(appRootDirectory + '/app/logging/bunyan');
 const syndicationOptions = require(appRootDirectory + '/app/data/syndication.json');
 let serviceIdentifier = '';
 

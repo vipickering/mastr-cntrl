@@ -1,3 +1,6 @@
+/*
+Check for Micropub main content and catch if there has been none sent.
+*/
 exports.findContent = function findContent(micropubContent) {
     let content = '';
 

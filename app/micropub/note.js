@@ -1,15 +1,15 @@
 /* eslint-disable quotes */
 /* eslint-disable complexity */
-const logger = require(appRootDirectory + '/app/functions/bunyan');
+const logger = require(appRootDirectory + '/app/logging/bunyan');
 const moment = require('moment');
 const tz = require('moment-timezone');
-const determineContent = require(appRootDirectory + '/app/functions/micropub-content/content');
+const determineContent = require(appRootDirectory + '/app/micropub/shared/format-content');
 
 exports.note = function note(micropubContent) {
     const pubDate  = moment(new Date()).tz('Pacific/Auckland').format('YYYY-MM-DDTHH:mm:ss');
     let layout = '';
     let category = '';
-    const content = determineContent.findContent(micropubContent); // Handle Body Conent
+    const content = determineContent.findContent(micropubContent);
     let photoURL = '';
     let photoArray = '';
     let alt = '';
@@ -80,6 +80,5 @@ twitterCard: false
 ${content}
 `;
     logger.info('Note formatter finished: ' + entry);
-    // stringEncode.strencode(entry);
     return entry;
 };
