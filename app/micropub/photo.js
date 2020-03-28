@@ -10,7 +10,7 @@ const handleTargets = require(appRootDirectory + functionPath + 'syndication-tar
 // Entry to be moved in to a formatter function, and return the markdown. It needs to take inputs from all the functions outputs previously.
 
 exports.photo = function photo(micropubContent) {
-    logger.info('Note JSON received: ' + JSON.stringify(micropubContent));
+    logger.info('Photo JSON received: ' + JSON.stringify(micropubContent));
 
     const pubDate = handleDateTime.formatDateTime();
     const content = handleContent.formatContent(micropubContent);

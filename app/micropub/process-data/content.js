@@ -6,9 +6,10 @@ Check for Micropub main content and catch if there has been none sent.
 exports.formatContent = function formatContent(micropubContent) {
     let content = '';
 
-    // Content is sent from Quil in different places if its a photo note or a standard note.
+    // Content is sent from different places if its a photo, checking  or a standard note.
     logger.info('Checking for text content,');
     try {
+        //Standard Note
         content = micropubContent.content;
         logger.info('Content is basic note content');
     } catch (e) {
@@ -16,10 +17,19 @@ exports.formatContent = function formatContent(micropubContent) {
     }
 
     try {
+        // Photo Note
         content = micropubContent.properties.content;
         logger.info('Content is photo note content');
     } catch (e) {
         logger.info('No photo note content');
+    }
+
+    try {
+        // Checkin
+        content = micropubContent.properties.content[0];
+        logger.info('Content is Checkin content');
+    } catch (e) {
+        logger.info('No checkin content');
     }
 
     if (content !== '') {

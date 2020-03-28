@@ -4,31 +4,37 @@ const handleContent = require(appRootDirectory + functionPath + 'content');
 const handleDateTime = require(appRootDirectory + functionPath + 'datetime');
 const handleTags = require(appRootDirectory + functionPath + 'tags');
 
-exports.replies = function replies(micropubContent) {
-    logger.info('Reply JSON received: ' + JSON.stringify(micropubContent));
+exports.bookmark = function bookmark(micropubContent) {
+    logger.info('links (bookmark) JSON received: ' + JSON.stringify(micropubContent));
 
     const pubDate = handleDateTime.formatDateTime();
     const content = handleContent.formatContent(micropubContent);
     const tags = handleTags.formatTags(micropubContent);
+    let title = '';
+    let target = '';
 
-    let replyTo = '';
-    //Reply target
     try {
-        replyTo = micropubContent['in-reply-to'];
+        title = micropubContent.name;
     } catch (e) {
-        logger.info('Reply contains no URL');
-        replyTo = '';
+        logger.info('No title micropubContent.content');
+        title = '';
+    }
+
+    try {
+        target = micropubContent['bookmark-of'];
+    } catch (e) {
+        logger.info('Bookmark is blank.');
     }
 
     const entry = `---
-title: "reply posted on ${pubDate} to ${replyTo}"
+title: "${title}"
 date: "${pubDate}"
-target: "${replyTo}"
-meta: "reply posted on ${pubDate} to ${replyTo}"
+target: "${target}"
+meta: "bookmark posted on ${pubDate}"
 tags:${tags}
 ---
 ${content}
 `;
-    logger.info('Reply formatter finished: ' + entry);
+    logger.info('Bookmark formatter finished: ' + entry);
     return entry;
 };

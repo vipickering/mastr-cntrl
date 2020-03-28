@@ -1,21 +1,21 @@
-/* eslint-disable quotes */
-/* eslint-disable complexity */
 const logger = require(appRootDirectory + '/app/logging/bunyan');
-// const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
+const functionPath = '/app/micropub/process-data/';
+const handlePhotos = require(appRootDirectory + functionPath + 'photos');
+const handleAltText = require(appRootDirectory + functionPath + 'alt-text');
+const handleContent = require(appRootDirectory + functionPath + 'content');
 
 exports.checkIn = function checkIn(micropubContent) {
-    const layout = 'checkin';
-    const category = 'Checkins';
+    logger.info('Checkin JSON received: ' + JSON.stringify(micropubContent));
+
+    const alt = handleAltText.formatAltText(micropubContent);
+    const photoURL = handlePhotos.formatPhotos(micropubContent);
     const rawPubDate = micropubContent.properties.published[0];
     const rawDate = rawPubDate.slice(0, 10);
     const rawTime = rawPubDate.replace(/-/g, ':').slice(11, -9);
     const pubDate = rawDate + 'T' + rawTime;
     const syndication = micropubContent.properties.syndication[0];
     const checkinName = micropubContent.properties.checkin[0].properties.name[0];
-    let content = '';
-    let photoURL = '';
-    let photoArray = '';
-    let alt = '';
+    const content = handleContent.formatContent(micropubContent);
     let foursquare = '';
     let addrLat = '';
     let addrLong  = '';
@@ -23,29 +23,6 @@ exports.checkIn = function checkIn(micropubContent) {
     let address   = '';
     let locality = '';
     let region = '';
-
-    //Debug
-    logger.info('Checkin JSON created: ' + JSON.stringify(micropubContent));
-
-    try {
-        content = micropubContent.properties.content[0]; // Swarm content comes from a different location
-    } catch (e) {
-        logger.info('No content');
-        content = '';
-    }
-
-    try {
-        photoArray = micropubContent.properties.photo[0];
-
-        for (let j = 0; j < photoArray.length; j++) {
-            photoURL += `photo${j+1}_url: "${photoArray[j].value}"\n`;
-            alt += `photo${j+1}_alt: "${photoArray[j].alt}"\n`;
-        }
-    } catch (e) {
-        photoURL = `photo1_url: ""`;
-        alt = `photo1_alt: ""`;
-        logger.info('No photo');
-    }
 
     try {
         foursquare = micropubContent.properties.checkin[0].properties.url[0];
@@ -86,17 +63,15 @@ exports.checkIn = function checkIn(micropubContent) {
     try {
         addrCountry = micropubContent.properties.checkin[0].properties['country-name'][0];
     } catch (e) {
-        logger.info('No country link skipping..');
+        logger.info('No country link');
     }
 
     const entry = `---
-layout: "${layout}"
 title: "${checkinName}"
 ${photoURL}
 ${alt}
 date: "${pubDate}"
 meta: "Checked in at ${checkinName}"
-category: "${category}"
 syndication: "${syndication}"
 foursquare: "${foursquare}"
 latitude: "${addrLat}"
@@ -105,7 +80,6 @@ address: "${address}"
 locality: "${locality}"
 region: "${region}"
 country: "${addrCountry}"
-twitterCard: false
 ---
 ${content}
 `;

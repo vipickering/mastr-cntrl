@@ -1,11 +1,10 @@
 const fetch = require('node-fetch');
 const moment = require('moment');
-const tz = require('moment-timezone');
 const logger = require(appRootDirectory + '/app/logging/bunyan');
 const formatCheckin = require(appRootDirectory + '/app/micropub/checkin');
 const formatNote = require(appRootDirectory + '/app/micropub/note');
 const formatPhoto = require(appRootDirectory + '/app/micropub/photo');
-const formatBookmark = require(appRootDirectory + '/app/micropub/bookmark');
+const formatBookmark = require(appRootDirectory + '/app/micropub/links');
 const formatFavourite = require(appRootDirectory + '/app/micropub/favourite');
 const formatReplies = require(appRootDirectory + '/app/micropub/replies');
 const githubApi = require(appRootDirectory + '/app/github/post-to-api');
