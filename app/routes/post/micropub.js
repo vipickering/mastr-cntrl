@@ -64,7 +64,7 @@ exports.micropubPost = function micropubPost(req, res) {
             payload = formatReplies.replies(micropubContent);
             fileLocation = 'src/_content/replies';
             break;
-        case (micropubContent.hasOwnProperty('photo')):
+        case (micropubContent.properties.hasOwnProperty('photo')):
             micropubType = 'photos';
             payload = formatPhoto.photo(micropubContent);
             fileLocation = 'src/_content/photos';
