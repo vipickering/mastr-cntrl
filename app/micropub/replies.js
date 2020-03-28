@@ -1,5 +1,5 @@
 const logger = require(appRootDirectory + '/app/logging/bunyan');
-const functionPath = '/app/micropub/process-content/';
+const functionPath = '/app/micropub/process-data/';
 
 const moment = require('moment');
 const tz = require('moment-timezone');

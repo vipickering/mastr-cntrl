@@ -13,6 +13,7 @@ exports.formatPhotos = function formatPhotos(micropubContent) {
 
         for (let j = 0; j < photoArray.length; j++) {
             photoURL += `photo${j + 1}_url: "${photoArray[j].value}"\n`;
+            logger.info('photo data: ' + photoArray[j].value);
         }
     } catch (e) {
         logger.info('No photo provided');

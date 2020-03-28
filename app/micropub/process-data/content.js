@@ -9,8 +9,9 @@ exports.formatContent = function formatContent(micropubContent) {
 
     if (content !== '') {
         logger.info('Content found');
+        logger.info('Content is: ' + content);
     } else {
-        logger.info('No content micropubContent.content');
+        logger.info('No content found: ' + content);
         content = '';
     }
 
