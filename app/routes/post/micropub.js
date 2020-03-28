@@ -63,9 +63,9 @@ exports.micropubPost = function micropubPost(req, res) {
             payload = formatReplies.replies(micropubContent);
             fileLocation = 'src/_content/replies';
             break;
-        case (micropubContent.hasOwnProperty('photo')): //does this work ok?
-            micropubType = 'notes';
-            payload = formatNote.note(micropubContent); //photos are formatted the same way for now.
+        case (micropubContent.hasOwnProperty('photo')):
+            micropubType = 'photos';
+            payload = formatNote.note(micropubContent);
             fileLocation = 'src/_content/photos';
             break;
         default:
