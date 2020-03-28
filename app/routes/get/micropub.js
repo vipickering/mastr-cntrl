@@ -3,6 +3,9 @@ const logger = require(appRootDirectory + '/app/logging/bunyan');
 const syndicationOptions = require(appRootDirectory + '/app/data/syndication.json');
 let serviceIdentifier = '';
 
+/**
+ Endpoint is used to return syndication options, to authorised clients only.
+ */
 exports.micropubGet = function micropubGet(req, res) {
     const token = req.headers.authorization;
     const indieauth = 'https://tokens.indieauth.com/token';
@@ -43,7 +46,7 @@ exports.micropubGet = function micropubGet(req, res) {
         logger.info('No Indie Auth Token Received');
     }
 
-    // Verify Token. If OK proceed
+    // Verify Token. If OK send syndication options or configuration
     fetch(indieauth, {
         method : 'GET',
         headers : authHeaders

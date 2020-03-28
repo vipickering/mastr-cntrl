@@ -21,6 +21,7 @@ exports.micropubPost = function micropubPost(req, res) {
     const token = req.headers.authorization;
     const indieauth = 'https://tokens.indieauth.com/token';
 
+
     logger.info('json body ' + JSON.stringify(req.body)); //Log packages sent, for debug
 
     //Some P3K services send the published date-time. Others do not. Check if it exists, and if not do it ourselves.
@@ -63,15 +64,17 @@ exports.micropubPost = function micropubPost(req, res) {
             payload = formatReplies.replies(micropubContent);
             fileLocation = 'src/_content/replies';
             break;
-        case (micropubContent.properties.hasOwnProperty('photo')):
-            micropubType = 'photos';
-            payload = formatPhoto.photo(micropubContent);
-            fileLocation = 'src/_content/photos';
-            break;
         default:
-            micropubType = 'notes';
-            payload = formatNote.note(micropubContent);
-            fileLocation = 'src/_content/notes';
+            try {
+                micropubContent.properties.hasOwnProperty('photo');
+                micropubType = 'photos';
+                payload = formatPhoto.photo(micropubContent);
+                fileLocation = 'src/_content/photos';
+            } catch (e) {
+                micropubType = 'notes';
+                payload = formatNote.note(micropubContent);
+                fileLocation = 'src/_content/notes';
+            }
         }
 
         logger.info('Micropub content is: ' + micropubType);
