@@ -75,6 +75,7 @@ exports.micropubPost = function micropubPost(req, res) {
             fileLocation = 'src/_content/notes';
         }
 
+        logger.info('Micropub content is: ' + micropubType);
         fileName = `${postFileNameDate}-${postFileNameTime}.md`;
         responseLocation = `https://vincentp.me/${micropubType}/${responseDate}/${responseLocationTime}/`;
 
