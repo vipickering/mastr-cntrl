@@ -4,6 +4,7 @@ const tz = require('moment-timezone');
 const logger = require(appRootDirectory + '/app/logging/bunyan');
 const formatCheckin = require(appRootDirectory + '/app/micropub/checkin');
 const formatNote = require(appRootDirectory + '/app/micropub/note');
+const formatPhoto = require(appRootDirectory + '/app/micropub/photo');
 const formatBookmark = require(appRootDirectory + '/app/micropub/bookmark');
 const formatFavourite = require(appRootDirectory + '/app/micropub/favourite');
 const formatReplies = require(appRootDirectory + '/app/micropub/replies');
@@ -65,7 +66,7 @@ exports.micropubPost = function micropubPost(req, res) {
             break;
         case (micropubContent.hasOwnProperty('photo')):
             micropubType = 'photos';
-            payload = formatNote.note(micropubContent);
+            payload = formatPhoto.photo(micropubContent);
             fileLocation = 'src/_content/photos';
             break;
         default:
