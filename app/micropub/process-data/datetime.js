@@ -1,5 +1,4 @@
 const moment = require('moment');
-// const tz = require('moment-timezone');
 
 /*
 Convert and format time to local Kiwi format
