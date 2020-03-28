@@ -22,6 +22,8 @@ exports.note = function note(micropubContent) {
 title: "Note for ${pubDate}"
 date: "${pubDate}"
 meta: "note posted on ${pubDate}"
+${photoURL}
+${alt}
 tags:${tags}
 syndication: ${targetArray}
 ---
