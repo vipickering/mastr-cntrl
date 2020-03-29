@@ -13,15 +13,8 @@ exports.formatTargets = function formatTargets(micropubContent) {
 
         for (let j = 0; j < targetArray.length; j++) {
             logger.info(targetArray[j]);
-            if (targetArray[j] === 'https://twitter.com/vincentlistens/') {
-                targets += '\n- ';
-                targets += 'twitter';
-            } else if (targetArray[j] === 'https://news.indieweb.org/en') {
-                targets += '\n- ';
-                targets += 'indienews';
-            } else {
-                logger.info('No further syndication targets');
-            }
+            targets += '\n- ';
+            targets += targetArray[j];
         }
     } catch (e) {
         logger.info('No Syndication targets');

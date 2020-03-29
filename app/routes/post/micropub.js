@@ -21,7 +21,6 @@ exports.micropubPost = function micropubPost(req, res) {
     const token = req.headers.authorization;
     const indieauth = 'https://tokens.indieauth.com/token';
 
-
     logger.info('json body ' + JSON.stringify(req.body)); //Log packages sent, for debug
 
     //Some P3K services send the published date-time. Others do not. Check if it exists, and if not do it ourselves.
@@ -65,6 +64,7 @@ exports.micropubPost = function micropubPost(req, res) {
             fileLocation = 'src/_content/replies';
             break;
         default:
+            // This is a pain. If micropubContent.properties  test is a switch clause it causes the server to crash. Wrapping it in a try/catch gets around the issue
             try {
                 micropubContent.properties.hasOwnProperty('photo');
                 micropubType = 'photos';
