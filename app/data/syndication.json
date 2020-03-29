@@ -3,9 +3,9 @@
     "syndicate-to" : [
         {
             "uid" : "Twitter",
-            "name" : "vincentlistens on Twitter",
+            "name" : "Twitter",
             "service": {
-                "name": "Twitter",
+                "name": "twitter",
                 "url": "https://twitter.com",
                 "photo": "https://abs.twimg.com/responsive-web/web/icon-ios.8ea219d4.png"
             },
@@ -19,7 +19,7 @@
             "uid" : "IndieNews",
             "name" : "IndieNews",
             "service": {
-                "name": "IndieNews",
+                "name": "indienews",
                 "url": "https://news.indieweb.org/en",
                 "photo": "https://indieweb.org/favicon.ico"
             }
