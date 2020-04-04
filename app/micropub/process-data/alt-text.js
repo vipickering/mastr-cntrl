@@ -12,7 +12,7 @@ exports.formatAltText = function formatAltText(micropubContent) {
         const photoArray = micropubContent.properties.photo;
 
         for (let j = 0; j < photoArray.length; j++) {
-            alt += `photo${j + 1}_alt: "${photoArray[j].alt}"\n`;
+            alt += `photo${j + 1}Alt: "${photoArray[j].alt}"\n`;
         }
     } catch (e) {
         logger.info('No alt text provided');

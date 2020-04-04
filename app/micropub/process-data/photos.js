@@ -12,7 +12,7 @@ exports.formatPhotos = function formatPhotos(micropubContent) {
         const photoArray = micropubContent.properties.photo;
 
         for (let j = 0; j < photoArray.length; j++) {
-            photoURL += `photo${j + 1}_url: "${photoArray[j].value}"\n`;
+            photoURL += `photo${j + 1}Url: "${photoArray[j].value}"\n`;
             logger.info('photo data: ' + photoArray[j].value);
         }
     } catch (e) {

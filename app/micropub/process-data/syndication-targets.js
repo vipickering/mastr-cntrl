@@ -14,6 +14,7 @@ exports.formatTargets = function formatTargets(micropubContent) {
             logger.info(targetArray[j]);
             targets += '\n- ';
             targets += targetArray[j];
+            logger.info('Found Syndication Target ' + targetArray[j]);
         }
     } catch (e) {
         logger.info('No Syndication targets');

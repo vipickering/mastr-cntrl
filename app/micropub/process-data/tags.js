@@ -13,7 +13,7 @@ exports.formatTags = function formatTags(micropubContent) {
         for (let i = 0; i < tagArray.length; i++) {
             tags += '\n- ';
             tags += tagArray[i];
-            logger.info('Found tag' + tagArray[i]);
+            logger.info('Found tag ' + tagArray[i]);
         }
     } catch (e) {
         logger.info('No tags provided assigning miscellaneous');

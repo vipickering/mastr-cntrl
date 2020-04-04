@@ -19,7 +19,7 @@ title: "Note for ${pubDate}"
 date: "${pubDate}"
 meta: "note posted on ${pubDate}"
 tags:${tags}
-syndication: ${targetArray}
+syndicationTargets: ${targetArray}
 ---
 ${content}
 `;
