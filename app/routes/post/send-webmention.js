@@ -4,16 +4,14 @@ const logger = require(appRootDirectory + '/app/logging/bunyan');
 const config = require(appRootDirectory + '/app/config.js');
 const moment = require('moment');
 const github = config.github;
-const website = config.website;
 const webmention = config.webmention;
-// const stringEncode = require(appRootDirectory + '/app/functions/stringEncode');
 
 exports.sendWebmention = function sendWebmention(req, res) {
     let webmentionSourceDateTime;
     let options;
     let publishedTime;
     let encodedContent;
-    const messageContent = ':robot: webmentions last sent date updated by Mastrl Cntrl';
+    const messageContent = ':robot: Webmention sent date updated by Mastrl Cntrl';
     const webmentionsDateFileName = 'pubdate.json';
     const webmentionsDateFileDestination = github.postUrl + '/contents/src/_data/' + webmentionsDateFileName;
     const githubApIFileOptions = {
@@ -26,7 +24,7 @@ exports.sendWebmention = function sendWebmention(req, res) {
         json : true
     };
     const webmentionsOptions = {
-        uri : website.url + 'src/feeds/indieweb/webmentions.json',
+        uri : webmention.feed,
         headers : {
             'User-Agent' : 'Request-Promise'
         },
@@ -128,7 +126,7 @@ exports.sendWebmention = function sendWebmention(req, res) {
     // If empty, end. Otherwise proceed and update.
     rp(webmentionsOptions)
         .then(function SendToTelegraph(webmentionData) {
-            logger.info(webmentionData.webmentions);
+            logger.info(`Webmentions data: ${webmentionData.webmentions}`);
             if (isEmptyObject(webmentionData.webmentions)) {
                 logger.info('No Webmentions to send');
                 res.status(200);
@@ -156,7 +154,6 @@ exports.sendWebmention = function sendWebmention(req, res) {
                 const telegraphOptions = {
                     method : 'POST',
                     uri : 'https://telegraph.p3k.io/webmention',
-                    // uri : 'http://example.com',
                     headers : {
                         'User-Agent' : github.name
                     },
