@@ -1,14 +1,16 @@
 const fetch = require('node-fetch');
 const logger = require(appRootDirectory + '/app/logging/bunyan');
 const syndicationOptions = require(appRootDirectory + '/app/data/syndication.json');
+const config = require(appRootDirectory + '/app/config.js');
+const indieauth = config.indieauth;
 let serviceIdentifier = '';
 
 /**
  Endpoint is used to return syndication options, to authorised clients only.
  */
-exports.micropubGet = function micropubGet(req, res) {
+
+ exports.micropubGet = function micropubGet(req, res) {
     const token = req.headers.authorization;
-    const indieauth = 'https://tokens.indieauth.com/token';
     const authHeaders = {
         'Accept' : 'application/json',
         'Authorization' : token
@@ -47,10 +49,7 @@ exports.micropubGet = function micropubGet(req, res) {
     }
 
     // Verify Token. If OK send syndication options or configuration
-    fetch(indieauth, {
-        method : 'GET',
-        headers : authHeaders
-    })
+    fetch(indieauth.url, {method : 'GET', headers : authHeaders})
         .then(authResponse)
         .then(micropubResponse)
         .catch((err) => logger.error(err));

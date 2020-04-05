@@ -17,9 +17,12 @@ config.api = {
 };
 
 config.webmention = {
-    'token' : process.env.WEBMENTION_TOKEN,
     'webhook' : process.env.WEBMENTION_WEBHOOK_TOKEN,
     'feed' : process.env.WEBMENTION_FEED
+};
+
+config.indieauth = {
+    'url' : process.env.INDIEAUTH_URL
 };
 
 config.website = {
