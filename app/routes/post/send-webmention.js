@@ -3,19 +3,20 @@ const base64 = require('base64it');
 const logger = require(appRootDirectory + '/app/logging/bunyan');
 const config = require(appRootDirectory + '/app/config.js');
 const moment = require('moment');
-const github = config.github;
+const githubApi = require(appRootDirectory + '/app/github/post-to-api');
 const webmention = config.webmention;
+const github = config.github;
+const telegraph = config.telegraph;
 
 exports.sendWebmention = function sendWebmention(req, res) {
     let webmentionSourceDateTime;
-    let options;
     let publishedTime;
-    let encodedContent;
-    const messageContent = ':robot: Webmention sent date updated by Mastrl Cntrl';
-    const webmentionsDateFileName = 'pubdate.json';
-    const webmentionsDateFileDestination = github.postUrl + '/contents/src/_data/' + webmentionsDateFileName;
-    const githubApIFileOptions = {
-        uri : webmentionsDateFileDestination,
+    let payload;
+    const fileName = 'pubdate.json';
+    const fileLocation = github.postUrl + '/contents/src/_data/' + fileName;
+    const responseLocation = fileLocation;
+    const getGithubFile = {
+        uri : fileLocation,
         headers : {
             Authorization : 'token ' + github.key,
             'Content-Type' : 'application/vnd.github.v3+json; charset=UTF-8',
@@ -23,7 +24,7 @@ exports.sendWebmention = function sendWebmention(req, res) {
         },
         json : true
     };
-    const webmentionsOptions = {
+    const getWebmentionFeed = {
         uri : webmention.feed,
         headers : {
             'User-Agent' : 'Request-Promise'
@@ -31,20 +32,20 @@ exports.sendWebmention = function sendWebmention(req, res) {
         json : true
     };
 
-    function isEmptyObject(obj) {
-        return !Object.keys(obj).length;
-    }
+    // function isEmptyObject(obj) {
+    //     return !Object.keys(obj).length;
+    // }
 
-    function isEmptyObject(obj) {
-        let key;
+    // function isEmptyObject(obj) {
+    //     let key;
 
-        for (key in obj) {
-            if (Object.prototype.hasOwnProperty.call(obj, key)) {
-                return false;
-            }
-        }
-        return true;
-    }
+    //     for (key in obj) {
+    //         if (Object.prototype.hasOwnProperty.call(obj, key)) {
+    //             return false;
+    //         }
+    //     }
+    //     return true;
+    // }
 
     function handleGithubApiGet(err) {
         logger.info('Github API Get File Failed');
@@ -53,7 +54,7 @@ exports.sendWebmention = function sendWebmention(req, res) {
         res.send('Internal Error Please Contact Author');
     }
 
-    function handlePatchError(err) {
+    function githubApiPublishError(err) {
         logger.info('published date update to Github API Failed');
         logger.error(err);
         res.status(400);
@@ -67,15 +68,9 @@ exports.sendWebmention = function sendWebmention(req, res) {
         res.send('webmentions feed not available');
     }
 
-    function functionFinish() {
-        logger.info('Webmentions sent');
-        res.status(202);
-        res.send('Accepted');
-    }
-
     // Get the date file from Github, update the date to current date. POST back.
     function updateWebmentionPubDate() {
-        rp(githubApIFileOptions)
+        rp(getGithubFile)
             .then((repos) => {
                 //Get previous published time
                 publishedTime = base64.decode(repos.content);
@@ -86,53 +81,23 @@ exports.sendWebmention = function sendWebmention(req, res) {
                 logger.info('Webmention JSON publish time: ' + publishedTime);
 
                 //Base 64 Encode for Github API
-                encodedContent = base64.encode(publishedTime);
+                payload = base64.encode(publishedTime);
                 logger.info('payload encoded');
 
-                //Configure options to PUT file back in Github API
-                options = {
-                    method : 'PUT',
-                    uri : webmentionsDateFileDestination,
-                    headers : {
-                        Authorization : 'token ' + github.key,
-                        'Content-Type' : 'application/vnd.github.v3+json; charset=UTF-8',
-                        'User-Agent' : github.name
-                    },
-                    body : {
-                        path : webmentionsDateFileName,
-                        branch : github.branch,
-                        message : messageContent,
-                        sha : repos.sha,
-                        committer : {
-                            'name' : github.user,
-                            'email' : github.email
-                        },
-                        content : encodedContent
-                    },
-                    json : true
-                };
-                //Push file in to Github API.
-                rp(options)
-                    .then(functionFinish)
-                    .catch(handlePatchError);
+                githubApi.publish(req, res, fileLocation, fileName, responseLocation, payload);
             })
             .catch(handleGithubApiGet);
     }
 
-    logger.info(githubApIFileOptions);
+    logger.info(getGithubFile);
     logger.info('Getting current webmention date ');
 
-    // Get the JSON feed from live.
-    // If empty, end. Otherwise proceed and update.
-    rp(webmentionsOptions)
+    // Get my webmention JSON feed from the Github API
+    rp(getWebmentionFeed)
         .then(function SendToTelegraph(webmentionData) {
             logger.info(`Webmentions data: ${webmentionData.webmentions}`);
-            if (isEmptyObject(webmentionData.webmentions)) {
-                logger.info('No Webmentions to send');
-                res.status(200);
-                res.send('Done');
-            } else {
-                // Submit webmention to Telegraph
+            if (webmentionData.webmentions.hasOwnProperty('time')) {
+                // Parse feed info and submit webmention to Telegraph
                 logger.info('Found Webmentions to send');
                 logger.info(`Webmention Source: ${webmentionData.webmentions.source}`);
                 logger.info(`Webmention Target: ${webmentionData.webmentions.target}`);
@@ -153,22 +118,27 @@ exports.sendWebmention = function sendWebmention(req, res) {
 
                 const telegraphOptions = {
                     method : 'POST',
-                    uri : 'https://telegraph.p3k.io/webmention',
+                    uri : telegraph.url,
                     headers : {
                         'User-Agent' : github.name
                     },
                     form : {
-                        token : webmention.telegraph,
+                        token : telegraph.token,
                         source : webmentionData.webmentions.source,
                         target : webmentionData.webmentions.target
                     }
                 };
 
                 logger.info(telegraphOptions);
+
                 // POST to telegraph API
                 rp(telegraphOptions)
                     .then(updateWebmentionPubDate)
-                    .catch(handlePatchError);
+                    .catch(githubApiPublishError);
+            } else {
+                logger.info('No Webmentions to send');
+                res.status(200);
+                res.send('Done');
             }
         })
         .catch(webmentionError);

@@ -1,5 +1,5 @@
 /*
-Receive content and POST it to the Github API
+POST content to the Github API
 */
 
 const rp = require('request-promise');
@@ -39,7 +39,7 @@ exports.publish = function publish(req, res, fileLocation, fileName, responseLoc
         res.end('Thanks');
     }
 
-    function handlePatchError(err) {
+    function githubError(err) {
         res.status(400);
         res.send('Update failed');
         logger.info('POST to Github API Failed');
@@ -52,5 +52,5 @@ exports.publish = function publish(req, res, fileLocation, fileName, responseLoc
 
     rp(options)
         .then(successful)
-        .catch(handlePatchError);
+        .catch(githubError);
 };
