@@ -3,7 +3,7 @@ const base64 = require('base64it');
 const logger = require(appRootDirectory + '/app/logging/bunyan');
 const config = require(appRootDirectory + '/app/config.js');
 const github = config.github;
-const webhookKey = config.webmention.webhook;
+const webmentionIO = config.webmentionIO;
 
 exports.webmentionPost = function webmentionPost(req, res) {
     const messageContent = ':robot: Webmentions updated by Mastrl Cntrl';
@@ -33,7 +33,7 @@ exports.webmentionPost = function webmentionPost(req, res) {
 
     logger.info('Webmention Debug: ' + JSON.stringify(req.body));
 
-    if (req.body.secret === webhookKey) {
+    if (req.body.secret === webmentionIO.webhookToken) {
         logger.info('Webmention recieved');
         const webmention = req.body.post;
         logger.info(`Creating Webmention:  ${webmention}`);

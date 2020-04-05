@@ -16,8 +16,11 @@ config.api = {
     'port' : process.env.API_PORT
 };
 
+config.webmentionIO = {
+    'webhookToken' : process.env.WEBMENTION_WEBHOOK_TOKEN
+};
+
 config.webmention = {
-    'webhook' : process.env.WEBMENTION_WEBHOOK_TOKEN,
     'feed' : process.env.WEBMENTION_FEED
 };
 
