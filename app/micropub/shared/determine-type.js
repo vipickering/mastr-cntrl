@@ -1,3 +1,0 @@
-/*
-Determine the micropub type that is received and send it to the relevant formatter.
-*/
