@@ -14,7 +14,6 @@ const webmentionPostRoute = require(appRootDirectory + '/app/endpoints/webmentio
 const mediaPostRoute = require(appRootDirectory + '/app/endpoints/media/post-to-github');
 let rtg;
 let redisClient;
-// let redisClientOptions;
 
 // Make Redis work on Heroku or local; using Redis-To-Go
 if (process.env.REDISTOGO_URL) {
