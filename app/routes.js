@@ -6,12 +6,12 @@ const ExpressMiddleware = require('ratelimit.js').ExpressMiddleware;
 const redis = require('redis');
 const multer = require('multer');
 const storage = multer.memoryStorage();
-const upload = multer({storage : storage});
-const syndicationOptionsGetRoute = require(appRootDirectory + '/app/routes/get/syndication-options');
-const SendWebmentionPostRoute = require(appRootDirectory + '/app/routes/post/send-webmention');
-const micropubPostRoute = require(appRootDirectory + '/app/routes/post/micropub');
-const webmentionPostRoute = require(appRootDirectory + '/app/routes/post/save-webmention');
-const mediaPostRoute = require(appRootDirectory + '/app/routes/post/media');
+const upload = multer({storage : storage}); //Used to store the media endpoint image in memory
+const syndicationOptionsGetRoute = require(appRootDirectory + '/app/endpoints/syndication/return-options');
+const SendWebmentionPostRoute = require(appRootDirectory + '/app/endpoints/webmention/send');
+const micropubPostRoute = require(appRootDirectory + '/app/endpoints/micropub/post-to-github');
+const webmentionPostRoute = require(appRootDirectory + '/app/endpoints/webmention/post-to-github');
+const mediaPostRoute = require(appRootDirectory + '/app/endpoints/media/post-to-github');
 let rtg;
 let redisClient;
 // let redisClientOptions;
@@ -36,11 +36,7 @@ const limitEndpoint = limitMiddleware.middleware((req, res) => {
 /***
 GET Routes
 ***/
-
-// Called before posting to the micropub route. It provides authentication. Routing to syndication options and media.
 router.get('/micropub', limitEndpoint, syndicationOptionsGetRoute.micropubGet);
-
-//Catch any route we don't know and return the JSON profile
 router.get('/', limitEndpoint, (req, res) => {
     res.json(serviceProfile);
 });
@@ -48,14 +44,8 @@ router.get('/', limitEndpoint, (req, res) => {
 /***
 POST Routes
 ***/
-
-// For recieving content in to the website via Micropub. Secured by IndieAuth
 router.post('/micropub', limitEndpoint, micropubPostRoute.micropubPost);
-
-// Webmentions receiving in to the website. POSTs to the Github API
 router.post('/webmention', limitEndpoint, webmentionPostRoute.webmentionPost);
-
-// Media Endpoint. For uploading media to the blog via Micropub. Secured by IndieAuth
 router.post('/media', limitEndpoint, upload.any(), mediaPostRoute.mediaPost);
 
 /**

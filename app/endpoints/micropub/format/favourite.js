@@ -1,5 +1,5 @@
 const logger = require(appRootDirectory + '/app/logging/bunyan');
-const functionPath = '/app/micropub/process-data/';
+const functionPath = '/app/endpoints/micropub/process-data/';
 const handleDateTime = require(appRootDirectory + functionPath + 'datetime');
 
 exports.favourite = function favourite(micropubContent) {

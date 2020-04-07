@@ -1,5 +1,5 @@
 const logger = require(appRootDirectory + '/app/logging/bunyan');
-const functionPath = '/app/micropub/process-data/';
+const functionPath = '/app/endpoints/micropub/process-data/';
 const handleContent = require(appRootDirectory + functionPath + 'content');
 const handleDateTime = require(appRootDirectory + functionPath + 'datetime');
 const handleTags = require(appRootDirectory + functionPath + 'tags');
