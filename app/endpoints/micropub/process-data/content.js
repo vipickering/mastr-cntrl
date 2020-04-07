@@ -11,7 +11,6 @@ exports.formatContent = function formatContent(micropubContent) {
     try {
         //Standard Note
         content = micropubContent.content;
-        logger.info('Content is basic note content');
     } catch (e) {
         logger.info('No basic note content provided');
     }
@@ -19,7 +18,6 @@ exports.formatContent = function formatContent(micropubContent) {
     try {
         // Photo Note
         content = micropubContent.properties.content;
-        logger.info('Content is photo note content');
     } catch (e) {
         logger.info('No photo note content');
     }
@@ -27,7 +25,6 @@ exports.formatContent = function formatContent(micropubContent) {
     try {
         // Checkin
         content = micropubContent.properties.content[0];
-        logger.info('Content is Checkin content');
     } catch (e) {
         logger.info('No checkin content');
     }
