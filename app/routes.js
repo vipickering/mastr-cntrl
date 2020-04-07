@@ -7,7 +7,7 @@ const redis = require('redis');
 const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({storage : storage});
-const micropubGetRoute = require(appRootDirectory + '/app/routes/get/micropub');
+const syndicationOptionsGetRoute = require(appRootDirectory + '/app/routes/get/syndication-options');
 const SendWebmentionPostRoute = require(appRootDirectory + '/app/routes/post/send-webmention');
 const micropubPostRoute = require(appRootDirectory + '/app/routes/post/micropub');
 const webmentionPostRoute = require(appRootDirectory + '/app/routes/post/save-webmention');
@@ -37,8 +37,8 @@ const limitEndpoint = limitMiddleware.middleware((req, res) => {
 GET Routes
 ***/
 
-// Called before posting to the micropub route. It provides authentication, routing to syndication and media.
-router.get('/micropub', limitEndpoint, micropubGetRoute.micropubGet);
+// Called before posting to the micropub route. It provides authentication. Routing to syndication options and media.
+router.get('/micropub', limitEndpoint, syndicationOptionsGetRoute.micropubGet);
 
 //Catch any route we don't know and return the JSON profile
 router.get('/', limitEndpoint, (req, res) => {
