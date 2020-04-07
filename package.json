@@ -1,6 +1,6 @@
 {
   "name": "vincentp.micropub-api",
-  "version": "2.5.0",
+  "version": "3.1.0",
   "description": "The IndieWeb Micropub API that publishes to vincentp.me",
   "main": "http://mastr-cntrl.herokuapp.com",
   "author": "Vincent Pickering",
@@ -21,7 +21,7 @@
     "url": "git+https://github.com/vipickering/micropub-API.git"
   },
   "engines": {
-    "node": "v12.16.1"
+    "node": "v10.10.0"
   },
   "bugs": {
     "url": "https://github.com/vipickering/micropub-API/issues"
