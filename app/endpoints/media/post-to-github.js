@@ -35,6 +35,8 @@ exports.mediaPost = function mediaPost(req, res) {
             .then(authResponse)
             .then(githubApi.publish(req, res, fileLocation, fileName, responseLocation, payload))
             .catch((err) => logger.error(err));
+        logger.info('Image Posted to Github');
+        return res.status(200);
     } catch (e) {
         logger.info('No Token supplied');
         return res.status(403);
