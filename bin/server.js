@@ -13,16 +13,15 @@ const routes = require(appRootDirectory + '/app/routes.js');
 const api = config.api;
 const app = express();
 const port = api.port;
-// const isDev = app.get('env') === 'development';
 
 app.use(helmet());
-app.use(bodyParser.json()); // for parsing application/json
-app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended : true}));
 app.use(favicon('public/images/favicon.ico'));
 app.use(express.json());
 app.use('/', routes);
 
 /*eslint-disable-next-line no-process-env */
-const server = app.listen(process.env.PORT || port, function () {
+const server = app.listen(process.env.PORT || port, function serveTheThings() {
     logger.info('Mastr Cntrl Online Port:%s...', server.address().port);
 });
