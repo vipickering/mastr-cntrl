@@ -1,35 +1,20 @@
-const rp = require('request-promise');
-const base64 = require('base64it');
 const logger = require(appRootDirectory + '/app/logging/bunyan');
 const config = require(appRootDirectory + '/app/config.js');
+// const determineWebmention = require(appRootDirectory + '/app/endpoints/webmention/determine-webmention');
 const github = config.github;
 const webmentionIO = config.webmentionIO;
+const githubApi = require(appRootDirectory + '/app/github/post-to-api');
 
 exports.webmentionPost = function webmentionPost(req, res) {
-    const messageContent = ':robot: Webmentions updated by Mastrl Cntrl';
-
+    const commitMessage = 'Webmention submitted from Webmention.IO';
     let payload;
-    let createFileOptions;
-    let encodedContent;
+    let responseLocation;
     let filePath;
-    let postDestination;
+    let fileLocation;
     let postFileName;
     let fileName;
-    let webmentionFolder;
+    let webmentionFileName;
     let webmentionId;
-
-    function handlePatchError(err) {
-        logger.info('Webmention update to Github API Failed');
-        logger.error(err);
-        res.status(400);
-        res.send('Update failed');
-    }
-
-    function functionFinish() {
-        logger.info('Webmentions complete');
-        res.status(202);
-        res.send('Accepted');
-    }
 
     logger.info('Webmention Debug: ' + JSON.stringify(req.body));
 
@@ -38,37 +23,29 @@ exports.webmentionPost = function webmentionPost(req, res) {
         const webmention = req.body.post;
         logger.info(`Creating Webmention:  ${webmention}`);
 
-        // Prepare the code to send to Github API
-        payload = webmention;
-        logger.info('payload combined');
-
-        //Base 64 Encode for Github API
-        encodedContent = base64.encode(payload);
-        logger.info('payload encoded');
-
+        // const alt = determineWebmention.getType(micropubContent);
         //quick and dirty code to work out WM.
-        // update to case statement if it works ok.
         if (webmention['wm-property'] === 'bookmark-of ') {
-            webmentionFolder = 'bookmarks';
-            fileName = 'bookmark';
+            filePath = 'bookmarks';
+            webmentionFileName = 'bookmark';
         } else if (webmention['wm-property'] === 'like-of') {
-            webmentionFolder = 'likes';
-            fileName = 'like';
+            filePath = 'likes';
+            webmentionFileName = 'like';
         } else if (webmention['wm-property'] === 'mention-of') {
-            webmentionFolder = 'mentions';
-            fileName = 'mention';
+            filePath = 'mentions';
+            webmentionFileName = 'mention';
         } else if (webmention['wm-property'] === 'in-reply-to') {
-            webmentionFolder = 'replies';
-            fileName = 'reply';
+            filePath = 'replies';
+            webmentionFileName = 'reply';
         } else if (webmention['wm-property'] === 'rsvp') {
-            webmentionFolder = 'rsvps';
-            fileName = 'rsvp';
+            filePath = 'rsvps';
+            webmentionFileName = 'rsvp';
         } else if (webmention['wm-property'] === 'repost') {
-            webmentionFolder = 'reposts';
-            fileName = 'repost';
+            filePath = 'reposts';
+            webmentionFileName = 'repost';
         } else {
-            webmentionFolder = 'unknown';
-            fileName = 'unknown';
+            filePath = 'unknown';
+            webmentionFileName = 'unknown';
         }
 
         try {
@@ -85,35 +62,11 @@ exports.webmentionPost = function webmentionPost(req, res) {
             logger.info('wm-id failed');
         }
 
-        filePath = webmentionFolder;
         logger.info('file path: ' + filePath);
-        postFileName = `${fileName}_${webmentionId}.json`;
-        postDestination = `${github.postUrl}/contents/src/_data/${filePath}/${postFileName}`;
-
-        createFileOptions = {
-            method : 'PUT',
-            uri : postDestination,
-            headers : {
-                Authorization : 'token ' + github.key,
-                'Content-Type' : 'application/vnd.github.v3+json; charset=UTF-8',
-                'User-Agent' : github.name
-            },
-            body : {
-                path : postFileName,
-                branch : github.branch,
-                message : messageContent,
-                committer : {
-                    'name' : github.user,
-                    'email' : github.email
-                },
-                content : encodedContent
-            },
-            json : true
-        };
-        // Push file in to Github API.
-        rp(createFileOptions)
-            .then(functionFinish)
-            .catch(handlePatchError);
+        fileName = `${webmentionFileName}_${webmentionId}.json`;
+        fileLocation = `${github.postUrl}/contents/src/_data/${filePath}/${postFileName}`;
+        responseLocation = fileLocation;
+        githubApi.publish(req, res, fileLocation, fileName, responseLocation, payload, commitMessage);
     } else {
         res.status(400);
         res.send('Secret incorrect');

@@ -1,3 +1,5 @@
+// Depricated. Will be moved to Netlify Function
+
 const rp = require('request-promise');
 const base64 = require('base64it');
 const logger = require(appRootDirectory + '/app/logging/bunyan');
@@ -31,21 +33,6 @@ exports.sendWebmention = function sendWebmention(req, res) {
         },
         json : true
     };
-
-    // function isEmptyObject(obj) {
-    //     return !Object.keys(obj).length;
-    // }
-
-    // function isEmptyObject(obj) {
-    //     let key;
-
-    //     for (key in obj) {
-    //         if (Object.prototype.hasOwnProperty.call(obj, key)) {
-    //             return false;
-    //         }
-    //     }
-    //     return true;
-    // }
 
     function handleGithubApiGet(err) {
         logger.info('Github API Get File Failed');
