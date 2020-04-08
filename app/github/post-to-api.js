@@ -8,10 +8,10 @@ const logger = require(appRootDirectory + '/app/logging/bunyan');
 const config = require(appRootDirectory + '/app/config.js');
 const github = config.github;
 
-exports.publish = function publish(req, res, fileLocation, fileName, responseLocation, payload) {
+exports.publish = function publish(req, res, fileLocation, fileName, responseLocation, payload, commitMessage) {
     const payloadEncoded = base64.encode(payload);
     const fileDestination = `${github.postUrl}/contents/${fileLocation}/${fileName}`;
-    const messageContent = ':robot: submitted by Mastrl Cntrl';
+    const messageContent = `:robot: ${commitMessage}`;
     const options = {
         method : 'PUT',
         url : fileDestination,

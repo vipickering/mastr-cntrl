@@ -17,6 +17,7 @@ exports.micropubPost = function micropubPost(req, res) {
     let publishedDate;
     let micropubType;
     let fileLocation;
+    let commitMessage;
     const micropubContent = req.body;
     const token = req.headers.authorization;
     const indieauth = 'https://tokens.indieauth.com/token';
@@ -47,33 +48,39 @@ exports.micropubPost = function micropubPost(req, res) {
             micropubType = 'checkins';
             payload = formatCheckin.checkIn(micropubContent);
             fileLocation = 'src/_content/checkins';
+            commitMessage = 'Checkin created via ownyourswarm';
             break;
         case (micropubContent.hasOwnProperty('bookmark-of')):
             micropubType = 'links';
             payload = formatBookmark.bookmark(micropubContent);
             fileLocation = 'src/_content/links';
+            commitMessage = 'Bookmark created';
             break;
         case (micropubContent.hasOwnProperty('like-of')):
             micropubType = 'favourites';
             payload = formatFavourite.favourite(micropubContent);
             fileLocation = 'src/_content/favourites';
+            commitMessage = 'Favourite created';
             break;
         case (micropubContent.hasOwnProperty('in-reply-to')):
             micropubType = 'replies';
             payload = formatReplies.replies(micropubContent);
             fileLocation = 'src/_content/replies';
+            commitMessage = 'Reply created';
             break;
         default:
-            // This is a pain. If micropubContent.properties  test is a switch clause it causes the server to crash. Wrapping it in a try/catch gets around the issue
+            // This is a pain. If micropubContent.properties test is a switch clause it causes the server to crash, when NULL. Wrapping it in a try/catch gets around the issue
             try {
                 micropubContent.properties.hasOwnProperty('photo');
                 micropubType = 'photos';
                 payload = formatPhoto.photo(micropubContent);
                 fileLocation = 'src/_content/photos';
+                commitMessage = 'Photo post created';
             } catch (e) {
                 micropubType = 'notes';
                 payload = formatNote.note(micropubContent);
                 fileLocation = 'src/_content/notes';
+                commitMessage = 'Note created';
             }
         }
 
@@ -81,7 +88,7 @@ exports.micropubPost = function micropubPost(req, res) {
         fileName = `${postFileNameDate}-${postFileNameTime}.md`;
         responseLocation = `https://vincentp.me/${micropubType}/${responseDate}/${responseLocationTime}/`;
 
-        githubApi.publish(req, res, fileLocation, fileName, responseLocation, payload);
+        githubApi.publish(req, res, fileLocation, fileName, responseLocation, payload, commitMessage);
     }
 
     // Check indie authentication

@@ -14,6 +14,7 @@ exports.mediaPost = function mediaPost(req, res) {
     const payload = req.files[0].buffer;
     const responseLocation = `src/images/blog/${publishedDate}/${fileName}`;
     const fileLocation = `src/images/blog/${publishedDate}`;
+    const commitMessage = 'Media created for blog post';
     let token;
     const authHeaders = {
         'Accept' : 'application/json',
@@ -33,7 +34,7 @@ exports.mediaPost = function mediaPost(req, res) {
         // Verify Token. If OK send syndication options or configuration
         fetch(indieauth.url, {method : 'GET', headers : authHeaders})
             .then(authResponse)
-            .then(githubApi.publish(req, res, fileLocation, fileName, responseLocation, payload))
+            .then(githubApi.publish(req, res, fileLocation, fileName, responseLocation, payload, commitMessage))
             .catch((err) => logger.error(err));
         logger.info('Image Posted to Github');
         return res.status(200);
