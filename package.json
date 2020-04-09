@@ -21,7 +21,7 @@
     "url": "git+https://github.com/vipickering/micropub-API.git"
   },
   "engines": {
-    "node": "v12.16.1"
+    "node": "v10.13.0"
   },
   "bugs": {
     "url": "https://github.com/vipickering/micropub-API/issues"
