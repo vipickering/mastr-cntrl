@@ -9,7 +9,7 @@ let serviceIdentifier = '';
  Endpoint is used to return syndication options, to authorised clients only.
  */
 
- exports.micropubGet = function micropubGet(req, res) {
+exports.micropubGet = function micropubGet(req, res) {
     const token = req.headers.authorization;
     const authHeaders = {
         'Accept' : 'application/json',
