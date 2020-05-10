@@ -8,7 +8,6 @@ const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({storage : storage}); //Used to store the media endpoint image in memory
 const syndicationOptionsGetRoute = require(appRootDirectory + '/app/endpoints/syndication/return-options');
-const SendWebmentionPostRoute = require(appRootDirectory + '/app/endpoints/webmention/send');
 const micropubPostRoute = require(appRootDirectory + '/app/endpoints/micropub/post-to-github');
 const webmentionPostRoute = require(appRootDirectory + '/app/endpoints/webmention/post-to-github');
 const mediaPostRoute = require(appRootDirectory + '/app/endpoints/media/post-to-github');
@@ -46,15 +45,5 @@ POST Routes
 router.post('/micropub', limitEndpoint, micropubPostRoute.micropubPost);
 router.post('/webmention', limitEndpoint, webmentionPostRoute.webmentionPost);
 router.post('/media', limitEndpoint, upload.any(), mediaPostRoute.mediaPost);
-
-/**
-Called by a  webhook on publish.
-**/
-
-// Checks for available webmentions to send. If it finds any in the feed, it POSTs them to Telegraph.
-router.post('/send-webmention', limitEndpoint, SendWebmentionPostRoute.sendWebmention);
-
-// Checks for available webmentions to send. If it finds any in the feed, it POSTs them to Telegraph.
-// router.post('/syndication', limitEndpoint, SyndicationPostRoute.syndication);
 
 module.exports = router;

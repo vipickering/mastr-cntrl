@@ -28,7 +28,7 @@ const streamsContent =  [
 ];
 
 const logger = bunyan.createLogger({
-    name : 'micropubAPI',
+    name : 'MastrCntrl',
     serializers : {
         err : bunyan.stdSerializers.err
     },
