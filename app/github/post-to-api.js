@@ -78,13 +78,17 @@ exports.publish = function publish(req, res, fileLocation, fileName, responseLoc
         };
 
         const response = await axios(options);
+            res.writeHead(201, {'location' : responseLocation});
             logger.info(response);
             logger.info('GIT PUT Success');
+            res.end('Thanks');
         } catch (error) {
-            logger.error(error);
+            res.status(400);
+            res.send('Update failed');
+            logger.info('GIT PUT Failed');
             logger.error(error.response);
             logger.info(error.response.data.message);
-            logger.info('GIT PUT Failed');
+            res.end('Error Sending Payload');
         }
         })();
 };

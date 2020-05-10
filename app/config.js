@@ -32,11 +32,6 @@ config.website = {
     'url' : process.env.WEBSITE_URL
 };
 
-config.telegraph = {
-    'token' : process.env.TELEGRAPH_TOKEN,
-    'url' : process.env.TELEGRAPH_URL
-};
-
 config.lastfm = {
     'token' : process.env.LASTFM_TOKEN
 };
