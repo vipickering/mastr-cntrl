@@ -1,6 +1,4 @@
 {
     "service" : "Mastr Cntrl",
-    "version" : "9000",
-    "formatting" : "Indie Web",
-    "purpose" : "Mastr Cntrl sees all"
+    "purpose" : "Vincentp IndieWeb Micropub Service"
 }
