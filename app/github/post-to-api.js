@@ -37,7 +37,7 @@ exports.publish = function publish(req, res, fileLocation, fileName, responseLoc
 
         const response = await axios(options);
             res.writeHead(201, {'location' : responseLocation});
-            logger.info(response);
+            // logger.info(response);
             logger.info('GIT PUT Success');
             res.end('Thanks');
         } catch (error) {
