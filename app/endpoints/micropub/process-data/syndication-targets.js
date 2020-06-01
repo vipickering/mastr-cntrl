@@ -19,6 +19,7 @@ exports.formatTargets = function formatTargets(micropubContent) {
         }
     } catch (e) {
         logger.info('No Syndication targets');
+        targets = '';
     }
 
     return targets;
