@@ -12,17 +12,8 @@
             "user": {
                 "name": "vincentlistens",
                 "url": "https://twitter.com/vincentlistens/",
-                "photo": "https://pbs.twimg.com/profile_images/994887629236776960/ruEyxdDe_400x400.jpg"
+                "photo": "https://abs.twimg.com/favicons/twitter.ico"
           }
-        },
-         {
-            "uid" : "IndieNews",
-            "name" : "IndieNews",
-            "service": {
-                "name": "indienews",
-                "url": "https://news.indieweb.org/en",
-                "photo": "https://indieweb.org/favicon.ico"
-            }
         }
     ],
     "post-types": [
