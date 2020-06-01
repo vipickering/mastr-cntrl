@@ -9,7 +9,6 @@ const storage = multer.memoryStorage();
 const upload = multer({storage : storage}); //Used to store the media endpoint image in memory
 const syndicationOptionsGetRoute = require(appRootDirectory + '/app/endpoints/syndication/return-options');
 const micropubPostRoute = require(appRootDirectory + '/app/endpoints/micropub/post-to-github');
-const webmentionPostRoute = require(appRootDirectory + '/app/endpoints/webmention/post-to-github');
 const mediaPostRoute = require(appRootDirectory + '/app/endpoints/media/post-to-github');
 let rtg;
 let redisClient;
@@ -43,7 +42,6 @@ router.get('/', limitEndpoint, (req, res) => {
 POST Routes
 ***/
 router.post('/micropub', limitEndpoint, micropubPostRoute.micropubPost);
-router.post('/webmention', limitEndpoint, webmentionPostRoute.webmentionPost);
 router.post('/media', limitEndpoint, upload.any(), mediaPostRoute.mediaPost);
 
 module.exports = router;
