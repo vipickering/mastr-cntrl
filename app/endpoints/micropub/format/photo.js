@@ -25,7 +25,7 @@ meta: "note posted on ${pubDate}"
 ${photoURL}
 ${alt}
 tags:${tags}
-syndicationTargets: ${targetArray}
+${targetArray}
 ---
 ${content}
 `;
