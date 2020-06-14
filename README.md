@@ -4,7 +4,7 @@ Mastr Cntrl is a part of a Microservices suite of [IndieWeb](https://indieweb.or
 
 - [Mastr Cntrl](https://github.com/vipickering/mastr-cntrl) is the Microservice responsible for recieving Micropub and social content.
 - [MC Webmebtion](https://github.com/vipickering/mc-webmention) is the webmention service. Designed to send and recieve [Webmentions](https://indieweb.org/Webmention).
-- [MC Syndication](https://github.com/vipickering/mc-syndicate-content) is the syndication service. Designed to syndicate content to other platforms.
+- [MC Syndication](https://github.com/vipickering/mc-syndication) is the syndication service. Designed to syndicate content to other platforms.
 
 ## Purpose
 
