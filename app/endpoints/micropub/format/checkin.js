@@ -1,6 +1,6 @@
 const logger = require(appRootDirectory + '/app/logging/bunyan');
 const functionPath = '/app/endpoints/micropub/process-data/';
-const handlePhotos = require(appRootDirectory + functionPath + 'swarm-photos');
+const handlePhotos = require(appRootDirectory + functionPath + 'swarm-photo');
 const handleAltText = require(appRootDirectory + functionPath + 'swarm-alt-text');
 const handleContent = require(appRootDirectory + functionPath + 'content');
 
