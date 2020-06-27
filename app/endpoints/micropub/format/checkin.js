@@ -1,7 +1,7 @@
 const logger = require(appRootDirectory + '/app/logging/bunyan');
 const functionPath = '/app/endpoints/micropub/process-data/';
-const handlePhotos = require(appRootDirectory + functionPath + 'photos');
-const handleAltText = require(appRootDirectory + functionPath + 'alt-text');
+const handlePhotos = require(appRootDirectory + functionPath + 'swarm-photos');
+const handleAltText = require(appRootDirectory + functionPath + 'swarm-alt-text');
 const handleContent = require(appRootDirectory + functionPath + 'content');
 
 exports.checkIn = function checkIn(micropubContent) {
