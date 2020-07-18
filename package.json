@@ -27,18 +27,18 @@
     "url": "https://github.com/vipickering/mastr-cntrl/issues"
   },
   "devDependencies": {
-    "eslint": "^7.0.0"
+    "eslint": "^7.5.0"
   },
   "dependencies": {
     "axios": "^0.19.2",
     "base64it": "^1.1.0",
     "body-parser": "^1.19.0",
-    "bunyan": "^1.8.12",
+    "bunyan": "^1.8.14",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "helmet": "^3.22.0",
-    "moment": "^2.25.3",
-    "moment-timezone": "^0.5.28",
+    "helmet": "^3.23.3",
+    "moment": "^2.27.0",
+    "moment-timezone": "^0.5.31",
     "multer": "^1.4.2",
     "node-fetch": "^2.6.0",
     "ratelimit.js": "^1.8.0",
