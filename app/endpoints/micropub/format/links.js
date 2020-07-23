@@ -29,7 +29,7 @@ exports.bookmark = function bookmark(micropubContent) {
     const entry = `---
 title: "${title}"
 date: "${pubDate}"
-target: "${target}"
+webmentionTarget: "${target}"
 meta: "bookmark posted on ${pubDate}"
 tags:${tags}
 ---

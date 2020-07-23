@@ -18,7 +18,7 @@ exports.favourite = function favourite(micropubContent) {
     const entry = `---
 title: "favourited ${like}"
 date: "${pubDate}"
-target: "${like}"
+webmentionTarget: "${like}"
 meta: "Vincent favourited ${like}"
 ---
 [${like}](${like})

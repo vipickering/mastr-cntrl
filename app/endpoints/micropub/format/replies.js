@@ -23,7 +23,7 @@ exports.replies = function replies(micropubContent) {
     const entry = `---
 title: "reply posted on ${pubDate} to ${replyTo}"
 date: "${pubDate}"
-target: "${replyTo}"
+webmentionTarget: "${replyTo}"
 meta: "reply posted on ${pubDate} to ${replyTo}"
 tags:${tags}
 ---
