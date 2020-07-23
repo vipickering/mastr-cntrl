@@ -23,9 +23,13 @@ exports.formatTags = function formatTags(micropubContent) {
     }
 
     // If we are syndicating content, add a tag as well.
-    if (targetArray.length > 0) {
-        tags += '\n- ';
-        tags += 'syndicated';
+    try {
+        if (targetArray.length > 0) {
+            tags += '\n- ';
+            tags += 'syndicated';
+        }
+    } catch (e) {
+        logger.info('No syndication tag');
     }
 
     return tags;
