@@ -30,6 +30,7 @@
     "eslint": "^7.6.0"
   },
   "dependencies": {
+    "@slack/webhook": "^5.0.3",
     "axios": "^0.19.2",
     "base64it": "^1.1.0",
     "body-parser": "^1.19.0",

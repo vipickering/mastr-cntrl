@@ -4,7 +4,6 @@ const path = require('path');
 const favicon = require('serve-favicon');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
-
 appRootDirectory = path.join(__dirname, '/..');
 const config = require(appRootDirectory + '/app/config.js');
 const logger = require(appRootDirectory + '/app/logging/bunyan');

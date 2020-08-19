@@ -7,6 +7,7 @@ const base64 = require('base64it');
 const logger = require(appRootDirectory + '/app/logging/bunyan');
 const config = require(appRootDirectory + '/app/config.js');
 const github = config.github;
+const slack = require(appRootDirectory + '/app/slack/post-message-slack');
 
 exports.publish = function publish(req, res, fileLocation, fileName, responseLocation, payload, commitMessage) {
     const payloadEncoded = base64.encode(payload);
@@ -37,13 +38,13 @@ exports.publish = function publish(req, res, fileLocation, fileName, responseLoc
 
         const response = await axios(options);
             res.writeHead(201, {'location' : responseLocation});
-            // logger.info(response);
             logger.info('GIT PUT Success');
             res.end('Thanks');
         } catch (error) {
             res.status(400);
             res.send('Update failed');
             logger.info('GIT PUT Failed');
+            slack.sendMessage('Micropub failed, check logs');
             logger.error(error.response);
             logger.info(error.response.data.message);
             res.end('Error Sending Payload');

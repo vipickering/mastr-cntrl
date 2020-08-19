@@ -36,4 +36,8 @@ config.lastfm = {
     'token' : process.env.LASTFM_TOKEN
 };
 
+config.slack = {
+    'token' : process.env.SLACK_TOKEN
+};
+
 module.exports = config;
