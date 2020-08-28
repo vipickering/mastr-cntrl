@@ -25,6 +25,13 @@ The service:
 
 This service uses Redis for cache management.
 
+### Timezone
+You will need to specify your timezone using this [timezone list](https://github.com/moment/moment-timezone/blob/develop/data/meta/latest.json) in the ```.env``` file. Use the ```sample.env``` as your guide.
+
+The timezone is used to generate the blog post frontmatter and is also used on my blog to generate URLs. You may also do the same, so I recommend setting it to a 24 local timezone to avoid clashes in a 12 hour period or to avoid posts published at random times, instead of your local time.
+
+It is also advantageous to do this so you are not constrained where you host Mastr-Cntrl. You can host it in one part of the world and post using your local time if you like.
+
 ## Optional extras
 
 ### Slack
