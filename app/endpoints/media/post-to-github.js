@@ -15,6 +15,7 @@ exports.mediaPost = function mediaPost(req, res) {
     const responseLocation = `src/images/blog/${publishedDate}/${fileName}`;
     const fileLocation = `src/images/blog/${publishedDate}`;
     const commitMessage = 'Media created for blog post';
+    const slack = require(appRootDirectory + '/app/slack/post-message-slack');
     let token;
     const authHeaders = {
         'Accept' : 'application/json',
@@ -37,6 +38,7 @@ exports.mediaPost = function mediaPost(req, res) {
             .then(githubApi.publish(req, res, fileLocation, fileName, responseLocation, payload, commitMessage))
             .catch((err) => logger.error(err));
         logger.info('Image Posted to Github');
+        slack.sendMessage('Image Posted to Github');
         return res.status(200);
     } catch (e) {
         logger.info('No Token supplied');
