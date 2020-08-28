@@ -1,4 +1,3 @@
-const logger = require(appRootDirectory + '/app/logging/bunyan');
 const config = require(appRootDirectory + '/app/config.js');
 const syndicationTarget = require(appRootDirectory + '/app/data/targets/twitter.js');
 const mastrCntrl = config.mastrCntrl;
@@ -10,7 +9,6 @@ Create the return options JSON file from the .env values
 exports.createJSON = function createJSON() {
     const mastrCntrlURL = mastrCntrl.url;
     const syndicationTargets = syndicationTarget.twitter(); //extend later for other targets
-    logger.info(syndicationTargets);
     const jsonFile = {
         'media-endpoint' : `${mastrCntrlURL}/media`,
         'syndicate-to' : [
