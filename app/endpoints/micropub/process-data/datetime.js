@@ -18,3 +18,8 @@ exports.formatMediaDateTime = function formatMediaDateTime() {
     const dateTime = moment(new Date()).tz(yourLocation).format('YYYY-MM-DDTHH');
     return dateTime;
 };
+
+exports.formatfileNameDateTime = function formatfileNameDateTime() {
+    const dateTime = moment(new Date()).tz(yourLocation).format('YYYY-MM-DDTHH:mm:ss+00:00');
+    return dateTime;
+};

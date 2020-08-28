@@ -28,7 +28,7 @@ exports.micropubPost = function micropubPost(req, res) {
     try {
         publishedDate = req.body.properties.published[0];
     } catch (e) {
-        publishedDate = handleDateTime.formatDateTime();
+        publishedDate = handleDateTime.formatfileNameDateTime();
     }
 
     //Format date time for naming file.
