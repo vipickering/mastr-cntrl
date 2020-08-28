@@ -44,4 +44,8 @@ config.twitter = {
     'username' : process.env.TWITTER_USERNAME
 };
 
+config.timezone = {
+    'region' : process.env.TIMEZONE
+};
+
 module.exports = config;

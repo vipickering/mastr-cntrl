@@ -1,5 +1,4 @@
 const fetch = require('node-fetch');
-const moment = require('moment');
 const logger = require(appRootDirectory + '/app/logging/bunyan');
 const formatCheckin = require(appRootDirectory + '/app/endpoints/micropub/format/checkin');
 const formatNote = require(appRootDirectory + '/app/endpoints/micropub/format/note');
@@ -8,6 +7,7 @@ const formatBookmark = require(appRootDirectory + '/app/endpoints/micropub/forma
 const formatFavourite = require(appRootDirectory + '/app/endpoints/micropub/format/favourite');
 const formatReplies = require(appRootDirectory + '/app/endpoints/micropub/format/replies');
 const githubApi = require(appRootDirectory + '/app/github/post-to-api');
+const handleDateTime = require(appRootDirectory + '/app/endpoints/micropub/process-data/datetime');
 
 exports.micropubPost = function micropubPost(req, res) {
     let serviceIdentifier = '';
@@ -28,7 +28,7 @@ exports.micropubPost = function micropubPost(req, res) {
     try {
         publishedDate = req.body.properties.published[0];
     } catch (e) {
-        publishedDate = moment(new Date()).tz('Pacific/Auckland').format('YYYY-MM-DDTHH:mm:ss+00:00');
+        publishedDate = handleDateTime.formatDateTime();
     }
 
     //Format date time for naming file.

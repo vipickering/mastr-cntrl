@@ -1,14 +1,13 @@
 const fetch = require('node-fetch');
-const moment = require('moment');
-const tz = require('moment-timezone');
 const shortid = require('shortid');
 const config = require(appRootDirectory + '/app/config.js');
 const indieauth = config.indieauth;
 const logger = require(appRootDirectory + '/app/logging/bunyan');
 const githubApi = require(appRootDirectory + '/app/github/post-to-api');
+const handleDateTime = require(appRootDirectory + '/app/endpoints/micropub/process-data/datetime');
 
 exports.mediaPost = function mediaPost(req, res) {
-    const publishedDate = moment(new Date()).tz('Pacific/Auckland').format('YYYY-MM-DD');
+    const publishedDate = handleDateTime.formatMediaDateTime();
     const filenameID = shortid.generate();
     const fileName = `${filenameID}.jpg`; //Need to identify other mimetypes
     const payload = req.files[0].buffer;
