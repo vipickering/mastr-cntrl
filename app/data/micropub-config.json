@@ -1,6 +1,0 @@
-{
-    "config" :
-        {
-            "media-endpoint" : "https://mastr-cntrl.herokuapp.com/media"
-        }
-}

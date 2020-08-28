@@ -28,16 +28,20 @@ config.indieauth = {
     'url' : process.env.INDIEAUTH_URL
 };
 
+config.mastrCntrl = {
+    'url' : process.env.MC_URL
+};
+
 config.website = {
     'url' : process.env.WEBSITE_URL
 };
 
-config.lastfm = {
-    'token' : process.env.LASTFM_TOKEN
-};
-
 config.slack = {
     'token' : process.env.SLACK_TOKEN
+};
+
+config.twitter = {
+    'username' : process.env.TWITTER_USERNAME
 };
 
 module.exports = config;
