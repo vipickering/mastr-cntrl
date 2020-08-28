@@ -24,3 +24,19 @@ The service:
 ## Dependencies
 
 This service uses Redis for cache management.
+
+## Optional extras
+
+### Slack
+
+If you wish to use additional Slack logging:
+
+1. Create an 'Incoming WebHooks app', over on Slack.
+2. Copy the webhook key., generated.
+3. Paste the key in to your  ```.env``` file following the ```sample.env``` file as a guide.
+
+### Syndicating to Twitter
+
+Mastr-Cntrl doesn't syndicate to Twitter (but mc-syndication does). However if you are creating a Micropub post and wish to syndicate to Twitter, the Micropub client needs to know your Twitter details, so they can be saved alongside the post in the frontmatter.
+
+Add your twitter username in the ```.env``` file following the ```sample.env``` file as a guide and it will appear in the micropub client as an option.
