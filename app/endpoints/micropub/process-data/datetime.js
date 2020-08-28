@@ -1,19 +1,20 @@
 const moment = require('moment');
 const tz = require('moment-timezone');
+const logger = require(appRootDirectory + '/app/logging/bunyan');
 const config = require(appRootDirectory + '/app/config.js');
 const yourLocation = config.timezone.region;
-const tmz = moment(new Date()).tz(`${yourLocation}`);
 
 /*
 Convert and format time
 */
 
 exports.formatDateTime = function formatDateTime() {
-    const dateTime = tmz.format('YYYY-MM-DDTHH:mm:ss');
+    const dateTime = moment(new Date()).tz(yourLocation).format('YYYY-MM-DDTHH:mm:ss');
+    logger.info(dateTime);
     return dateTime;
 };
 
 exports.formatMediaDateTime = function formatMediaDateTime() {
-    const dateTime = tmz.format('YYYY-MM-DDTHH');
+    const dateTime = moment(new Date()).tz(yourLocation).format('YYYY-MM-DDTHH');
     return dateTime;
 };
