@@ -3,6 +3,7 @@ const logger = require(appRootDirectory + '/app/logging/bunyan');
 const syndicationOptions = require(appRootDirectory + '/app/data/syndicate.js');
 const config = require(appRootDirectory + '/app/config.js');
 const indieauth = config.indieauth;
+const website = config.website;
 
 /**
  Endpoint is used to return syndication options, to authorised clients only.
@@ -16,10 +17,15 @@ exports.micropubGet = function micropubGet(req, res) {
     };
     const returnOptions = syndicationOptions.createJSON();
 
-    //Issue is here. I need to interrorgate the thing and check the "me" param matches my website URL
+    // Compare if the requester is the one who owns the website, otherwise its a breach and not authorised
     function authResponse(response) {
         logger.info(response);
-        return response.json();
+        if (response.me !== website.url) {
+            logger.info('Not Authorised');
+            return res.status(401);
+        } else {
+            return response.json();
+        }
     }
 
     function micropubResponse(json) {
