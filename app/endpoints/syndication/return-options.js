@@ -19,7 +19,8 @@ exports.micropubGet = function micropubGet(req, res) {
 
     // Compare if the requester is the one who owns the website, otherwise its a breach and not authorised
     function authResponse(response) {
-        logger.info(response.me);
+        logger.info(response.msg);
+        logger.info(response.msg.me);
         // if (response.me !== website.url) {
         //     logger.info('Not Authorised');
         //     return res.status(401);
