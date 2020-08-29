@@ -23,6 +23,8 @@ exports.micropubGet = function micropubGet(req, res) {
 
     function micropubResponse(json) {
         logger.info(JSON.stringify(json));
+        logger.info(json.me);
+        logger.info(website.url);
 
         if (json.me !== website.url) {
             logger.info('Not Authorised');
