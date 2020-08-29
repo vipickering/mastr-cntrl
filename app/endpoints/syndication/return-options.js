@@ -16,6 +16,7 @@ exports.micropubGet = function micropubGet(req, res) {
         'Authorization' : token
     };
     const returnOptions = syndicationOptions.createJSON();
+    const websiteURL = website.url + ('/');
 
     function authResponse(response) {
         return response.json();
@@ -26,18 +27,21 @@ exports.micropubGet = function micropubGet(req, res) {
         logger.info(json.me);
         logger.info(website.url);
 
-        if (json.me !== website.url) {
+        if (json.me !== websiteURL) {
             logger.info('Not Authorised');
-            return res.status(401); // Compare if the requester is the one who owns the website, otherwise its a breach and not authorised
+            return res.status(403); // Compare if the requester is the one who owns the website, otherwise its a breach and not authorised
         }
 
         logger.info('Indie Auth Token Received:');
         switch (req.query.q) {
         case ('syndicate-to') :
+            res.status(200);
             return res.json(returnOptions);
         case ('config') :
+            res.status(200);
             return res.json(returnOptions);
         default:
+            res.status(200);
             return res.json({});
         }
     }
