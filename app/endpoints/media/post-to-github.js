@@ -9,7 +9,7 @@ const handleDateTime = require(appRootDirectory + '/app/endpoints/micropub/proce
 exports.mediaPost = function mediaPost(req, res) {
     const publishedDate = handleDateTime.formatMediaDateTime();
     const filenameID = shortid.generate();
-    const fileName = `${filenameID}.jpg`; //Need to identify other mimetypes
+    const fileName = `${filenameID}.jpg`; //Need to identify other mimetypes (should be req.mimetype ?)
     const payload = req.files[0].buffer;
     const responseLocation = `src/images/blog/${publishedDate}/${fileName}`;
     const fileLocation = `src/images/blog/${publishedDate}`;
@@ -28,7 +28,6 @@ exports.mediaPost = function mediaPost(req, res) {
 
     try {
         token = req.headers.authorization;
-        logger.info(req);
         logger.info('Token supplied');
         logger.info('json body ' + JSON.stringify(req.body));
 

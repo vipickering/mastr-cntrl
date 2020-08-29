@@ -16,7 +16,9 @@ exports.micropubGet = function micropubGet(req, res) {
     };
     const returnOptions = syndicationOptions.createJSON();
 
+    //Issue is here. I need to interrorgate the thing and check the "me" param matches my website URL
     function authResponse(response) {
+        logger.info(response);
         return response.json();
     }
 
