@@ -29,8 +29,6 @@ exports.micropubGet = function micropubGet(req, res) {
             logger.info('No Service Declared');
         }
 
-        logger.info(req);
-        logger.info(res);
         if (token) {
             logger.info('Indie Auth Token Received:');
             switch (req.query.q) {

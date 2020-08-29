@@ -28,6 +28,7 @@ exports.mediaPost = function mediaPost(req, res) {
 
     try {
         token = req.headers.authorization;
+        logger.info(req);
         logger.info('Token supplied');
         logger.info('json body ' + JSON.stringify(req.body));
 

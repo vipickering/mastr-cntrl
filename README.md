@@ -18,8 +18,7 @@ The service:
 
 1. Download the content and install with ```npm install```.
 2. Create your ```.env``` file and use the ```sample.env``` as your guide.
-3. Make sure to install and start your [Redis](https://redis.io/) server.
-4. Run with ```npm start```
+3. Run with ```npm start```
 
 ## Dependencies
 
