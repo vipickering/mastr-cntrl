@@ -11,8 +11,8 @@ const mediaPostRoute = require(appRootDirectory + '/app/endpoints/media/post-to-
 /***
 GET Routes
 ***/
-router.get('/micropub', syndicationOptionsGetRoute.micropubGet);
-router.get('/', (req, res) => {
+router.get('/micropub', syndicationOptionsGetRoute.micropubGet); //Get syndication options for Micropub client
+router.get('/', (req, res) => { //Display Service Profile if called directly
     res.json(serviceProfile);
 });
 
@@ -21,5 +21,12 @@ POST Routes
 ***/
 router.post('/micropub', micropubPostRoute.micropubPost);
 router.post('/media', upload.any(), mediaPostRoute.mediaPost);
+
+/***
+CATCH ALL Route
+***/
+router.get('*', (req, res) => { //Display Service Profile if unknown routing called
+    res.json(serviceProfile);
+});
 
 module.exports = router;

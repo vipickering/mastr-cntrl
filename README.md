@@ -23,8 +23,6 @@ The service:
 
 ## Dependencies
 
-This service uses Redis for cache management.
-
 ### Timezone
 You will need to specify your timezone using this [timezone list](https://github.com/moment/moment-timezone/blob/develop/data/meta/latest.json) in the ```.env``` file. Use the ```sample.env``` as your guide.
 
