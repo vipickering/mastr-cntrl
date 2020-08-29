@@ -24,13 +24,12 @@ exports.micropubGet = function micropubGet(req, res) {
     function micropubResponse(json) {
         logger.info(JSON.stringify(json));
 
-        if (json.me === website.url) {
-            logger.info('Indie Auth Token Received:');
-        } else {
+        if (json.me !== website.url) {
             logger.info('Not Authorised');
             return res.status(401); // Compare if the requester is the one who owns the website, otherwise its a breach and not authorised
         }
 
+        logger.info('Indie Auth Token Received:');
         switch (req.query.q) {
         case ('syndicate-to') :
             return res.json(returnOptions);
