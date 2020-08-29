@@ -17,42 +17,27 @@ exports.micropubGet = function micropubGet(req, res) {
     };
     const returnOptions = syndicationOptions.createJSON();
 
-    // Compare if the requester is the one who owns the website, otherwise its a breach and not authorised
     function authResponse(response) {
-            return response.json();
-        // if (response.me !== website.url) {
-        //     logger.info('Not Authorised');
-        //     return res.status(401);
-        // } else {
-
-        // }
+        return response.json();
     }
 
     function micropubResponse(json) {
         logger.info(JSON.stringify(json));
-        logger.info(json.me);
 
-        if (json.client_id) {
-            logger.info('Service Is: ' + json.client_id);
+        if (json.me === website.url) {
+            logger.info('Indie Auth Token Received:');
         } else {
-            logger.info('No Service Declared');
+            logger.info('Not Authorised');
+            return res.status(401); // Compare if the requester is the one who owns the website, otherwise its a breach and not authorised
         }
 
-        if (token) {
-            logger.info('Indie Auth Token Received:');
-            switch (req.query.q) {
-            case ('syndicate-to') :
-                res.json(returnOptions);
-                break;
-            case ('config') :
-                res.json(returnOptions);
-                break;
-            default:
-                res.json({});
-            }
-        } else {
-            logger.info('No Indie Auth Token Received');
-            res.json({});
+        switch (req.query.q) {
+        case ('syndicate-to') :
+            return res.json(returnOptions);
+        case ('config') :
+            return res.json(returnOptions);
+        default:
+            return res.json({});
         }
     }
 
