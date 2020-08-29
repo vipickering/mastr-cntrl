@@ -15,7 +15,7 @@ exports.formatDateTime = function formatDateTime() {
 };
 
 exports.formatMediaDateTime = function formatMediaDateTime() {
-    const dateTime = moment(new Date()).tz(yourLocation).format('YYYY-MM-DDTHH');
+    const dateTime = moment(new Date()).tz(yourLocation).format('YYYY-MM-DD');
     return dateTime;
 };
 
