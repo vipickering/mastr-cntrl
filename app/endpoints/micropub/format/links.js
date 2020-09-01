@@ -3,6 +3,7 @@ const functionPath = '/app/endpoints/micropub/process-data/';
 const handleContent = require(appRootDirectory + functionPath + 'content');
 const handleDateTime = require(appRootDirectory + functionPath + 'datetime');
 const handleTags = require(appRootDirectory + functionPath + 'tags');
+const handleTargets = require(appRootDirectory + functionPath + 'syndication-targets');
 
 exports.bookmark = function bookmark(micropubContent) {
     logger.info('links (bookmark) JSON received: ' + JSON.stringify(micropubContent));
@@ -10,6 +11,7 @@ exports.bookmark = function bookmark(micropubContent) {
     const pubDate = handleDateTime.formatDateTime();
     const content = handleContent.formatContent(micropubContent);
     const tags = handleTags.formatTags(micropubContent);
+    const targetArray = handleTargets.formatTargets(micropubContent);
     let title = '';
     let target = '';
 
@@ -32,6 +34,7 @@ date: "${pubDate}"
 webmentionTarget: "${target}"
 meta: "bookmark posted on ${pubDate}"
 tags:${tags}
+${targetArray}
 ---
 ${content}
 `;

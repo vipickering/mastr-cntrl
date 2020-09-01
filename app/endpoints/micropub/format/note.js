@@ -3,7 +3,7 @@ const functionPath = '/app/endpoints/micropub/process-data/';
 const handleContent = require(appRootDirectory + functionPath + 'content');
 const handleDateTime = require(appRootDirectory + functionPath + 'datetime');
 const handleTags = require(appRootDirectory + functionPath + 'tags');
-const handleTargets = require(appRootDirectory + functionPath + 'syndication-targets'); // This is untested. Also IndieNews isn't appearing.
+const handleTargets = require(appRootDirectory + functionPath + 'syndication-targets');
 
 // Entry to be moved in to a formatter function, and return the markdown. It needs to take inputs from all the functions outputs previously.
 
