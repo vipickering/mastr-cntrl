@@ -13,19 +13,16 @@ config.github = {
     'email' : process.env.GITHUB_USER_EMAIL
 };
 
-config.mastrcntrlRepo = {
-    'repo' : process.env.MASTRCNTRL_REPO,
-    'branch' : process.env.MASTRCNTRL_BRANCH,
-    'postUrl' : process.env.GITHUB_HOST + '/repos/' + process.env.GITHUB_NAME + '/' + process.env.MASTRCNTRL_REPO
-};
-
 config.mastrCntrl = {
     'url' : process.env.MC_URL
 };
 
-//The website you are targeting
+// Your website you are saving Micropub posts in
 config.website = {
-    'url' : process.env.WEBSITE_URL
+    'url' : process.env.WEBSITE_URL,
+    'repo' : process.env.WEBSITE_REPO,
+    'branch' : process.env.WEBSITE_BRANCH,
+    'postUrl' : process.env.GITHUB_HOST + '/repos/' + process.env.GITHUB_NAME + '/' + process.env.WEBSITE_REPO
 };
 
 config.indieauth = {

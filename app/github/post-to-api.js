@@ -7,12 +7,12 @@ const base64 = require('base64it');
 const logger = require(appRootDirectory + '/app/logging/bunyan');
 const config = require(appRootDirectory + '/app/config.js');
 const github = config.github;
-const mastrcntrlRepo = config.mastrcntrlRepo;
+const website = config.website;
 const slack = require(appRootDirectory + '/app/slack/post-message-slack');
 
 exports.publish = function publish(req, res, fileLocation, fileName, responseLocation, payload, commitMessage) {
     const payloadEncoded = base64.encode(payload);
-    const fileDestination = `${mastrcntrlRepo.postUrl}/contents/${fileLocation}/${fileName}`;
+    const fileDestination = `${website.postUrl}/contents/${fileLocation}/${fileName}`;
     const messageContent = `:robot: ${commitMessage}`;
 
     (async () => {
@@ -28,7 +28,7 @@ exports.publish = function publish(req, res, fileLocation, fileName, responseLoc
             data : {
                 path : fileName,
                 message : messageContent,
-                branch : mastrcntrlRepo.branch,
+                branch : website.branch,
                 content : payloadEncoded,
                 committer : {
                     name : github.user,
