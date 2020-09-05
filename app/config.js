@@ -1,6 +1,10 @@
 /*eslint no-process-env: "off"*/
 const config = {};
 
+config.api = {
+    'port' : process.env.API_PORT
+};
+
 config.github = {
     'postUrl' : process.env.GITHUB_HOST + '/repos/' + process.env.GITHUB_NAME + '/' + process.env.GITHUB_REPO,
     'key' : process.env.GITHUB_KEY,
@@ -12,16 +16,8 @@ config.github = {
     'branch' : process.env.GITHUB_BRANCH
 };
 
-config.api = {
-    'port' : process.env.API_PORT
-};
-
 config.webmentionIO = {
     'webhookToken' : process.env.WEBMENTION_WEBHOOK_TOKEN
-};
-
-config.webmention = {
-    'feed' : process.env.WEBMENTION_FEED
 };
 
 config.indieauth = {
