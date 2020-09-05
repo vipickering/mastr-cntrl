@@ -6,30 +6,30 @@ config.api = {
 };
 
 config.github = {
-    'postUrl' : process.env.GITHUB_HOST + '/repos/' + process.env.GITHUB_NAME + '/' + process.env.GITHUB_REPO,
+    'host' : process.env.GITHUB_HOST,
     'key' : process.env.GITHUB_KEY,
-    'repo' : process.env.GITHUB_REPO,
     'name' : process.env.GITHUB_NAME,
     'user' : process.env.GITHUB_USER,
-    'email' : process.env.GITHUB_USER_EMAIL,
-    'host' : process.env.GITHUB_HOST,
-    'branch' : process.env.GITHUB_BRANCH
+    'email' : process.env.GITHUB_USER_EMAIL
 };
 
-config.webmentionIO = {
-    'webhookToken' : process.env.WEBMENTION_WEBHOOK_TOKEN
-};
-
-config.indieauth = {
-    'url' : process.env.INDIEAUTH_URL
+config.mastrcntrlRepo = {
+    'repo' : process.env.MASTRCNTRL_REPO,
+    'branch' : process.env.MASTRCNTRL_BRANCH,
+    'postUrl' : process.env.GITHUB_HOST + '/repos/' + process.env.GITHUB_NAME + '/' + process.env.MASTRCNTRL_REPO
 };
 
 config.mastrCntrl = {
     'url' : process.env.MC_URL
 };
 
+//The website you are targeting
 config.website = {
     'url' : process.env.WEBSITE_URL
+};
+
+config.indieauth = {
+    'url' : process.env.INDIEAUTH_URL
 };
 
 config.slack = {
