@@ -10,7 +10,6 @@ exports.formatPhotos = function formatPhotos(micropubContent) {
     logger.info('Checking for media');
     try {
         const photoArray = micropubContent.properties.photo;
-        logger.info(photoArray);
         for (let j = 0; j < photoArray.length; j++) {
             photoURL += `photo${j + 1}Url: "${photoArray[j].value}"\n`;
             logger.info('photo data: ' + photoArray[j].value);
@@ -18,6 +17,5 @@ exports.formatPhotos = function formatPhotos(micropubContent) {
     } catch (e) {
         logger.info('No photo provided');
     }
-    logger.info(photoURL);
     return photoURL;
 };
