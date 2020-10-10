@@ -7,7 +7,6 @@ const formatBookmark = require(appRootDirectory + '/app/endpoints/micropub/forma
 const formatFavourite = require(appRootDirectory + '/app/endpoints/micropub/format/favourite');
 const formatReplies = require(appRootDirectory + '/app/endpoints/micropub/format/replies');
 const githubApi = require(appRootDirectory + '/app/github/post-to-api');
-const handleDateTime = require(appRootDirectory + '/app/endpoints/micropub/process-data/datetime');
 
 exports.micropubPost = function micropubPost(req, res) {
     let serviceIdentifier = '';
@@ -23,19 +22,29 @@ exports.micropubPost = function micropubPost(req, res) {
     const indieauth = 'https://tokens.indieauth.com/token';
 
     logger.info('json body ' + JSON.stringify(req.body)); //Log packages sent, for debug
+    logger.info(`time is ${req.body.properties.published[0]}`);
 
-    //Some P3K services send the published date-time. Others do not. Check if it exists, and if not do it ourselves.
+    //Some services send the published date-time. Others do not. Check if it exists, and if not do it ourselves.
     try {
         publishedDate = req.body.properties.published[0];
     } catch (e) {
-        publishedDate = handleDateTime.formatfileNameDateTime();
+        publishedDate = new Date().getTime();
     }
+
+    logger.info(`published date is ${publishedDate}`);
 
     //Format date time for naming file.
     const postFileNameDate = publishedDate.slice(0, 10);
+    logger.info(`slice 10 ${postFileNameDate}`);
+
     const postFileNameTime = publishedDate.replace(/:/g, '-').slice(11, -9);
+    logger.info(`slice 11,-9 ${postFileNameTime}`);
+
     const responseDate = postFileNameDate.replace(/-/g, '/');
+    logger.info(`add dash ${responseDate}`);
+
     const responseLocationTime = publishedDate.slice(11, -12) + '-' + publishedDate.slice(14, -9);
+    logger.info(`put it together ${responseLocationTime}`);
 
     // Micropub Action (only fires if authentication passes)
     function micropubAction(json) {
