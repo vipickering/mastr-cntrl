@@ -13,7 +13,6 @@ exports.micropubPost = function micropubPost(req, res) {
     let fileName;
     let responseLocation;
     let payload;
-    let publishedDate;
     let micropubType;
     let fileLocation;
     let commitMessage;
@@ -22,14 +21,9 @@ exports.micropubPost = function micropubPost(req, res) {
     const indieauth = 'https://tokens.indieauth.com/token';
 
     logger.info('json body ' + JSON.stringify(req.body)); //Log packages sent, for debug
-    logger.info(`time is ${req.body.properties.published[0]}`);
 
     //Some services send the published date-time. Others do not. Check if it exists, and if not do it ourselves.
-    try {
-        publishedDate = req.body.properties.published[0];
-    } catch (e) {
-        publishedDate = new Date().getTime();
-    }
+    const publishedDate = new Date().getTime();
 
     logger.info(`published date is ${publishedDate}`);
 
