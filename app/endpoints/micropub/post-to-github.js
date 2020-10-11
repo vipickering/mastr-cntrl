@@ -36,7 +36,7 @@ exports.micropubPost = function micropubPost(req, res) {
     const responseDate = postFileNameDate.replace(/-/g, '/');
     logger.info(`add dash ${responseDate}`);
 
-    const responseLocationTime = publishedDate.slice(11, -12) + '-' + publishedDate.slice(14, -9);
+    const responseLocationTime = publishedDate.slice(11, -12) + '-' + publishedDate.slice(14, -8);
     logger.info(`put it together ${responseLocationTime}`);
 
     // Micropub Action (only fires if authentication passes)
