@@ -22,22 +22,22 @@ exports.micropubPost = function micropubPost(req, res) {
 
     logger.info('json body ' + JSON.stringify(req.body)); //Log packages sent, for debug
 
-    //Some services send the published date-time. Others do not. Check if it exists, and if not do it ourselves.
+    // Create File name and return URL from the type, date and time of publish
     const publishedDate = new Date().toISOString();
     logger.info(`published date is ${publishedDate}`);
-
+//Sample -> 2020-10-11T00:53:23.513Z
     //Format date time for naming file.
     const postFileNameDate = publishedDate.slice(0, 10);
     logger.info(`slice 10 ${postFileNameDate}`);
 
-    const postFileNameTime = publishedDate.replace(/:/g, '-').slice(11, -9);
+    const postFileNameTime = publishedDate.replace(/:/g, '-').slice(12, -8);
     logger.info(`slice 11,-9 ${postFileNameTime}`);
 
     const responseDate = postFileNameDate.replace(/-/g, '/');
     logger.info(`add dash ${responseDate}`);
 
-    const responseLocationTime = publishedDate.slice(11, -12) + '-' + publishedDate.slice(14, -8);
-    logger.info(`put it together ${responseLocationTime}`);
+    const responseLocationTime = publishedDate.slice(11, -12) + '-' + publishedDate.slice(14, -10);
+    logger.info(`responseLocationTime ${responseLocationTime}`);
 
     // Micropub Action (only fires if authentication passes)
     function micropubAction(json) {
