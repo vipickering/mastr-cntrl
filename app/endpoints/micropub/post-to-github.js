@@ -23,7 +23,7 @@ exports.micropubPost = function micropubPost(req, res) {
     logger.info('json body ' + JSON.stringify(req.body)); //Log packages sent, for debug
 
     //Some services send the published date-time. Others do not. Check if it exists, and if not do it ourselves.
-    const newDate = Date.now();
+    const newDate = new Date();
     logger.info(`newDate is ${newDate}`);
 
     const publishedDate = newDate.getUTCDate();
