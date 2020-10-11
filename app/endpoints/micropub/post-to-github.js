@@ -26,6 +26,7 @@ exports.micropubPost = function micropubPost(req, res) {
     const publishedDate = new Date().toISOString();
     logger.info(`published date is ${publishedDate}`);
 //Sample -> 2020-10-11T00:53:23.513Z
+//2020-10-11-3-41
     //Format date time for naming file.
     const postFileNameDate = publishedDate.slice(0, 10);
     logger.info(`slice 10 ${postFileNameDate}`);
@@ -36,7 +37,7 @@ exports.micropubPost = function micropubPost(req, res) {
     const responseDate = postFileNameDate.replace(/-/g, '/');
     logger.info(`add dash ${responseDate}`);
 
-    const responseLocationTime = publishedDate.slice(11, -12) + '-' + publishedDate.slice(14, -10);
+    const responseLocationTime = publishedDate.slice(10, -12) + '-' + publishedDate.slice(14, -10);
     logger.info(`responseLocationTime ${responseLocationTime}`);
 
     // Micropub Action (only fires if authentication passes)
