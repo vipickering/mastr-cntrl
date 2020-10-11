@@ -25,20 +25,16 @@ exports.micropubPost = function micropubPost(req, res) {
     // Create File name and return URL from the type, date and time of publish
     const publishedDate = new Date().toISOString();
     logger.info(`published date is ${publishedDate}`);
-//Sample -> 2020-10-11T00:53:23.513Z
-//2020-10-11-3-41
+
     //Format date time for naming file.
     const postFileNameDate = publishedDate.slice(0, 10);
-    logger.info(`slice 10 ${postFileNameDate}`);
-
-    const postFileNameTime = publishedDate.replace(/:/g, '-').slice(12, -8);
-    logger.info(`slice 11,-9 ${postFileNameTime}`);
+    logger.info(`YYYY-MM-DD ${postFileNameDate}`);
 
     const responseDate = postFileNameDate.replace(/-/g, '/');
     logger.info(`add slash ${responseDate}`);
 
-    const responseLocationTime = publishedDate.slice(7, -12) + '-' + publishedDate.slice(14, -10);
-    logger.info(`responseLocationTime ${responseLocationTime}`);
+    const postFileNameTime = publishedDate.replace(/:/g, '-').slice(11, -8);
+    logger.info(`file-name ${postFileNameTime}`);
 
     // Micropub Action (only fires if authentication passes)
     function micropubAction(json) {
@@ -89,7 +85,7 @@ exports.micropubPost = function micropubPost(req, res) {
 
         logger.info('Micropub content is: ' + micropubType);
         fileName = `${postFileNameDate}-${postFileNameTime}.md`;
-        responseLocation = `https://vincentp.me/${micropubType}/${responseDate}/${responseLocationTime}/`;
+        responseLocation = `https://vincentp.me/${micropubType}/${responseDate}/${postFileNameTime}/`;
 
         githubApi.publish(req, res, fileLocation, fileName, responseLocation, payload, commitMessage);
     }
