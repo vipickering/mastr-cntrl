@@ -77,7 +77,7 @@ exports.micropubPost = function micropubPost(req, res) {
                 commitMessage = 'Photo post created';
             } catch (e) {
                 micropubType = 'notes';
-                payload = formatNote.note(micropubContent);
+                payload = formatNote.note(publishedDate, micropubContent);
                 fileLocation = 'src/_content/notes';
                 commitMessage = 'Note created';
             }
