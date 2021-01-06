@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "@slack/webhook": "^5.0.3",
-    "axios": "^0.20.0",
+    "axios": "^0.21.1",
     "base64it": "^1.1.0",
     "body-parser": "^1.19.0",
     "bunyan": "^1.8.14",
